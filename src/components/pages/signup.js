@@ -19,26 +19,26 @@ function Signup() {
 
   const signUp = async (event) => {
     event.preventDefault()
-    
-    var serchEmail = await directusRequest("/items/Users?filter[email_account][_eq]=" + emailInput + "&",'','GET')
+
+    var serchEmail = await directusRequest("/items/Users?filter[email_account][_eq]=" + emailInput + "&", '', 'GET')
     var verUser = serchEmail.data
 
     if (verUser.length != 0) {
       setErrorEmail(true)
-       setTimeout(() => {setErrorEmail(false);}, 5000);
-      
-    }else{
-      await directusRequest("/items/Users", {"email_account":emailInput, "pass_account":passInput, "associate_status":"registered_user"}, "POST")
-      .then(response => {
+      setTimeout(() => { setErrorEmail(false); }, 5000);
 
-        setLoginSucess(true)
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    } else {
+      await directusRequest("/items/Users", { "email_account": emailInput, "pass_account": passInput, "associate_status": "registered_user" }, "POST")
+        .then(response => {
+
+          setLoginSucess(true)
+        })
+        .catch(error => {
+          console.error(error);
+        });
 
 
-    } 
+    }
   }
 
   const emailHandleChange = (event) => {
@@ -52,10 +52,10 @@ function Signup() {
   return (
 
     <div class="container">
-    {loginSucess && <Navigate to="/" replace={true} />}
-    {errorEmail &&
+      {loginSucess && <Navigate to="/" replace={true} />}
+      {errorEmail &&
         <div class="alert alert-danger" role="alert">
-            Este endereço de e-mail já está sendo usado.
+          Este endereço de e-mail já está sendo usado.
         </div>
       }
 
@@ -74,7 +74,7 @@ function Signup() {
             <br></br>
             <button type="submit" onClick={signUp} class="btn btn-primary">Fazer Cadastro</button>
           </form>
-          
+
         </div>
       </div>
     </div>

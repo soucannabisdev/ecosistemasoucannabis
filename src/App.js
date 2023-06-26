@@ -6,7 +6,7 @@ import Menu from './components/pages/elements/menu'
 import AssociateSignup from './components/pages/associate-signup'
 import Sidebar from './components/pages/elements/sidebar'
 import Signup from './components/pages/signup'
-
+import UploadComponent from './components/pages/documents-upload'
 
 function App() {  
 
@@ -20,6 +20,7 @@ function App() {
         <Route path="/solicitacao-contato" element={<Contact />} />
         <Route path="/cadastro" element={<Signup />} />
         <Route path="/cadastro-associado" element={<AssociateSignup />} />
+        <Route path="/documentos" element={<UploadComponent />} />
       </Routes>
     </Router>
   )

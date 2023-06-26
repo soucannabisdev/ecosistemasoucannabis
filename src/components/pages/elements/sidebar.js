@@ -18,7 +18,7 @@ const Sidebar = () => {
           <Link to="/cadastro-associado">Cadastro de associado</Link>
         </li>
         <li>
-          <Link to="/link4">Documentação</Link>
+          <Link to="/documentos">Documentação</Link>
         </li>
         <li>
           <Link to="/link5">Consulta Medica</Link>
