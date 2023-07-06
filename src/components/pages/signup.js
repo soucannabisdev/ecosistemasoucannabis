@@ -28,10 +28,10 @@ function Signup() {
       setTimeout(() => { setErrorEmail(false); }, 5000);
 
     } else {
-      await directusRequest("/items/Users", { "email_account": emailInput, "pass_account": passInput, "associate_status": "registered_user" }, "POST")
+      await directusRequest("/items/Users", { "email_account": emailInput, "pass_account": passInput, "associate_status": 0 }, "POST")
         .then(response => {
-
           setLoginSucess(true)
+          window.location.assign("/login");
         })
         .catch(error => {
           console.error(error);
@@ -52,7 +52,7 @@ function Signup() {
   return (
 
     <div class="container">
-      {loginSucess && <Navigate to="/" replace={true} />}
+     
       {errorEmail &&
         <div class="alert alert-danger" role="alert">
           Este endereço de e-mail já está sendo usado.

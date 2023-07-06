@@ -22,7 +22,7 @@ await axios.request(config)
   console.log(error);
 });
 
-return requestData;
+return await requestData;
 }
 
 export default directusRequest

@@ -43,7 +43,7 @@ function LoginForm() {
           setTimeout(() => {setLoginErrorPass(false);}, 5000);
         } else {
           setLoginSucess(true);
-          window.location.reload();
+          window.location.assign("/");
         }
       }
     })

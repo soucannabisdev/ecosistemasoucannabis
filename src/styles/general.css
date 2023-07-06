@@ -1,6 +1,22 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.vertical-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.line-through{
+  text-decoration: line-through;
+}
+
 .form-container {
-    max-width: 400px;
-    margin: 0 auto;
+    max-width: 600px;
     padding: 2rem;
     background-color: #f4f4f4;
     border: 1px solid #ccc;
@@ -43,4 +59,45 @@
   .form-container button[type="submit"]:hover {
     background-color: #0056b3;
   }
+  
+  .wrapper {
+    display: flex;
+    height: 100%;
+  }
+  
+  .sidebar {
+    position: fixed;
+    width: 30%;
+    height: 100%;
+    background-color: #064b05;
+      
+  }
+  
+  .content {
+    margin-left: 600px;
+    width: 58%;
+    padding: 100px 20px 20px 50px;
+  }
+  
+  .disabled{
+    color:#615f5f
+  
+  }
+  
+  .listPages > div > a, .listPages > a{
+  color:#fff;
+  text-decoration:none;
+  font-size:20px;
+  font-weight:bold;
+  
+  }
+  
+  .listPages > div  > a > li,  .listPages > a > li{
+  border-bottom:1px solid #fff;
+  list-style:none;
+  height:80px;
+  padding:25px 20px 20px 20px
+  
+  }
+
   

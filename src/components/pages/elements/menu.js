@@ -6,12 +6,21 @@ const MenuTopo = () => {
 
   const [user, setUser] = useState();
 
-  (async function () {
-    const userData = await User();
-    setUser(userData);
-  })();
+  useEffect(() =>{
+    (async function () {
+      const userData = await User();
+      setUser(userData);
+    })();
+  },[])
 
+  const [logout, setLogout] = useState(false);
 
+  const logoutHandleChange = (event) => {
+    setLogout(true);
+    localStorage.removeItem("user_code")
+    window.location.assign("/login");
+  };
+  
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">
@@ -34,7 +43,7 @@ const MenuTopo = () => {
                 <Dropdown.Item href="#action1">Opção 1</Dropdown.Item>
                 <Dropdown.Item href="#action2">Opção 2</Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item href="#action3">Sair</Dropdown.Item>
+                <Dropdown.Item onClick={logoutHandleChange} class="btn btn-primary">Sair</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </ul>
