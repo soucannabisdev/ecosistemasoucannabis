@@ -34,10 +34,19 @@ function Contact() {
     window.location.assign("/")
   }
 
-  const contact = (event) => {
+  const contact = async (event) => {
     event.preventDefault();
+    var value = event.target.value
+    console.log(value)
+    await directusRequest("/items/Users/" + user.id, {associate_status: value }, "PATCH")
+    .then(response => {
+    })
+    .catch(error => {
+        console.error(error);
+    });
 
-    console.log(formData)
+    window.location.reload()
+
   }
 
   const handleChangeInput = (event) => {
@@ -73,7 +82,7 @@ function Contact() {
       {user.associate_status === 0 && (
         <div>
           <div className="form-container">
-            <button type="button" onClick={contact} class="btn btn-primary">Entrar em contato</button>
+            <button type="button" onClick={contact} value={1} class="btn btn-primary">Entrar em contato</button>
           </div>
         </div>
       )}
@@ -81,7 +90,7 @@ function Contact() {
       {user.associate_status === 1 && (
         <div>
           <div className="form-container">
-            <button type="button" class="btn btn-primary">Já entrei em contato</button>
+            <button type="button" onClick={contact} value={2} class="btn btn-primary">Já entrei em contato</button>
           </div>
         </div>
       )}
