@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom'
-import directusRequest from '../../modules/directusRequest'
 import Logout from '../logout'
+import apiRequest from '../../modules/apiRequest';
 
 function LoginForm() {
 
@@ -25,20 +25,20 @@ function LoginForm() {
 
   const userLogin = async (event) => {
     event.preventDefault()
-    await directusRequest("/items/Users?filter[email_account][_eq]=" + emailInput + "&", '', "GET")
-    .then(response => {
-      localStorage.setItem("user_code",response.data[0].user_code)
+    await apiRequest("/directus/login", {"email":emailInput}, "POST")
+    .then(async response => {
+      localStorage.setItem("user_code", await response.user_code)
+      console.log(response)
       setLogged(true)
-
-
-      var verUser = response.data
+      var verUser = response
 
       if (verUser.length == 0) {
         console.log("E-mail não encontrado")
         setLoginEmailError(true)
+        setLogged(false)
         setTimeout(() => {setLoginEmailError(false);}, 5000);
       } else {
-        if (verUser[0].pass_account != passInput) {
+        if (verUser.pass_account != passInput) {
           setLoginErrorPass(true)
           setTimeout(() => {setLoginErrorPass(false);}, 5000);
         } else {

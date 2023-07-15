@@ -1,6 +1,6 @@
-import axios from 'axios'
+const axios = require('axios')
 
-async function whatsappRequest(data){
+async function whaticketRequest(data){
 var requestData = []
 let config = {
   method: "POST",
@@ -8,10 +8,10 @@ let config = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers':'Content-Type,Authorization,Access-Control-Allow-Origin,Access-Control-Allow-Headers',
     'Content-Type': 'application/json', 
-    'Authorization': process.env.REACT_APP_WHATSAPP_TOKEN,
+    'Authorization': "Bearer a5cb1e74-82de-4de9-ab22-b76b1c51860a",
    },
   maxBodyLength: Infinity,
-  url: process.env.REACT_APP_WHATSAPP_URL,
+  url: "https://sou-atendimento-backend.soucannabis.ong.br/api/messages/send",
   data: data
 };
 
@@ -27,4 +27,4 @@ await axios.request(config)
 return await requestData;
 }
 
-export default whatsappRequest
+module.exports = whaticketRequest

@@ -1,31 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import directusRequest from '../../modules/directusRequest'
 import User from '../../modules/User'
-import whatsappRequest from '../../modules/whatsappRequest';
+import apiRequest from '../../modules/apiRequest';
 
 function Contact() {
   useEffect(() => {
     (async () => {
       const userData = await User();
       setUser(userData);
-
-      await whatsappRequest(JSON.stringify({
-        "number": "5548999287996",
-        "body": "Teste de solicitação de contato"
-      }))
-    })()
-
-  
+    })() 
 
   }, []);
-
 
   const [user, setUser] = useState({});
   const [formData, setFormData] = useState({
     name:null,
-    email:null,
-    phone:null
-    
+    phone:null    
   })
 
   const associate_status = user.associate_status
@@ -34,18 +23,36 @@ function Contact() {
     window.location.assign("/")
   }
 
-  const contact = async (event) => {
+  const nocontact = async (event) => {
     event.preventDefault();
     var value = event.target.value
-    console.log(value)
-    await directusRequest("/items/Users/" + user.id, {associate_status: value }, "PATCH")
+
+    await apiRequest("/directus/update", {"userId":user.id, "formData":{"associate_status": value} }, "POST")
     .then(response => {
     })
     .catch(error => {
         console.error(error);
     });
 
-    window.location.reload()
+   window.location.reload()
+
+  }
+
+
+  const contact = async (event) => {
+    event.preventDefault();
+    var value = event.target.value
+
+    console.log(formData)
+
+    await apiRequest("/whaticket/send-message", JSON.stringify(formData), "POST")
+    .then(response => {
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
+   window.location.reload()
 
   }
 
@@ -62,13 +69,9 @@ function Contact() {
     <div>
        <form onSubmit={contact}>
             <div class="form-group">
-              <label for="email">Nome completo:</label>
+              <label for="name">Nome completo:</label>
               <input type="text" class="form-control" onChange={handleChangeInput} value={formData.name} id="name" name="name" placeholder=""></input>
-            </div>
-            <div class="form-group">
-              <label for="password">Email:</label>
-              <input type="email" class="form-control" onChange={handleChangeInput} value={formData.email} id="email" name="email" placeholder=""></input>
-            </div>
+            </div>            
             <div class="form-group">
               <label for="password">Telefone:</label>
               <input type="text" class="form-control" onChange={handleChangeInput} value={formData.phone} id="phone" name="phone" placeholder=""></input>
@@ -82,7 +85,7 @@ function Contact() {
       {user.associate_status === 0 && (
         <div>
           <div className="form-container">
-            <button type="button" onClick={contact} value={1} class="btn btn-primary">Entrar em contato</button>
+            <button type="button" onClick={nocontact} value={1} class="btn btn-primary">Entrar em contato</button>
           </div>
         </div>
       )}
@@ -90,7 +93,7 @@ function Contact() {
       {user.associate_status === 1 && (
         <div>
           <div className="form-container">
-            <button type="button" onClick={contact} value={2} class="btn btn-primary">Já entrei em contato</button>
+            <button type="button" onClick={nocontact} value={2} class="btn btn-primary">Já entrei em contato</button>
           </div>
         </div>
       )}

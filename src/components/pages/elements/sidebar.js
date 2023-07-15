@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import User from '../../../modules/User'
 
-
-
 const Sidebar = () => {  
   const [user, setUser] = useState({}); 
 
@@ -11,6 +9,7 @@ const Sidebar = () => {
     (async () => {
       const userData = await User();
       setUser(userData);
+
     })()
 
   }, []);

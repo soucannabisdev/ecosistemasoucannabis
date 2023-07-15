@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import directusRequest from '../../modules/directusRequest'
+import directusRequest from '../../modules/apiRequest'
 import User from '../../modules/User'
 
 function Prescription() {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom'
-import directusRequest from '../../modules/directusRequest'
+import directusRequest from '../../modules/apiRequest'
+import apiRequest from '../../modules/apiRequest';
 
 function Signup() {
 
@@ -20,15 +21,14 @@ function Signup() {
   const signUp = async (event) => {
     event.preventDefault()
 
-    var serchEmail = await directusRequest("/items/Users?filter[email_account][_eq]=" + emailInput + "&", '', 'GET')
-    var verUser = serchEmail.data
+    var serchEmail =  await apiRequest("/directus/login", {"email":emailInput}, "POST")
 
-    if (verUser.length != 0) {
+    if (serchEmail.length != 0) {
       setErrorEmail(true)
       setTimeout(() => { setErrorEmail(false); }, 5000);
 
     } else {
-      await directusRequest("/items/Users", { "email_account": emailInput, "pass_account": passInput, "associate_status": 0 }, "POST")
+      await apiRequest("/directus/create-user", { "email_account": emailInput, "pass_account": passInput, "associate_status": 0 }, "POST")
         .then(response => {
           setLoginSucess(true)
           window.location.assign("/login");
@@ -36,7 +36,6 @@ function Signup() {
         .catch(error => {
           console.error(error);
         });
-
 
     }
   }

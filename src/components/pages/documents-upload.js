@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import directusRequest from '../../modules/directusRequest'
+import directusRequest from '../../modules/apiRequest'
+import apiRequest from "../../modules/apiRequest";
 import User from '../../modules/User'
 
 
@@ -86,7 +87,7 @@ const FileUploadComponent = () => {
 
         var fileId = ""
 
-        await directusRequest("/files", formData, "POST")
+        await apiRequest("/files", formData, "POST")
             .then(response => {
                 console.log(response)
                 fileId = response.data.id
@@ -96,15 +97,14 @@ const FileUploadComponent = () => {
                 console.error(error);
             });
 
-        console.log(user)
-
         if (user.proof_of_address && user.rg_patient_proof && user.contract) {
             var status = 4
         } 
-
-        await directusRequest("/items/Users/" + user.id, { rg_proof: fileId, associate_status: status }, "PATCH")
+        const bodyRequest = { rg_proof: fileId, associate_status: status }
+        
+        await apiRequest("/directus/update", {"userId":user.id, "formData":bodyRequest}, "POST")
             .then(response => {
-                console.log(response)
+                
             })
             .catch(error => {
                 console.error(error);
@@ -125,7 +125,7 @@ const FileUploadComponent = () => {
 
         var fileId = ""
 
-        await directusRequest("/files", formData, "POST")
+        await apiRequest("/files", formData, "POST")
             .then(response => {
                 console.log(response)
                 fileId = response.data.id
@@ -135,13 +135,13 @@ const FileUploadComponent = () => {
                 console.error(error);
             });
 
-        console.log(user)
-
-        if (user.rg_proof && user.rg_patient_proof && user.contract) {
+            if (user.rg_proof && user.rg_patient_proof && user.contract) {
             var status = 4
         } 
 
-        await directusRequest("/items/Users/" + user.id, { proof_of_address: fileId, associate_status: status }, "PATCH")
+        const bodyRequest = { proof_of_address: fileId, associate_status: status }
+
+        await apiRequest("/directus/update", {"userId":user.id, "formData":bodyRequest}, "POST")
             .then(response => {
                 console.log(response)
             })
@@ -164,7 +164,7 @@ const FileUploadComponent = () => {
 
         var fileId = ""
 
-        await directusRequest("/files", formData, "POST")
+        await apiRequest("/files", formData, "POST")
             .then(response => {
                 console.log(response)
                 fileId = response.data.id
@@ -180,7 +180,9 @@ const FileUploadComponent = () => {
             var status = 4
         } 
 
-        await directusRequest("/items/Users/" + user.id, { rg_patient_proof: fileId, associate_status: status }, "PATCH")
+       const bodyRequest =  { rg_patient_proof: fileId, associate_status: status }
+
+       await apiRequest("/directus/update", {"userId":user.id, "formData":bodyRequest}, "POST")
             .then(response => {
                 console.log(response)
             })
@@ -203,7 +205,7 @@ const FileUploadComponent = () => {
 
         var fileId = ""
 
-        await directusRequest("/files", formData, "POST")
+        await apiRequest("/files", formData, "POST")
             .then(response => {
                 console.log(response)
                 fileId = response.data.id
@@ -218,8 +220,10 @@ const FileUploadComponent = () => {
         if (user.proof_of_address && user.rg_patient_proof && user.rg_proof) {
             var status = 4
         } 
+        
+        const bodyRequest = { contract: fileId, associate_status: status }
+        await apiRequest("/directus/update", {"userId":user.id, "formData":bodyRequest}, "POST")
 
-        await directusRequest("/items/Users/" + user.id, { contract: fileId, associate_status: status }, "PATCH")
             .then(response => {
                 console.log(response)
             })

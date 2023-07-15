@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import directusRequest from '../../modules/directusRequest'
+import { Link } from 'react-router-dom';
 import User from '../../modules/User'
+import apiRequest from '../../modules/apiRequest';
 
 function Contact() {
   useEffect(() => {
@@ -13,21 +14,11 @@ function Contact() {
 
   const [user, setUser] = useState({});
 
-
-  const copyText = () => {
-    const textToCopy = user.user_code
-    navigator.clipboard.writeText(textToCopy)
-      .then(() => {
-        console.log('Texto copiado com sucesso!');
-      })
-      .catch((error) => {
-        console.error('Erro ao copiar o texto:', error);
-      });
-  }
-
   const medicalAppointmentSuccess = async () => {
-    await directusRequest("/items/Users/" + user.id, { associate_status: 5 }, "PATCH")
-      .then(response => {
+
+    await apiRequest("/directus/update", {"userId":user.id, "formData":{"associate_status": 5} }, "POST")
+
+    .then(response => {
         console.log(response)
       })
       .catch(error => {
@@ -41,16 +32,12 @@ function Contact() {
 
   return (
     <div style={{textAlign:"center", fontSize:"18px"}}>
-     <div>Acesse agendarapido.soucannabis.ong.br para agendar a sua consulta médica.</div> 
+     <div>Clique no botão abaixo para agendar sua consulta médica</div> 
      <br></br>
-      <div style={{color:"red", fontSize:"20px"}}>IMPORTANTE</div> 
-      <br></br>
-      <div>Informe o seu código de usuário no agendamento da consulta</div> 
-      <br></br>
-      <b style={{fontSize:"22px"}}>{user.user_code}</b>
+     <Link to={`http://localhost/easyappointments/?code=${user.user_code}`}>Agendar Consulta</Link>
+      <b style={{fontSize:"22px"}}></b>
       <br></br>
       <br></br>
-      <button onClick={copyText}>Copiar código do usuário</button>
       <br></br>
       <br></br>
       <button onClick={medicalAppointmentSuccess}>Já realizei minha consulta</button>

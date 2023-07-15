@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Redirect } from 'react-router'
 import InputMask from "react-input-mask";
 import "../../styles/general.css"
-import directusRequest from '../../modules/directusRequest'
+import apiRequest from "../../modules/apiRequest";
 import User from '../../modules/User'
 
 const initialValues = {
@@ -183,7 +183,7 @@ const AssociateSignUp = () => {
 
     console.log(formData)
 
-    await directusRequest("/items/Users/" + user.id, formData, "PATCH")
+    await apiRequest("/directus/update", {"userId":user.id, "formData":formData}, "POST")
       .then(response => {
 
       })
