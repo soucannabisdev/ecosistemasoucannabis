@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import directusRequest from '../../modules/apiRequest'
+import directusRequestUpload from '../../modules/directusRequestUpload'
 import apiRequest from "../../modules/apiRequest";
 import User from '../../modules/User'
 
 
 
 const FileUploadComponent = () => {
-    
-    if(!localStorage.getItem("user_code")){
+
+    if (!localStorage.getItem("user_code")) {
         console.log(window.location.assign("/login"))
-      }
-      
+    }
+
 
     const [file1, setFile1] = useState(null);
     const [file2, setFile2] = useState(null);
@@ -29,7 +29,6 @@ const FileUploadComponent = () => {
             const userData = await User();
             setUser(userData);
 
-            
             if (userData.rg_proof == null) {
                 setRgProof(true)
             } else {
@@ -87,30 +86,26 @@ const FileUploadComponent = () => {
 
         var fileId = ""
 
-        await apiRequest("/files", formData, "POST")
+        await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
             .then(response => {
-                console.log(response)
-                fileId = response.data.id
+                fileId = response.id
                 return fileId
             })
             .catch(error => {
                 console.error(error);
-            });
+            })
 
-        if (user.proof_of_address && user.rg_patient_proof && user.contract) {
-            var status = 4
-        } 
-        const bodyRequest = { rg_proof: fileId, associate_status: status }
-        
-        await apiRequest("/directus/update", {"userId":user.id, "formData":bodyRequest}, "POST")
+        const bodyRequest = { rg_proof: fileId }
+        await apiRequest("/directus/update", { "userId": user.id, "formData": bodyRequest }, "POST")
+
             .then(response => {
-                
+                console.log(response)
             })
             .catch(error => {
                 console.error(error);
             });
 
-            window.location.reload()
+        window.location.reload()
 
     };
 
@@ -125,23 +120,20 @@ const FileUploadComponent = () => {
 
         var fileId = ""
 
-        await apiRequest("/files", formData, "POST")
+        console.log(formData)
+
+        await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
             .then(response => {
-                console.log(response)
-                fileId = response.data.id
+                fileId = response.id
                 return fileId
             })
             .catch(error => {
                 console.error(error);
-            });
+            })
 
-            if (user.rg_proof && user.rg_patient_proof && user.contract) {
-            var status = 4
-        } 
+        const bodyRequest = { proof_of_address: fileId}
+        await apiRequest("/directus/update", { "userId": user.id, "formData": bodyRequest }, "POST")
 
-        const bodyRequest = { proof_of_address: fileId, associate_status: status }
-
-        await apiRequest("/directus/update", {"userId":user.id, "formData":bodyRequest}, "POST")
             .then(response => {
                 console.log(response)
             })
@@ -149,7 +141,7 @@ const FileUploadComponent = () => {
                 console.error(error);
             });
 
-            window.location.reload()
+        window.location.reload()
 
     };
 
@@ -164,25 +156,18 @@ const FileUploadComponent = () => {
 
         var fileId = ""
 
-        await apiRequest("/files", formData, "POST")
+        await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
             .then(response => {
-                console.log(response)
-                fileId = response.data.id
+                fileId = response.id
                 return fileId
             })
             .catch(error => {
                 console.error(error);
-            });
+            })
 
-        console.log(user)
+        const bodyRequest = { rg_patient_proof: fileId }
+        await apiRequest("/directus/update", { "userId": user.id, "formData": bodyRequest }, "POST")
 
-        if (user.proof_of_address && user.rg_patient_proof && user.contract) {
-            var status = 4
-        } 
-
-       const bodyRequest =  { rg_patient_proof: fileId, associate_status: status }
-
-       await apiRequest("/directus/update", {"userId":user.id, "formData":bodyRequest}, "POST")
             .then(response => {
                 console.log(response)
             })
@@ -190,7 +175,7 @@ const FileUploadComponent = () => {
                 console.error(error);
             });
 
-            window.location.reload()
+        window.location.reload()
 
     };
 
@@ -205,24 +190,17 @@ const FileUploadComponent = () => {
 
         var fileId = ""
 
-        await apiRequest("/files", formData, "POST")
+        await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
             .then(response => {
-                console.log(response)
-                fileId = response.data.id
+                fileId = response.id
                 return fileId
             })
             .catch(error => {
                 console.error(error);
-            });
+            })
 
-        console.log(user)
-
-        if (user.proof_of_address && user.rg_patient_proof && user.rg_proof) {
-            var status = 4
-        } 
-        
-        const bodyRequest = { contract: fileId, associate_status: status }
-        await apiRequest("/directus/update", {"userId":user.id, "formData":bodyRequest}, "POST")
+        const bodyRequest = { contract: fileId, associate_status: 4 }
+        await apiRequest("/directus/update", { "userId": user.id, "formData": bodyRequest }, "POST")
 
             .then(response => {
                 console.log(response)
@@ -231,7 +209,7 @@ const FileUploadComponent = () => {
                 console.error(error);
             });
 
-            window.location.reload()
+        window.location.reload()
 
     };
 
@@ -257,15 +235,14 @@ const FileUploadComponent = () => {
                             RG já enviado
                         </div>
                     )}
-                </Col>
-                <Col md={6}>
+
                     {proof_of_address && (
                         <Form onSubmit={proofAdressSubmit}>
                             <Form.Group controlId="formFile2">
                                 <Form.Label>Arquivo 2</Form.Label>
-                                <Form.Control type="file" onChange={handleFile2Change} />
+                                <Form.Control type="file" onChange={handleFile2Change} disabled={rgProof} />
                             </Form.Group>
-                            <Button variant="primary" type="submit">
+                            <Button variant="primary" type="submit" disabled={rgProof}>
                                 Enviar
                             </Button>
                         </Form>
@@ -278,32 +255,34 @@ const FileUploadComponent = () => {
                 </Col>
             </Row>
             <Row>
-                <Col md={6}>
-                    {rg_patient_proof && (
-                        <Form onSubmit={rgProofPatientSubmit}>
-                            <Form.Group controlId="formFile3">
-                                <Form.Label>Arquivo 3</Form.Label>
-                                <Form.Control type="file" onChange={handleFile3Change} />
-                            </Form.Group>
-                            <Button variant="primary" type="submit">
-                                Enviar
-                            </Button>
-                        </Form>
+                <Col md={6}>         
+                    {user.responsable_type == "another" && rg_patient_proof &&(
+               
+                            <Form onSubmit={rgProofPatientSubmit}>
+                                <Form.Group controlId="formFile3">
+                                    <Form.Label>Arquivo 3</Form.Label>
+                                    <Form.Control type="file" onChange={handleFile3Change} disabled={proof_of_address} />
+                                </Form.Group>
+                                <Button variant="primary" type="submit" disabled={proof_of_address}>
+                                    Enviar
+                                </Button>
+                            </Form>            
                     )}
-                    {!rg_patient_proof && (
+
+                    {!rg_patient_proof && user.responsable_type == "another" &&(
                         <div>
                             Rg do Paciente já enviado
                         </div>
                     )}
-                </Col>
-                <Col md={6}>
+
+
                     {contract && (
                         <Form onSubmit={contractSubmit}>
                             <Form.Group controlId="formFile4">
                                 <Form.Label>Arquivo 4</Form.Label>
-                                <Form.Control type="file" onChange={handleFile4Change} />
+                                <Form.Control type="file" onChange={handleFile4Change} disabled={rg_patient_proof} />
                             </Form.Group>
-                            <Button variant="primary" type="submit">
+                            <Button variant="primary" type="submit" disabled>
                                 Enviar
                             </Button>
                         </Form>

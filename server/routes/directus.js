@@ -64,7 +64,7 @@ router.post('/user-appointment', async (req, res) => {
            //delete userData.city
            delete userData.complement
            delete userData.contract
-           delete userData.cpf_associate
+           //delete userData.cpf_associate
            delete userData.cpf_patient
            delete userData.date_created
            delete userData.date_updated
@@ -126,8 +126,7 @@ router.post('/create-user', async (req, res) => {
 
     if (token == "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6ImFkbWluIiwiaWF0IjoxNjg4ODU0MDQ3fQ.rouBF2M_r2UCJfUcUrlhggINHuyJnfCK7IqmO35p5bk") {
 
-        const userData = await directusRequest("/items/Users", req.body, "POST")
-       
+        const userData = await directusRequest("/items/Users", req.body, "POST")       
         res.send(userData)
         res.status(200)
     } else {
@@ -143,8 +142,8 @@ router.post('/update', async (req, res) => {
     console.log(req.body)
 
     if (token == "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6ImFkbWluIiwiaWF0IjoxNjg4ODU0MDQ3fQ.rouBF2M_r2UCJfUcUrlhggINHuyJnfCK7IqmO35p5bk") {
-
-        const userData = await directusRequest("/items/Users/"+req.body.userId, req.body.formData, "PATCH")
+  
+       const userData = await directusRequest("/items/Users/"+req.body.userId, req.body.formData, "PATCH")
        
        res.send(userData)
         res.status(200)
@@ -158,13 +157,14 @@ router.post('/files', async (req, res) => {
 
     const token = req.headers.authorization
 
-    console.log(req.body)
+    if (!req.body.file) {
+        console.log("Nenhum Arquivo")
+      }   
 
     if (token == "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6ImFkbWluIiwiaWF0IjoxNjg4ODU0MDQ3fQ.rouBF2M_r2UCJfUcUrlhggINHuyJnfCK7IqmO35p5bk") {
-
-        const userData = await directusRequest("/files", req.body.formData, "POST")
-       
-       res.send(userData)
+      
+       const userData = await directusRequest("/files", req.body.file, "POST",{"Content-Type": "multipart/form-data"})
+        res.send(userData)
         res.status(200)
     } else {
         res.status(401).json({ mensagem: 'Credenciais inválidas' });

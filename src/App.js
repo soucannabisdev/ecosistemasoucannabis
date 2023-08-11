@@ -1,10 +1,11 @@
 import { BrowserRouter as Router, Route, Routes, Navigate, Link, useHistory} from 'react-router-dom'
 import React, { useState, useEffect } from 'react';
 import LoginForm from './components/pages/loginForm'
-import Index from './components/pages/index'
+import ApproveAssociate from './components/pages/approveAssociate'
 import Contact from './components/pages/first-contact'
 import Menu from './components/pages/elements/menu'
 import AssociateSignup from './components/pages/associate-signup'
+import PacientSignup from './components/pages/pacient-signup'
 import Sidebar from './components/pages/elements/sidebar'
 import Signup from './components/pages/signup'
 import UploadComponent from './components/pages/documents-upload'
@@ -20,10 +21,9 @@ function App() {
     (async () => {
       const userData = await User();
       setUser(userData);
-    })()
+    })()  
 
   }, []);
-
 
   return (
     <Router>
@@ -56,9 +56,11 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/solicitacao-contato" element={<Contact />} />
                 <Route path="/cadastro-associado" element={<AssociateSignup />} />
+                <Route path="/cadastro-paciente" element={<PacientSignup />} />
                 <Route path="/documentos" element={<UploadComponent />} />
                 <Route path="/consulta" element={<MedicalAppointment />} />
                 <Route path="/receita-medica" element={<Prescription />} />
+                <Route path="/cadastro-aprovado" element={<ApproveAssociate />} />
               </Routes>
             </div>
           </div>

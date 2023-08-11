@@ -4,33 +4,21 @@ const crypto = require('crypto');
 const axios = require('axios')
 const cors = require("cors")
 const bodyParser = require("body-parser")
+const fileUpload = require('express-fileupload');
 
 
 const app = express();
 app.use(bodyParser.json());
+app.use(fileUpload());
 app.use(cors());
 
 const direcuts = require('./routes/directus')
-const whatciket = require('./routes/whaticket')
+const chatwoot = require('./routes/chatwoot')
+const wekan = require('./routes/wekan')
 
 app.use('/directus', direcuts); // use as rotas no aplicativo
-app.use('/whaticket', whatciket)
-
-/*const chaveSecreta = 'minhaChaveSuperSecreta';
-
-const dadosOriginais = 'Os segredos devem ser protegidos!';
-
-const cipher = crypto.createCipher('aes-256-cbc', chaveSecreta);
-let dadosCriptografados = cipher.update(dadosOriginais, 'utf8', 'hex');
-dadosCriptografados += cipher.final('hex');
-console.log('Dados criptografados:', dadosCriptografados);
-
-const decipher = crypto.createDecipher('aes-256-cbc', chaveSecreta);
-let dadosDescriptografados = decipher.update(dadosCriptografados, 'hex', 'utf8');
-dadosDescriptografados += decipher.final('utf8');
-console.log('Dados descriptografados:', dadosDescriptografados);*/
-
-
+app.use('/chatwoot', chatwoot)
+app.use('/wekan', wekan)
 
 
 const port = 3005;

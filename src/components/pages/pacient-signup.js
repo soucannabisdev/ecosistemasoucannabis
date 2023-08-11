@@ -6,6 +6,7 @@ import "../../styles/general.css"
 import apiRequest from "../../modules/apiRequest";
 import User from '../../modules/User'
 
+
 const initialValues = {
   responsible: "",
   patient_is_pet: "",
@@ -38,9 +39,11 @@ const initialValues = {
   description_reasons_treatment: ""
 };
 
-const AssociateSignUp = () => {
+const PacientSignup = () => {
 
   const [user, setUser] = useState({});
+
+  var codeUser = localStorage.getItem("user_code")
 
 
   const [formData, setFormData] = useState({
@@ -68,12 +71,13 @@ const AssociateSignUp = () => {
     proof_of_adress: null,
     reason_treatment: null,
     reason_treatment_text: null,
-    associate_status:3
+    associate_status: 3,
+    responsable_code: codeUser
   }
-  
+
   );
 
-  
+
 
   const handleChangeInput = (event) => {
     console.log(event.target.value)
@@ -85,7 +89,7 @@ const AssociateSignUp = () => {
 
 
   useEffect(() => {
-   (async () => {
+    (async () => {
       const userData = await User();
       setUser(userData);
     })()
@@ -104,7 +108,7 @@ const AssociateSignUp = () => {
     if (cleanedValue.length !== 11) {
       return "O CPF deve ter 11 dígitos";
     }
-    setFormData({...formData,cpf_associate:value})
+    setFormData({ ...formData, cpf_associate: value })
     return undefined;
   };
 
@@ -116,23 +120,8 @@ const AssociateSignUp = () => {
     if (cleanedValue.length !== 7) {
       return "O RG deve ter 7 dígitos";
     }
-    setFormData({...formData,rg_associate:value})
+    setFormData({ ...formData, rg_associate: value })
     return undefined;
-  };
-
-  const responsable_himself = (event) => {
-    var responsableType = event.target.value
-    setFormData({...formData, responsable_type:responsableType})
-  };
-
-  const responsable_another = (event) => {
-    var responsableType = event.target.value
-    setFormData({...formData, responsable_type:responsableType})
-  };
-
-  const responsable_pet = (event) => {
-   var  responsableType = event.target.value
-    setFormData({...formData, responsable_type:responsableType})
   };
 
 
@@ -141,7 +130,7 @@ const AssociateSignUp = () => {
 
     console.log(formData)
 
-    await apiRequest("/directus/update", {"userId":user.id, "formData":formData}, "POST")
+    await apiRequest("/directus/create-user", formData, "POST")
       .then(response => {
 
       })
@@ -149,60 +138,39 @@ const AssociateSignUp = () => {
         console.error(error);
       });
 
-      if(formData.responsable_type == "another"){
+    window.location.assign("/documentos");
 
-        window.location.assign("/cadastro-paciente");
-
-      }else{
-        window.location.assign("/documentos");
-      }
-
-  
   }
 
 
   return (
-
-
-
     <Formik initialValues={initialValues}>
       <Form onSubmit={updateUser} className="form-container">
-        <div className="mb-3">
-          <label className="form-label" htmlFor="responsible">Você é responsável pelo seu próprio tratamento?</label>
-          <Field onClick={responsable_himself} type="radio" id="responsable_himself" name="resposable" value="himself" />
-          <label className="form-label" htmlFor="responsible">Sim, sou o responsável pelo meu tratamento</label>
-          <Field  onClick={responsable_another} type="radio" id="responsable_another" name="resposable" value="another" />
-          <label className="form-label" htmlFor="responsible">Não, sou reponsável pelo tratamento de outra pessoa</label>
-          <Field type="radio" id="responsable_pet" name="resposable" value="pet" />
-          <label onClick={responsable_pet} className="form-label" htmlFor="responsible">Não, sou reponsável pelo tratamento de um pet</label>
-          <ErrorMessage name="responsible" component="div" />
-        </div>
 
-    
-          <div>
-            <div className="mb-3">
-              <label className="form-label" htmlFor="name_associate">Primeiro nome</label>
-              <Field onChange={handleChangeInput} value={formData.name_associate} type="text" id="name_associate" name="name_associate" />
-              <ErrorMessage name="name_associate" component="div" />
-            </div>
+        <div>
+          <div className="mb-3">
+            <label className="form-label" htmlFor="name_associate">Primeiro nome</label>
+            <Field onChange={handleChangeInput} value={formData.name_associate} type="text" id="name_associate" name="name_associate" />
+            <ErrorMessage name="name_associate" component="div" />
+          </div>
 
-            <div className="mb-3">
-              <label className="form-label" htmlFor="lastname_associate">Sobrenome</label>
-              <Field onChange={handleChangeInput} value={formData.lastname_associate} type="text" id="lastname_associate" name="lastname_associate" />
-              <ErrorMessage name="lastname_associate" component="div" />
-            </div>
+          <div className="mb-3">
+            <label className="form-label" htmlFor="lastname_associate">Sobrenome</label>
+            <Field onChange={handleChangeInput} value={formData.lastname_associate} type="text" id="lastname_associate" name="lastname_associate" />
+            <ErrorMessage name="lastname_associate" component="div" />
+          </div>
 
-            <div className="mb-3">
-              <label className="form-label" htmlFor="birthday_associate">Data de nascimento</label>
-              <Field onChange={handleChangeInput} value={formData.birthday_associate} type="date" id="birthday_associate" name="birthday_associate" />
-              <ErrorMessage name="birthday_associate" component="div" />
-            </div>
+          <div className="mb-3">
+            <label className="form-label" htmlFor="birthday_associate">Data de nascimento</label>
+            <Field onChange={handleChangeInput} value={formData.birthday_associate} type="date" id="birthday_associate" name="birthday_associate" />
+            <ErrorMessage name="birthday_associate" component="div" />
+          </div>
 
-            <div className="mb-3">
-              <label className="form-label" htmlFor="gender">Identidade de gênero</label>
-              <Field onChange={handleChangeInput} value={formData.gender} type="text" id="gender" name="gender" />
-              <ErrorMessage name="gender" component="div" />
-            </div>
+          <div className="mb-3">
+            <label className="form-label" htmlFor="gender">Identidade de gênero</label>
+            <Field onChange={handleChangeInput} value={formData.gender} type="text" id="gender" name="gender" />
+            <ErrorMessage name="gender" component="div" />
+          </div>
 
           <div className="mb-3">
             <label className="form-label" htmlFor="nationality">Nacionalidade</label>
@@ -283,7 +251,7 @@ const AssociateSignUp = () => {
 
           <div className="mb-3">
             <label className="form-label" htmlFor="mobile_number">Telefone celular</label>
-            <Field onChange={handleChangeInput} value={formData.mobile_number}type="text" id="mobile_number" name="mobile_number" />
+            <Field onChange={handleChangeInput} value={formData.mobile_number} type="text" id="mobile_number" name="mobile_number" />
             <ErrorMessage name="mobile_number" component="div" />
           </div>
 
@@ -319,7 +287,7 @@ const AssociateSignUp = () => {
 
           <div className="mb-3">
             <label className="form-label" htmlFor="city">Cidade</label>
-            <Field onChange={handleChangeInput}value={formData.city}  type="text" id="city" name="city" />
+            <Field onChange={handleChangeInput} value={formData.city} type="text" id="city" name="city" />
             <ErrorMessage name="city" component="div" />
           </div>
 
@@ -336,19 +304,19 @@ const AssociateSignUp = () => {
           </div>
 
           <div className="mb-3">
-              <label className="form-label" htmlFor="reason_treatment">Motivo principal para o tratamento</label>
-              <Field onChange={handleChangeInput}  value={formData.reason_treatment} type="text" id="reason_treatment" name="reason_treatment" />
-              <ErrorMessage name="reason_treatment" component="div" />
-            </div>
+            <label className="form-label" htmlFor="reason_treatment">Motivo principal para o tratamento</label>
+            <Field onChange={handleChangeInput} value={formData.reason_treatment} type="text" id="reason_treatment" name="reason_treatment" />
+            <ErrorMessage name="reason_treatment" component="div" />
+          </div>
 
-            <div className="mb-3">
-              <label className="form-label" htmlFor="reason_treatment_text">Descreva o motivo do tratamento</label>
-              <Field onChange={handleChangeInput} value={formData.reason_treatment_text} as="textarea" id="reason_treatment_text" name="reason_treatment_text" />
-              <ErrorMessage name="reason_treatment_text" component="div" />
-            </div>
+          <div className="mb-3">
+            <label className="form-label" htmlFor="reason_treatment_text">Descreva o motivo do tratamento</label>
+            <Field onChange={handleChangeInput} value={formData.reason_treatment_text} as="textarea" id="reason_treatment_text" name="reason_treatment_text" />
+            <ErrorMessage name="reason_treatment_text" component="div" />
+          </div>
 
-            <button type="submit">Submit</button>
-          </div>      
+          <button type="submit">Submit</button>
+        </div>
 
 
       </Form>
@@ -356,4 +324,4 @@ const AssociateSignUp = () => {
   );
 };
 
-export default AssociateSignUp;
+export default PacientSignup;

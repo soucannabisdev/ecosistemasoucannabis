@@ -9,7 +9,6 @@ const Sidebar = () => {
     (async () => {
       const userData = await User();
       setUser(userData);
-
     })()
 
   }, []);
@@ -62,7 +61,7 @@ const Sidebar = () => {
               </div>
             )}
 
-{user.associate_status === 5 && (
+            {user.associate_status === 5 && (
               <div>
                 <Link><li className="line-through">Solicitação de contato</li></Link>
                 <Link><li className="line-through">Cadastro de associado</li></Link>
@@ -70,6 +69,17 @@ const Sidebar = () => {
                 <Link><li className="line-through">Consulta Medica</li></Link>
                 <Link to="/receita-medica"><li >Receita Medica</li></Link>
                 <Link><li className="disabled">Aguardando aprovação do cadastro</li></Link>
+              </div>
+            )}
+
+          {user.associate_status === 6 && (
+              <div>
+                <Link><li className="line-through">Solicitação de contato</li></Link>
+                <Link><li className="line-through">Cadastro de associado</li></Link>
+                <Link><li className="line-through">Documentação</li></Link>
+                <Link><li className="line-through">Consulta Medica</li></Link>
+                <Link><li className="line-through">Receita Medica</li></Link>
+                <Link to="/cadastro-aprovado"><li>Aguardando aprovação do cadastro</li></Link>
               </div>
             )}
 

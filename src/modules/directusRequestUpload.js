@@ -1,9 +1,8 @@
-const axios = require('axios');
+import axios from 'axios'
 
-async function directusRequest(query, data, method) {
+async function directusRequest(query, data, method, headers) {
+
   var requestData = [];
-
-
   let config = {
     method: method,
     headers: {
@@ -13,18 +12,20 @@ async function directusRequest(query, data, method) {
     },
     maxBodyLength: Infinity,
     url: "https://directus-production-3403.up.railway.app" + query,
-    data: data
+    data: data,
+
   };
 
-  try {
+  config.headers = { ...config.headers, ...headers };
+  
+  try {    
     const response = await axios.request(config);
-    requestData = response.data.data[0];
+    requestData = response.data.data;
     // delete requestData.id;
     return requestData;
   } catch (error) {
-    console.log("Erro")
-    console.log(error.response.data.errors);
+    console.log(error);
   }
 }
 
-module.exports = directusRequest;
+export default directusRequest;

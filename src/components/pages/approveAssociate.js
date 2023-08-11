@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
-function Index() { 
+function approveAssociate() { 
     
     return (
         <div class="container">
-          xxxxxxxxxxxxxxxxxxxxxxx
+          Seu cadastro foi aprovado!
      </div>
      );
 }
 
-export default Index;
+export default approveAssociate;
