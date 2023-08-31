@@ -1,5 +1,7 @@
 const axios = require('axios');
 
+var requestData = []
+
 async function chatWootRequest(phone, mensage) {
     let data = JSON.stringify({
         "number": phone,
@@ -14,7 +16,7 @@ async function chatWootRequest(phone, mensage) {
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'http://216.238.106.135:8083/message/sendText/API',
+        url: process.env.REACT_CHATWOOT_API_URL+'/message/sendText/API',
         headers: { 
           'Content-Type': 'application/json', 
           'apikey': 'zYzP7ocstxh3SJ23D4FZTCu4ehnM8v4hu'
@@ -22,13 +24,15 @@ async function chatWootRequest(phone, mensage) {
         data : data
       };
       
-      axios.request(config)
+      await axios.request(config)
       .then((response) => {
-        console.log(JSON.stringify(response.data));
+        requestData = response.data
       })
       .catch((error) => {
         console.log(error);
       });
+
+      return requestData
 }
 
 module.exports = chatWootRequest;

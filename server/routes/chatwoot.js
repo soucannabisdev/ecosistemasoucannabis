@@ -2,19 +2,24 @@ const axios = require('axios')
 const express = require('express');
 const router = express.Router();
 const chatWootRequest = require('./modules/chatWootRequest')
+const directusRequest = require('./modules/directusRequest');
 
 
 router.post('/send-message-api', async (req, res) => {
 
     const token = req.headers.authorization
-    console.log(req.body)
 
     const phone = req.body.phone
-    const phoneMask = phone.split("+").join("")
 
-    if (token == "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6ImFkbWluIiwiaWF0IjoxNjg4ODU0MDQ3fQ.rouBF2M_r2UCJfUcUrlhggINHuyJnfCK7IqmO35p5bk") {
-
-        await chatWootRequest(phoneMask, "Olá, " + req.body.name + ".\nSua solicitação de contato foi recebida, você entá em nossa lista de espera!\nAguarde para ser etendido.\nObrigado.")
+    const verToken = await directusRequest("/items/Users_Api?filter[token][_eq]=" + token + "", '', "GET")
+    if (verToken) {     
+        await chatWootRequest(phone, "Olá, " + req.body.name + ".\nSua solicitação de contato foi recebida, você entá em nossa lista de espera!\nAguarde para ser etendido.\nObrigado.")
+        .then((response) => {
+            res.send(response)
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 
     } else {
         res.status(401)
@@ -24,10 +29,9 @@ router.post('/send-message-api', async (req, res) => {
 router.post('/send-message-chat', async (req, res) => {
 
     const token = req.headers.authorization
-    console.log(req.body)
 
-    if (token == "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6ImFkbWluIiwiaWF0IjoxNjg4ODU0MDQ3fQ.rouBF2M_r2UCJfUcUrlhggINHuyJnfCK7IqmO35p5bk") {
-
+    const verToken = await directusRequest("/items/Users_Api?filter[token][_eq]=" + token + "", '', "GET")
+    if (verToken) {     
         var sourceId = 0
         var conversationId = 0
 
@@ -52,7 +56,6 @@ router.post('/send-message-chat', async (req, res) => {
         await axios.request(config)
             .then((response) => {
                 sourceId = response.data.source_id
-                console.log(response.data)
                 return sourceId
             })
             .catch((error) => {
@@ -91,7 +94,6 @@ router.post('/send-message-chat', async (req, res) => {
             })
         })
             .then((response) => {
-                console.log(response.data)
                 res.send(response.data)
             })
             .catch((error) => {

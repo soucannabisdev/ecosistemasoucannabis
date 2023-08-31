@@ -12,6 +12,7 @@ async function User() {
     });
 
     requestData = await apiRequest("/directus/user",data,"POST")
+    
 
   } catch (error) {
     console.log(error);

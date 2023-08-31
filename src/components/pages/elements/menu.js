@@ -22,7 +22,7 @@ const MenuTopo = () => {
   };
   
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+    <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
       <div className="container-fluid">
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -31,17 +31,13 @@ const MenuTopo = () => {
                 <a className="nav-link" href="#">{user.email_account}</a>
               }
             </li>
-            <li className="nav-item">
-              <img src="https://cdn1.iconfinder.com/data/icons/user-pictures/100/male3-48.png" alt="Avatar" className="rounded-circle" />
-            </li>
+       
             <Dropdown>
               <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                Dropdown
+                Menu
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                <Dropdown.Item href="#action1">Opção 1</Dropdown.Item>
-                <Dropdown.Item href="#action2">Opção 2</Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item onClick={logoutHandleChange} class="btn btn-primary">Sair</Dropdown.Item>
               </Dropdown.Menu>

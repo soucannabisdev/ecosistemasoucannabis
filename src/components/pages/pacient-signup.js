@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Redirect } from 'react-router'
 import InputMask from "react-input-mask";
-import "../../styles/general.css"
 import apiRequest from "../../modules/apiRequest";
 import User from '../../modules/User'
 

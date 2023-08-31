@@ -3,6 +3,7 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import directusRequestUpload from '../../modules/directusRequestUpload'
 import apiRequest from "../../modules/apiRequest";
 import User from '../../modules/User'
+import { Link } from 'react-router-dom';
 
 
 
@@ -13,15 +14,17 @@ const FileUploadComponent = () => {
     }
 
 
+
     const [file1, setFile1] = useState(null);
     const [file2, setFile2] = useState(null);
     const [file3, setFile3] = useState(null);
     const [file4, setFile4] = useState(null);
     const [user, setUser] = useState({});
-    const [rgProof, setRgProof] = useState(true);
-    const [rg_patient_proof, setRg_patient_proof] = useState(true);
-    const [proof_of_address, setProof_of_address] = useState(true);
-    const [contract, setcontract] = useState(true);
+    const [rgProof, setRgProof] = useState(false);
+    const [rg_patient_proof, setRg_patient_proof] = useState(false);
+    const [proof_of_address, setProof_of_address] = useState(false);
+    const [contract, setcontract] = useState(false);
+    const [generateContract, setGenerateContract] = useState(false);
 
 
     useEffect(() => {
@@ -30,26 +33,17 @@ const FileUploadComponent = () => {
             setUser(userData);
 
             if (userData.rg_proof == null) {
-                setRgProof(true)
-            } else {
                 setRgProof(false)
             }
 
             if (userData.rg_patient_proof == null) {
-                setRg_patient_proof(true)
-            } else {
                 setRg_patient_proof(false)
             }
 
             if (userData.proof_of_address == null) {
-                setProof_of_address(true)
-            } else {
                 setProof_of_address(false)
             }
-
             if (userData.contract == null) {
-                setcontract(true)
-            } else {
                 setcontract(false)
             }
 
@@ -59,29 +53,21 @@ const FileUploadComponent = () => {
 
     const handleFile1Change = async (event) => {
         setFile1(event.target.files[0]);
-    };
 
-    const handleFile2Change = (event) => {
-        setFile2(event.target.files[0]);
-    };
+        console.log(event.target.files[0])
 
-    const handleFile3Change = (event) => {
-        setFile3(event.target.files[0]);
-    };
+        const file1 = event.target.files[0]
 
-    const handleFile4Change = (event) => {
-        setFile4(event.target.files[0]);
-    };
-
-
-
-    const rgProofSubmit = async (event) => {
-        event.preventDefault();
+        const createFolder = await apiRequest("/directus/create-folder", { "name": user.user_code }, "POST")
+        var userFolder = createFolder.id
+        console.log("User Folder: " + userFolder)
+        localStorage.setItem("user_folder", userFolder)
 
         file1.storage = "local"
         file1.filename_download = file1.name
 
         var formData = new FormData();
+        formData.append("folder", userFolder)
         formData.append("file", file1)
 
         var fileId = ""
@@ -89,6 +75,7 @@ const FileUploadComponent = () => {
         await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
             .then(response => {
                 fileId = response.id
+                console.log(response)
                 return fileId
             })
             .catch(error => {
@@ -105,17 +92,21 @@ const FileUploadComponent = () => {
                 console.error(error);
             });
 
-        window.location.reload()
-
+        setRgProof(true)
     };
 
-    const proofAdressSubmit = async (event) => {
-        event.preventDefault();
+    const handleFile2Change = async (event) => {
+        setFile2(event.target.files[0]);
+
+        const file2 = event.target.files[0]
+
+        var userFolder = localStorage.getItem("user_folder")
 
         file2.storage = "local"
         file2.filename_download = file2.name
 
         var formData = new FormData();
+        formData.append("folder", userFolder)
         formData.append("file", file2)
 
         var fileId = ""
@@ -131,7 +122,7 @@ const FileUploadComponent = () => {
                 console.error(error);
             })
 
-        const bodyRequest = { proof_of_address: fileId}
+        const bodyRequest = { proof_of_address: fileId }
         await apiRequest("/directus/update", { "userId": user.id, "formData": bodyRequest }, "POST")
 
             .then(response => {
@@ -141,17 +132,23 @@ const FileUploadComponent = () => {
                 console.error(error);
             });
 
-        window.location.reload()
+        setProof_of_address(true)
+
 
     };
 
-    const rgProofPatientSubmit = async (event) => {
-        event.preventDefault();
+    const handleFile3Change = async (event) => {
+        setFile3(event.target.files[0]);
+
+        const file3 = event.target.files[0]
+
+        var userFolder = localStorage.getItem("user_folder")
 
         file3.storage = "local"
         file3.filename_download = file3.name
 
         var formData = new FormData();
+        formData.append("folder", userFolder)
         formData.append("file", file3)
 
         var fileId = ""
@@ -175,31 +172,35 @@ const FileUploadComponent = () => {
                 console.error(error);
             });
 
-        window.location.reload()
-
+        setRg_patient_proof(true)
     };
 
-    const contractSubmit = async (event) => {
-        event.preventDefault();
+    const handleFile4Change = async (event) => {
+        setFile4(event.target.files[0]);
+
+        const file4 = event.target.files[0]
+
+        var userFolder = localStorage.getItem("user_folder")
 
         file4.storage = "local"
         file4.filename_download = file4.name
 
         var formData = new FormData();
+        formData.append("folder", userFolder)
         formData.append("file", file4)
 
         var fileId = ""
 
         await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
             .then(response => {
-                fileId = response.id
+                fileId = response.ids
                 return fileId
             })
             .catch(error => {
                 console.error(error);
             })
 
-        const bodyRequest = { contract: fileId, associate_status: 4 }
+       /* const bodyRequest = { contract: fileId, associate_status: 4 }
         await apiRequest("/directus/update", { "userId": user.id, "formData": bodyRequest }, "POST")
 
             .then(response => {
@@ -207,95 +208,144 @@ const FileUploadComponent = () => {
             })
             .catch(error => {
                 console.error(error);
-            });
+            });*/
 
-        window.location.reload()
-
+        setcontract(true)
+        window.location.assign("/consulta");
     };
+
+    const zapsign = async (event) => {
+
+        var fields = [
+            "name_associate",
+            "lastname_associate",
+            "nacionality",
+            "marital_status",
+            "rg_associate",
+            "cpf_associate",
+            "emiiter_rg_associate",
+            "email",
+            "street",
+            "number",
+            "neighborhood",
+            "city",
+            "cep", 
+            "date"
+        ]
+
+        const months = [
+            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        ];
+
+        const currentDate = new Date();
+        const day = currentDate.getDate();
+        const month = currentDate.getMonth();
+        const year = currentDate.getFullYear();
+        const monthName = months[month];
+        const formattedDate = `${day} de ${monthName} de ${year}`;
+
+        user.date = formattedDate
+
+        var userData = []
+        const templateInfo = await apiRequest("/zapsign/template-info", "", "GET")
+
+        var inputs = templateInfo.inputs
+        inputs.forEach(async function (input, i) {
+            
+            userData.push({
+                "de": input.variable,
+                "para": await user[fields[i]]
+            })
+        })
+       
+        console.log(await userData)
+
+       const createContract = await apiRequest("/zapsign/create-contract", {"userData":userData, "cod_id":user.id}, "POST")
+        console.log(createContract.signers[0].sign_url)
+        setGenerateContract(createContract.signers[0].sign_url)
+    }
 
 
     return (
-        <Container>
-            <Row>
-                <Col md={6}>
-                    {rgProof && (
-                        <Form onSubmit={rgProofSubmit}>
-                            <Form.Group controlId="formFile1">
-                                <Form.Label>Arquivo 1</Form.Label>
-                                <Form.Control type="file" onChange={handleFile1Change} />
-                            </Form.Group>
-                            <Button variant="primary" type="submit">
-                                Enviar
-                            </Button>
-                        </Form>
-                    )}
+        <div class="justify-content-center">
+            <h1 class="sub-title">Envie os documentos citados abaixo para comprovar seu RG e Residência.</h1>
 
-                    {!rgProof && (
-                        <div>
-                            RG já enviado
-                        </div>
-                    )}
+            <div class="">
+                {!rgProof && (
+                    <Form>
+                        <Form.Group controlId="formFile1">
+                            <Form.Label className="label-upload">Comprovante de Identidade do Associado</Form.Label>
+                            <Form.Control className="input-upload" type="file" onChange={handleFile1Change} />
+                        </Form.Group>
+                    </Form>
+                )}
 
-                    {proof_of_address && (
-                        <Form onSubmit={proofAdressSubmit}>
-                            <Form.Group controlId="formFile2">
-                                <Form.Label>Arquivo 2</Form.Label>
-                                <Form.Control type="file" onChange={handleFile2Change} disabled={rgProof} />
-                            </Form.Group>
-                            <Button variant="primary" type="submit" disabled={rgProof}>
-                                Enviar
-                            </Button>
-                        </Form>
-                    )}
-                    {!proof_of_address && (
-                        <div>
-                            Comprovante de endereço já enviado
-                        </div>
-                    )}
-                </Col>
-            </Row>
-            <Row>
-                <Col md={6}>         
-                    {user.responsable_type == "another" && rg_patient_proof &&(
-               
-                            <Form onSubmit={rgProofPatientSubmit}>
-                                <Form.Group controlId="formFile3">
-                                    <Form.Label>Arquivo 3</Form.Label>
-                                    <Form.Control type="file" onChange={handleFile3Change} disabled={proof_of_address} />
-                                </Form.Group>
-                                <Button variant="primary" type="submit" disabled={proof_of_address}>
-                                    Enviar
-                                </Button>
-                            </Form>            
-                    )}
+                {rgProof && (
+                    <div>
+                        <Form.Label className="label-upload send-ok">Comprovante de identidade enviado</Form.Label>
+                    </div>
+                )}
 
-                    {!rg_patient_proof && user.responsable_type == "another" &&(
-                        <div>
-                            Rg do Paciente já enviado
-                        </div>
-                    )}
+                {!proof_of_address && (
+                    <Form>
+                        <Form.Group controlId="formFile2">
+                            <Form.Label className="label-upload">Comprovante de residência</Form.Label>
+                            <Form.Control className="input-upload" type="file" onChange={handleFile2Change} disabled={!rgProof} />
+                        </Form.Group>
+                    </Form>
+                )}
+                {proof_of_address && (
+                    <div class="document-send">
+                        <Form.Label className="label-upload send-ok">Comprovante de endereço já enviado</Form.Label>
+                    </div>
+                )}
 
+                {user.responsable_type == "another" && !rg_patient_proof && (
 
-                    {contract && (
-                        <Form onSubmit={contractSubmit}>
-                            <Form.Group controlId="formFile4">
-                                <Form.Label>Arquivo 4</Form.Label>
-                                <Form.Control type="file" onChange={handleFile4Change} disabled={rg_patient_proof} />
-                            </Form.Group>
-                            <Button variant="primary" type="submit" disabled>
-                                Enviar
-                            </Button>
-                        </Form>
-                    )}
-                    {!contract && (
-                        <div>
-                            Contrato já enviado
-                        </div>
-                    )}
-                </Col>
-            </Row>
+                    <Form>
+                        <Form.Group controlId="formFile3">
+                            <Form.Label className="label-upload">Comprovante de identidade do paciente</Form.Label>
+                            <Form.Control className="input-upload" type="file" onChange={handleFile3Change} disabled={!proof_of_address} />
+                        </Form.Group>
+                    </Form>
+                )}
 
-        </Container>
+                {rg_patient_proof && user.responsable_type == "another" && (
+                    <div class="document-send">
+                        <Form.Label className="label-upload send-ok">Rg do Paciente já enviado</Form.Label>
+                    </div>
+                )}
+
+                {!contract && (
+                    <Form>
+                        <Form.Group controlId="formFile4">
+                            <Form.Label className="label-upload">Contrato assinado</Form.Label>
+                            <Form.Control type="file" className="input-upload" onChange={handleFile4Change} disabled={!proof_of_address} />
+                        </Form.Group>
+                    </Form>
+                )}
+                {contract && (
+                    <div class="document-send">
+                        <Form.Label className="label-upload send-ok">Contrato já enviado</Form.Label>
+
+                    </div>
+                )}
+
+                <Form>
+                    <Form.Group controlId="formFile4">
+                        <Form.Label onClick={zapsign} className="label-upload" disabled={generateContract}>Gerar um contrato com Zapsign</Form.Label>
+                    </Form.Group>
+                </Form>
+
+                {generateContract && (
+                    <a  className="label-upload" target="_blank" href={generateContract}>                   
+                             Assinar Contrato Online                     
+                     </a>
+                )}
+            </div>
+        </div>
+
     );
 };
 

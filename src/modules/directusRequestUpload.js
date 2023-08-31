@@ -2,6 +2,8 @@ import axios from 'axios'
 
 async function directusRequest(query, data, method, headers) {
 
+  console.log(data)
+
   var requestData = [];
   let config = {
     method: method,

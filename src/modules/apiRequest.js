@@ -3,20 +3,12 @@ import axios from 'axios'
 async function apiRequest(query, body, method, headers) {
   var requestData = []
 
- /* if(body.formData){
-    const formData = new FormData();
-    formData.append('file', body.formData);
-    formData.append('storage', 'local');
-    formData.append('filename_download', 'name');
-    body = formData
-  }*/
-
   let config = {
     method: method,
     maxBodyLength: Infinity,
     url: 'http://localhost:3005' + query,
     headers: {
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6ImFkbWluIiwiaWF0IjoxNjg4ODU0MDQ3fQ.rouBF2M_r2UCJfUcUrlhggINHuyJnfCK7IqmO35p5bk'
+      'Authorization': '7ebbfd8f63600b172dc430f9e8884af5f04496b4bbb0d3d33c946a93f3d88b80'
     },
     data: body
   };  

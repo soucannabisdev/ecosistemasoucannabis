@@ -27,19 +27,22 @@ function Prescription() {
   const submit = async (event) => {
     event.preventDefault();
 
-    console.log(user)
+    const userFolder = localStorage.getItem("user_folder")
 
     file.storage = "local"
     file.filename_download = file.name
 
+    console.log(userFolder)
+
     var formData = new FormData();
+    formData.append("folder", userFolder)
     formData.append("file", file)
 
     console.log(formData)
 
     var fileId = ""
 
-    await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
+   await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
       .then(response => {
         console.log(response.id)
         fileId = response.id
@@ -58,6 +61,9 @@ function Prescription() {
       .catch(error => {
         console.error(error);
       });
+
+      
+     window.location.reload()
   }
 
   const approve = async (event) => {

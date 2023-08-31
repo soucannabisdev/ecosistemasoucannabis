@@ -23,20 +23,20 @@ function Signup() {
 
     var serchEmail =  await apiRequest("/directus/login", {"email":emailInput}, "POST")
 
-    if (serchEmail.length != 0) {
+    if (serchEmail) {
       setErrorEmail(true)
       setTimeout(() => { setErrorEmail(false); }, 5000);
-
     } else {
-      await apiRequest("/directus/create-user", { "email_account": emailInput, "pass_account": passInput, "associate_status": 0 }, "POST")
-        .then(response => {
-          setLoginSucess(true)
-          window.location.assign("/login");
-        })
-        .catch(error => {
-          console.error(error);
-        });
+      
+      const createUser = await apiRequest("/directus/create-user", { "email_account": emailInput, "pass_account": passInput, "associate_status": 0 }, "POST")
 
+      if(createUser){
+        setLoginSucess(true)
+        window.location.assign("/login");
+      }else{
+        console.log("erro")
+      }
+      
     }
   }
 
@@ -59,19 +59,19 @@ function Signup() {
       }
 
       <div class="row justify-content-center">
-        <div class="col-md-6">
-          <h1>Formulário de Cadastro</h1>
+        <div class="col-md-6 form-signup">
+          <h1 class="sub-title">Preencha com seu e-mail e defina uma senha</h1>
           <form onSubmit={signUp}>
             <div class="form-group">
-              <label for="email">Email:</label>
-              <input type="email" class="form-control" onChange={emailHandleChange} value={emailInput} id="email" placeholder="Digite seu email"></input>
+            <label class="label-login" for="email">E-mail:</label>
+              <input type="email" class="form-control input-login" onChange={emailHandleChange} value={emailInput} id="email" placeholder="Digite seu email"></input>
             </div>
             <div class="form-group">
-              <label for="password">Senha:</label>
-              <input type="password" class="form-control" onChange={passHandleChange} value={passInput} id="password" placeholder="Digite sua senha"></input>
+            <label class="label-login" for="email">Senha:</label>
+              <input type="password" class="form-control input-login" onChange={passHandleChange} value={passInput} id="password" placeholder="Digite sua senha"></input>
             </div>
             <br></br>
-            <button type="submit" onClick={signUp} class="btn btn-primary">Fazer Cadastro</button>
+            <button type="submit" onClick={signUp} class="btn btn-primary btn-lg btn-signup">Fazer Cadastro</button>
           </form>
 
         </div>

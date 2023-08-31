@@ -13,15 +13,25 @@ import Home from './components/pages/home'
 import MedicalAppointment from './components/pages/medical-appointment'
 import Prescription from './components/pages/prescription'
 import User from './modules/User'
+import "./styles/general.css"
+
 
 function App() {
   const [user, setUser] = useState(false);
+  const [userCode, setUserCode] = useState(false);
+  const [hiddenButtons, setHiddenButtons] = useState(true);
 
   useEffect(() => {
     (async () => {
       const userData = await User();
       setUser(userData);
     })()  
+
+    if(localStorage.getItem("user_code")){
+      setUserCode(localStorage.getItem("user_code"))
+    }else{
+      setHiddenButtons(false)
+    }
 
   }, []);
 
@@ -30,10 +40,11 @@ function App() {
       {!user && (
         <div class="container vertical-center">
           <div class="text-center">
-            <h1>Ecossistema SouCannabis</h1>
-            <div class="mt-4">
-              <Link to="/login" class="btn btn-primary mr-2">Login</Link>
-              <Link to="/cadastro"  class="btn btn-secondary">Faça sua conta</Link>
+            <img src="https://cdn-icons-png.flaticon.com/512/188/188418.png" width="50%" />
+            <h1 class="title">Ecosistema SouCannabis</h1>
+            <div class="row">
+              <Link to="/login" class="btn btn-lg btn-primary btn-login" hidden={hiddenButtons}>Login</Link>
+              <Link to="/cadastro"  class="btn btn-lg btn-success" hidden={hiddenButtons}>Criar minha conta</Link>
             </div>
           </div>
           <Routes>

@@ -9,7 +9,9 @@ function Logout() {
   const logoutHandleChange = (event) => {
     setLogout(true);
     localStorage.removeItem("user_code")
+    localStorage.removeItem("user_folder")
     window.location.reload();
+
   };
     
     return (

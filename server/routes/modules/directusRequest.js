@@ -3,7 +3,6 @@ const axios = require('axios');
 async function directusRequest(query, data, method) {
   var requestData = [];
 
-
   let config = {
     method: method,
     headers: {
@@ -18,8 +17,12 @@ async function directusRequest(query, data, method) {
 
   try {
     const response = await axios.request(config);
-    requestData = response.data.data[0];
-    // delete requestData.id;
+    if (query == "/folders") {
+      requestData = response.data.data;
+    } else {
+      requestData = response.data.data[0];
+    }
+    // delete requestData.id; 
     return requestData;
   } catch (error) {
     console.log("Erro")

@@ -2,45 +2,33 @@ import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Redirect } from 'react-router'
 import InputMask from "react-input-mask";
-import "../../styles/general.css"
 import apiRequest from "../../modules/apiRequest";
 import User from '../../modules/User'
+import GenderInput from '../forms/GenderInput'
+import EmailInput from '../forms/EmailInput'
+import AlertError from '../forms/AlertError'
+import MultiSelectField from '../forms/CIAPInput'; // Certifique-se de ajustar o caminho do arquivo
+import PhoneInput from 'react-phone-number-input'
 
-const initialValues = {
-  responsible: "",
-  patient_is_pet: "",
-  associate_name: "",
-  associate_lastname: "",
-  birthday_responsible: "",
-  gender: "",
-  nationality: "",
-  cpf_associate: "",
-  rg_associate: "",
-  organ_emitter: "",
-  marital_status: "",
-  email: "",
-  mobile_number: "",
-  secundary_number: "",
-  street: "",
-  number: "",
-  complement: "",
-  neighborhood: "",
-  city: "",
-  state: "",
-  cep: "",
-  residence_proof: "",
-  name_patient: "",
-  lastname_patient: "",
-  birthday_patient: "",
-  cpf_patient: "",
-  rg_patient: "",
-  reason_treatment: "",
-  description_reasons_treatment: ""
-};
 
 const AssociateSignUp = () => {
 
   const [user, setUser] = useState({});
+  const [inputError, setInputError] = useState(false);
+  const [fieldsError, setFieldsError] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      const userData = await User();
+      setUser(userData);
+    })()
+
+    const timer = setTimeout(() => {
+    }, 3000);
+    return () => clearTimeout(timer);
+
+  }, []);
 
 
   const [formData, setFormData] = useState({
@@ -56,8 +44,7 @@ const AssociateSignUp = () => {
     emiiter_rg_associate: null,
     marital_status: null,
     email: null,
-    mobile_number: null,
-    secundary_number: null,
+    phone: null,
     street: null,
     number: null,
     complement: null,
@@ -65,36 +52,36 @@ const AssociateSignUp = () => {
     city: null,
     state: null,
     cep: null,
-    proof_of_adress: null,
     reason_treatment: null,
     reason_treatment_text: null,
-    associate_status:3
+    associate_status: 3
   }
-  
   );
 
-  
-
-  const handleChangeInput = (event) => {
-    console.log(event.target.value)
+  const handleChangeInput = (event,) => {
+    console.log()
     setFormData({
       ...formData,
       [event.target.name]: event.target.value,
     });
+
   };
 
+  const handleSelectionChange = (event) => {
+    setFormData({
+      ...formData,
+      ["reason_treatment"]: event,
+    });
+  };
 
-  useEffect(() => {
-   (async () => {
-      const userData = await User();
-      setUser(userData);
-    })()
+  const handleChangeInputPhone = (event) => {
+    setFormData({
+      ...formData,
+      ["phone"]: event,
+    });
+    setInputError(false)
+  };
 
-    const timer = setTimeout(() => {
-    }, 3000);
-    return () => clearTimeout(timer);
-
-  }, []);
 
   const validateCPFAssociate = (value) => {
     if (!value) {
@@ -104,7 +91,7 @@ const AssociateSignUp = () => {
     if (cleanedValue.length !== 11) {
       return "O CPF deve ter 11 dígitos";
     }
-    setFormData({...formData,cpf_associate:value})
+    setFormData({ ...formData, cpf_associate: value })
     return undefined;
   };
 
@@ -116,117 +103,202 @@ const AssociateSignUp = () => {
     if (cleanedValue.length !== 7) {
       return "O RG deve ter 7 dígitos";
     }
-    setFormData({...formData,rg_associate:value})
+    setFormData({ ...formData, rg_associate: value })
     return undefined;
   };
 
   const responsable_himself = (event) => {
     var responsableType = event.target.value
-    setFormData({...formData, responsable_type:responsableType})
+    setFormData({ ...formData, responsable_type: responsableType })
   };
 
   const responsable_another = (event) => {
     var responsableType = event.target.value
-    setFormData({...formData, responsable_type:responsableType})
+    setFormData({ ...formData, responsable_type: responsableType })
   };
 
   const responsable_pet = (event) => {
-   var  responsableType = event.target.value
-    setFormData({...formData, responsable_type:responsableType})
+    var responsableType = event.target.value
+    setFormData({ ...formData, responsable_type: responsableType })
   };
+
+  const statesData = [
+    { value: 'AC', label: 'Acre' },
+    { value: 'AL', label: 'Alagoas' },
+    { value: 'AP', label: 'Amapá' },
+    { value: 'AM', label: 'Amazonas' },
+    { value: 'BA', label: 'Bahia' },
+    { value: 'CE', label: 'Ceará' },
+    { value: 'DF', label: 'Distrito Federal' },
+    { value: 'ES', label: 'Espírito Santo' },
+    { value: 'GO', label: 'Goiás' },
+    { value: 'MA', label: 'Maranhão' },
+    { value: 'MT', label: 'Mato Grosso' },
+    { value: 'MS', label: 'Mato Grosso do Sul' },
+    { value: 'MG', label: 'Minas Gerais' },
+    { value: 'PA', label: 'Pará' },
+    { value: 'PB', label: 'Paraíba' },
+    { value: 'PR', label: 'Paraná' },
+    { value: 'PE', label: 'Pernambuco' },
+    { value: 'PI', label: 'Piauí' },
+    { value: 'RJ', label: 'Rio de Janeiro' },
+    { value: 'RN', label: 'Rio Grande do Norte' },
+    { value: 'RS', label: 'Rio Grande do Sul' },
+    { value: 'RO', label: 'Rondônia' },
+    { value: 'RR', label: 'Roraima' },
+    { value: 'SC', label: 'Santa Catarina' },
+    { value: 'SP', label: 'São Paulo' },
+    { value: 'SE', label: 'Sergipe' },
+    { value: 'TO', label: 'Tocantins' },
+  ];
+
 
 
   const updateUser = async (event) => {
     event.preventDefault();
 
     console.log(formData)
+    var fieldsNull = []
 
-    await apiRequest("/directus/update", {"userId":user.id, "formData":formData}, "POST")
-      .then(response => {
+    function isEmpty(formData) {
+      for (let key in formData) {
+        if (formData.hasOwnProperty(key)) {
+          if (formData[key] === null || formData[key] === undefined || formData[key] === "" || formData[key] === []) {
+            fieldsNull.push(key)
+            if (key != "phone" && key != "status" && key != "associate_status" && key != "reason_treatment") {
+              document.querySelector("#" + key).className = "form-control input-login input-empty"
+            }
+           
+          } else {
+            if (key != "phone" && key != "status" && key != "associate_status" && key != "reason_treatment") {
+              document.querySelector("#" + key).className = "form-control input-login"
+            }
+          }
 
-      })
-      .catch(error => {
-        console.error(error);
-      });
+          if (key == "reason_treatment") {
+            document.querySelector("#" + key).className = "form-control input-login css-b62m3t-container input-empty"
+          }
 
-      if(formData.responsable_type == "another"){
+          if(formData.reason_treatment == [] || formData.reason_treatment == null){
+            document.querySelector("#reason_treatment").className = "form-control input-login css-b62m3t-container input-empty"
+          }else{
+            document.querySelector("#reason_treatment").className = "form-control input-login css-b62m3t-container"
+          }
+        }
+      }    
+     setFieldsError(true)
+      setTimeout(() => {
+        setFieldsError(false)
+      }, 6000)
+    }
 
-        window.location.assign("/cadastro-paciente");
+    if (isEmpty(formData)) {
+      setFieldsError(true)
+      setTimeout(() => {
+        setFieldsError(false)
+      }, 6000)
+    } else {
 
-      }else{
-        window.location.assign("/documentos");
+      console.log(formData)
+
+      await apiRequest("/directus/update", { "userId": user.id, "formData": formData }, "POST")
+        .then(response => {
+
+        })
+        .catch(error => {
+          console.error(error);
+        });
+
+      if (formData.responsable_type == "another") {
+
+        // window.location.assign("/cadastro-paciente");
+
+      } else {
+        //window.location.assign("/documentos");
       }
 
-  
+    }
   }
+
 
 
   return (
 
+    <Formik initialValues={formData}
+      validate={values => {
+        const errors = {};
 
+        return errors;
+      }}
+    >
+      <Form onSubmit={updateUser} className="form-container ">     
+  
 
-    <Formik initialValues={initialValues}>
-      <Form onSubmit={updateUser} className="form-container">
-        <div className="mb-3">
-          <label className="form-label" htmlFor="responsible">Você é responsável pelo seu próprio tratamento?</label>
-          <Field onClick={responsable_himself} type="radio" id="responsable_himself" name="resposable" value="himself" />
-          <label className="form-label" htmlFor="responsible">Sim, sou o responsável pelo meu tratamento</label>
-          <Field  onClick={responsable_another} type="radio" id="responsable_another" name="resposable" value="another" />
-          <label className="form-label" htmlFor="responsible">Não, sou reponsável pelo tratamento de outra pessoa</label>
-          <Field type="radio" id="responsable_pet" name="resposable" value="pet" />
-          <label onClick={responsable_pet} className="form-label" htmlFor="responsible">Não, sou reponsável pelo tratamento de um pet</label>
-          <ErrorMessage name="responsible" component="div" />
+        <h1 className="sub-title">Você é responsável pelo seu próprio tratamento?</h1>
+        <br></br>
+        <div className="form-control input-login" id="responsable_type">
+          <Field type="radio" className="btn-check" onClick={responsable_himself} name="resposable" id="btnradio1" value="himself" />
+          <label className="btn btn-outline-primary radio-input" htmlFor="btnradio1">
+            Sim, sou responsável pelo MEU PRÓPRIO tratamento
+          </label>
+          <Field type="radio" className="btn-check" onClick={responsable_another} name="resposable" id="btnradio2" value="another" />
+          <label className="btn btn-outline-primary radio-input" htmlFor="btnradio2">
+            Sou responsável pelo tratamento de OUTRA PESSOA
+          </label>
+          <Field type="radio" className="btn-check" onClick={responsable_pet} name="resposable" id="btnradio3" value="pet" />
+          <label className="btn btn-outline-primary radio-input" htmlFor="btnradio3">
+            Sou responsável por um PET
+          </label>
         </div>
 
-    
-          <div>
-            <div className="mb-3">
-              <label className="form-label" htmlFor="name_associate">Primeiro nome</label>
-              <Field onChange={handleChangeInput} value={formData.name_associate} type="text" id="name_associate" name="name_associate" />
-              <ErrorMessage name="name_associate" component="div" />
-            </div>
-
-            <div className="mb-3">
-              <label className="form-label" htmlFor="lastname_associate">Sobrenome</label>
-              <Field onChange={handleChangeInput} value={formData.lastname_associate} type="text" id="lastname_associate" name="lastname_associate" />
-              <ErrorMessage name="lastname_associate" component="div" />
-            </div>
-
-            <div className="mb-3">
-              <label className="form-label" htmlFor="birthday_associate">Data de nascimento</label>
-              <Field onChange={handleChangeInput} value={formData.birthday_associate} type="date" id="birthday_associate" name="birthday_associate" />
-              <ErrorMessage name="birthday_associate" component="div" />
-            </div>
-
-            <div className="mb-3">
-              <label className="form-label" htmlFor="gender">Identidade de gênero</label>
-              <Field onChange={handleChangeInput} value={formData.gender} type="text" id="gender" name="gender" />
-              <ErrorMessage name="gender" component="div" />
-            </div>
+        <br></br>
+        <div>
+          <div className="mb-3">
+            <label className="form-label" htmlFor="name_associate">Primeiro nome</label>
+            <Field class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.name_associate} type="text" id="name_associate" name="name_associate" />
+            <ErrorMessage name="name_associate" component="div" />
+          </div>
 
           <div className="mb-3">
+            <label className="form-label" htmlFor="lastname_associate">Sobrenome</label>
+            <Field class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.lastname_associate} type="text" id="lastname_associate" name="lastname_associate" />
+            <ErrorMessage name="lastname_associate" component="div" />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label" htmlFor="birthday_associate">Data de nascimento</label>
+            <Field class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.birthday_associate} type="date" id="birthday_associate" name="birthday_associate" />
+            <ErrorMessage name="birthday_associate" component="div" />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label" htmlFor="gender">Identidade de gênero</label>
+            <GenderInput name="gender" handleChangeInput={handleChangeInput} />
+          </div>
+          <br></br>
+          <br></br>
+          <div className="mb-3">
             <label className="form-label" htmlFor="nationality">Nacionalidade</label>
-            <Field onChange={handleChangeInput} value={formData.nationality} type="text" id="nationality" name="nationality" />
+            <Field class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.nationality} type="text" id="nationality" name="nationality" />
             <ErrorMessage name="nationality" component="div" />
           </div>
 
           <div className="mb-3">
             <label className="form-label" htmlFor="cpf_associate">CPF</label>
-            <Field onChange={handleChangeInput} name="cpf_associate" id="cpf_associate" validate={validateCPFAssociate}>
+            <Field class="form-control input-login" onChange={handleChangeInput} value={formData.cpf_associate} onBlur={handleChangeInput} name="cpf_associate" id="cpf_associate" validate={validateCPFAssociate}>
               {({ field, form }) => (
                 <InputMask
                   mask="999.999.999-99"
-                  value={field.value}
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
+                  value={formData.cpf_associate}
+                  onChange={handleChangeInput}
+                  onBlur={handleChangeInput}
                 >
                   {(inputProps) => (
                     <input
                       type="text"
                       id="cpf_associate"
-                      className={
-                        form.touched.cpf_associate && form.errors.cpf_associate ? "invalid" : ""
-                      }
+                      name="cpf_associate"
+                      className="form-control"
                       {...inputProps}
                     />
                   )}
@@ -238,21 +310,20 @@ const AssociateSignUp = () => {
 
           <div className="mb-3">
             <label className="form-label" htmlFor="rg_associate">RG</label>
-            <Field onChange={handleChangeInput} value={formData.rg_associate} name="rg_associate" validate={validateRGAssociate}>
+            <Field class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.rg_associate} name="rg_associate" validate={validateRGAssociate}>
               {({ field, form }) => (
                 <InputMask
                   mask="9.999.999"
-                  value={field.value}
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
+                  value={formData.rg_associate}
+                  onChange={handleChangeInput}
+                  onBlur={handleChangeInput}
                 >
                   {(inputProps) => (
                     <input
                       type="text"
                       id="rg_associate"
-                      className={
-                        form.touched.rg_associate && form.errors.rg_associate ? "invalid" : ""
-                      }
+                      name="rg_associate"
+                      className="form-control"
                       {...inputProps}
                     />
                   )}
@@ -265,91 +336,105 @@ const AssociateSignUp = () => {
 
           <div className="mb-3">
             <label className="form-label" htmlFor="emiiter_rg_associate">Orgão emissor</label>
-            <Field onChange={handleChangeInput} value={formData.emiiter_rg_associate} type="text" id="emiiter_rg_associate" name="emiiter_rg_associate" />
+            <Field class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.emiiter_rg_associate} type="text" id="emiiter_rg_associate" name="emiiter_rg_associate" />
             <ErrorMessage name="emiiter_rg_associate" component="div" />
           </div>
 
           <div className="mb-3">
             <label className="form-label" htmlFor="marital_status">Estado civil</label>
-            <Field onChange={handleChangeInput} value={formData.marital_status} type="text" id="marital_status" name="marital_status" />
+            <Field class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.marital_status} type="text" id="marital_status" name="marital_status" />
             <ErrorMessage name="marital_status" component="div" />
           </div>
-
+          <br></br>
+          <br></br>
           <div className="mb-3">
             <label className="form-label" htmlFor="email">Email</label>
-            <Field onChange={handleChangeInput} value={formData.email} type="email" id="email" name="email" />
-            <ErrorMessage name="email" component="div" />
+            <EmailInput
+              onBlur={handleChangeInput}
+              handleChangeInput={handleChangeInput}
+              setButtonDisabled={setButtonDisabled}
+            />
           </div>
 
           <div className="mb-3">
-            <label className="form-label" htmlFor="mobile_number">Telefone celular</label>
-            <Field onChange={handleChangeInput} value={formData.mobile_number}type="text" id="mobile_number" name="mobile_number" />
-            <ErrorMessage name="mobile_number" component="div" />
+            <label className="form-label" htmlFor="email">Telefone</label>
+            <PhoneInput
+              id="phone"
+              className="form-control"
+              placeholder="<-- Selecione o país | (DDD)Telefone"
+              value={formData.phone}
+              onChange={handleChangeInputPhone}
+              name="phone" />
+            <ErrorMessage name="phone" component="div" />
           </div>
-
-          <div className="mb-3">
-            <label className="form-label" htmlFor="secundary_number">Telefone secundário</label>
-            <Field onChange={handleChangeInput} value={formData.secundary_number} type="text" id="secundary_number" name="secundary_number" />
-            <ErrorMessage name="secundary_number" component="div" />
-          </div>
-
+          <br></br>
+          <br></br>
           <div className="mb-3">
             <label className="form-label" htmlFor="street">Rua</label>
-            <Field onChange={handleChangeInput} value={formData.street} type="text" id="street" name="street" />
+            <Field class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.street} type="text" id="street" name="street" />
             <ErrorMessage name="street" component="div" />
           </div>
 
           <div className="mb-3">
             <label className="form-label" htmlFor="number">Número</label>
-            <Field onChange={handleChangeInput} value={formData.number} type="text" id="number" name="number" />
+            <Field class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.number} type="text" id="number" name="number" />
             <ErrorMessage name="number" component="div" />
           </div>
 
           <div className="mb-3">
             <label className="form-label" htmlFor="complement">Complemento</label>
-            <Field onChange={handleChangeInput} value={formData.complement} type="text" id="complement" name="complement" />
+            <Field class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.complement} type="text" id="complement" name="complement" />
             <ErrorMessage name="complement" component="div" />
           </div>
 
           <div className="mb-3">
             <label className="form-label" htmlFor="neighborhood">Bairro</label>
-            <Field onChange={handleChangeInput} value={formData.neighborhood} type="text" id="neighborhood" name="neighborhood" />
+            <Field class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.neighborhood} type="text" id="neighborhood" name="neighborhood" />
             <ErrorMessage name="neighborhood" component="div" />
           </div>
 
           <div className="mb-3">
             <label className="form-label" htmlFor="city">Cidade</label>
-            <Field onChange={handleChangeInput}value={formData.city}  type="text" id="city" name="city" />
+            <Field class="form-control input-login" onChange={handleChangeInput} value={formData.city} type="text" id="city" name="city" />
             <ErrorMessage name="city" component="div" />
           </div>
 
           <div className="mb-3">
             <label className="form-label" htmlFor="state">Estado</label>
-            <Field onChange={handleChangeInput} value={formData.state} type="text" id="state" name="state" />
-            <ErrorMessage name="state" component="div" />
+            <select class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.state} type="text" id="state" name="state" >
+              <option value="">Selecione...</option>
+              {statesData.map(state => (
+                <option key={state.value} value={state.value}>
+                  {state.label}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="mb-3">
             <label className="form-label" htmlFor="cep">CEP</label>
-            <Field onChange={handleChangeInput} value={formData.cep} type="text" id="cep" name="cep" />
+            <Field class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.cep} type="text" id="cep" name="cep" />
             <ErrorMessage name="cep" component="div" />
+          </div>
+          <br></br>
+          <br></br>
+          <div className="mb-3">
+            <label className="form-label" htmlFor="reason_treatment">Motivo principal para o tratamento</label>
+            <MultiSelectField onChange={handleSelectionChange} value={formData.reason_treatment} name="reason_treatment" />
+            <ErrorMessage name="reason_treatment" component="div" />
           </div>
 
           <div className="mb-3">
-              <label className="form-label" htmlFor="reason_treatment">Motivo principal para o tratamento</label>
-              <Field onChange={handleChangeInput}  value={formData.reason_treatment} type="text" id="reason_treatment" name="reason_treatment" />
-              <ErrorMessage name="reason_treatment" component="div" />
-            </div>
+            <label className="form-label" htmlFor="reason_treatment_text">Descreva com suas palavras o motivo do seu tratamento</label>
+            <Field onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.reason_treatment_text} as="textarea" id="reason_treatment_text" name="reason_treatment_text" />
+            <ErrorMessage name="reason_treatment_text" component="div" />
+          </div>
 
-            <div className="mb-3">
-              <label className="form-label" htmlFor="reason_treatment_text">Descreva o motivo do tratamento</label>
-              <Field onChange={handleChangeInput} value={formData.reason_treatment_text} as="textarea" id="reason_treatment_text" name="reason_treatment_text" />
-              <ErrorMessage name="reason_treatment_text" component="div" />
-            </div>
-
-            <button type="submit">Submit</button>
-          </div>      
-
+          <button type="submit">Submit</button>
+        </div>
+        {fieldsError && (
+          <AlertError message="Você precisa preencher todos os campos"/>
+        )}
 
       </Form>
     </Formik>
