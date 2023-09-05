@@ -9,7 +9,6 @@ const EmailInput = ({ handleChangeInput, onBlur, setButtonDisabled }) => (
       validate={values => {
         const errors = {};
         if (!values.email) {
-          errors.email = 'Campo Obrigatório';
           setButtonDisabled(true)
         } else if (
           !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
@@ -19,6 +18,7 @@ const EmailInput = ({ handleChangeInput, onBlur, setButtonDisabled }) => (
         } else {
           setButtonDisabled(false)
         }
+        
         return errors;
       }}
     >

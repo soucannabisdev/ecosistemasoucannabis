@@ -1,16 +1,19 @@
 const express = require('express');
-
 const cors = require("cors")
 const bodyParser = require("body-parser")
 const fileUpload = require('express-fileupload');
+const dotenv = require('dotenv');
+dotenv.config();
+
 
 const app = express();
 app.use(bodyParser.json());
 app.use(fileUpload());
 app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true // Se você estiver usando cookies ou autenticação
+  origin: process.env.REACT_SERVER_URL,
+  credentials: true 
 }));
+
 
 const direcuts = require('./routes/directus')
 const chatwoot = require('./routes/chatwoot')
@@ -24,7 +27,7 @@ app.use('/wekan', wekan)
 app.use('/api', api)
 app.use('/zapsign', zapsign)
 
-const port = 3005;
-app.listen(port, () => {
-  console.log(`Servidor rodando na porta ${port}`);
+
+app.listen(process.env.REACT_SERVER_PORT, () => {
+  console.log(`Servidor rodando na porta ${process.env.REACT_SERVER_PORT}`);
 });

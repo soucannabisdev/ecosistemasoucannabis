@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 
-const GenderSelect = ({ handleChangeInput }) => {
+const NationalityInput = ({ handleChangeInput }) => {
   const [hiddenInput, setHiddenInput] = useState(false);
 
   return (
     <Formik
-      initialValues={{ gender: '', other_gender: '' }}
+      initialValues={{ nationality: '' }}
       onSubmit={(values) => {
       }}
     >
@@ -15,8 +15,8 @@ const GenderSelect = ({ handleChangeInput }) => {
           <Field
             className="form-control" 
             as="select"
-            id="gender"
-            name="gender"
+            id="nationality"
+            name="nationality"
             onChange={(e) => {
               handleChange(e);
               handleChangeInput(e);
@@ -28,13 +28,12 @@ const GenderSelect = ({ handleChangeInput }) => {
             }}
           >
             <option value="">Selecione...</option>
-            <option value="masculino">Masculino</option>
-            <option value="feminino">Feminino</option>
-            <option value="outro">Outro Gênero</option>
+            <option value="brasileiro(a)">Brasileiro(a)</option>
+            <option value="outro">Outra nacionalidade</option>
           </Field>
           <br></br>
           {hiddenInput && (
-            <Field  className="form-control" type="text" name="gender" placeholder="Digite outro gênero"  
+            <Field  className="form-control" type="text"  name="nationality" 
             onChange={(e) => {
                 handleChange(e);
                 handleChangeInput(e);
@@ -46,4 +45,4 @@ const GenderSelect = ({ handleChangeInput }) => {
   );
 };
 
-export default GenderSelect;
+export default NationalityInput;

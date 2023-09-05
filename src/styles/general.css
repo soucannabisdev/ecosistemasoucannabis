@@ -101,6 +101,7 @@ h1.sub-title{
     width: 30%;
     height: 100%;
     background-color: #064b05;
+    top:50px
       
   }
   
@@ -269,6 +270,10 @@ button.btn.btn-primary.btn-lg:disabled {
   transition: top 0.5s ease-in-out;
 }
 
+.alert2{
+  top:120px
+}
+
 .message{
   font-size:18px
 }
@@ -281,4 +286,25 @@ button.btn.btn-primary.btn-lg:disabled {
 
 textarea#reason_treatment_text {
   background-color:#f0f5fa;
+}
+
+.alert2 > .custom-alert {
+  top: 185px;
+}
+
+.alert3 > .custom-alert {
+  top: 270px;
+}
+
+.warning-button-modal{
+  font-weight:bold;
+  margin-left:10px
+}
+
+.button-modal{
+  margin-top:20px
+}
+
+textarea{
+  height:100px
 }
