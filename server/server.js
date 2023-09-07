@@ -5,6 +5,8 @@ const fileUpload = require('express-fileupload');
 const dotenv = require('dotenv');
 dotenv.config();
 
+console.log(process.env)
+
 
 const app = express();
 app.use(bodyParser.json());
