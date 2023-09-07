@@ -11,8 +11,7 @@ async function User() {
       "code_user": userCode
     });
 
-    requestData = await apiRequest("/directus/user",data,"POST")
-    
+    requestData = await apiRequest("/directus/user",data,"POST")    
 
   } catch (error) {
     console.log(error);

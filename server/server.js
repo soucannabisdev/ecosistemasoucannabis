@@ -10,7 +10,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(fileUpload());
 app.use(cors({
-  origin: process.env.REACT_SERVER_URL,
+  origin: process.env.REACT_APP_URL,
   credentials: true 
 }));
 
@@ -28,6 +28,6 @@ app.use('/api', api)
 app.use('/zapsign', zapsign)
 
 
-app.listen(process.env.REACT_SERVER_PORT, () => {
-  console.log(`Servidor rodando na porta ${process.env.REACT_SERVER_PORT}`);
+app.listen(process.env.REACT_APP_SERVER_PORT, () => {
+  console.log(`Servidor rodando na porta ${process.env.REACT_APP_SERVER_PORT}`);
 });
