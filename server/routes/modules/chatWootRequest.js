@@ -1,4 +1,6 @@
 const axios = require('axios');
+const dotenv = require('dotenv');
+dotenv.config();
 
 var requestData = []
 
@@ -16,16 +18,17 @@ async function chatWootRequest(phone, mensage) {
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: process.env.REACT_CHATWOOT_API_URL+'/message/sendText/API',
+        url: process.env.CHATWOOT_API_URL+'/message/sendText/'+process.env.CHATWOOT_INSTANCE_NAME,
         headers: { 
           'Content-Type': 'application/json', 
-          'apikey': 'zYzP7ocstxh3SJ23D4FZTCu4ehnM8v4hu'
+          'apikey': process.env.CHATWOOT_API_KEY
         },
         data : data
       };
       
       await axios.request(config)
       .then((response) => {
+        console.log(response)
         requestData = response.data
       })
       .catch((error) => {

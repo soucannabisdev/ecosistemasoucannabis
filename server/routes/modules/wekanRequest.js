@@ -1,14 +1,15 @@
 const axios = require('axios');
+const dotenv = require('dotenv');
+dotenv.config();
 
 async function wekanRequest(query, data, method) {
-  //console.log(data)
     const config = {
         method: method,
         maxBodyLength: Infinity,
-        url: 'http://216.238.102.44/api/'+query,
+        url: process.env.WEKAN_URL+query,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer VyNRj1niaZDoJpKveM5Q-Ww5LIYQ7SuKpuoZHhd9XSR'
+          'Authorization': process.env.WEKAN_API_KEY
         },
         data: data
       }

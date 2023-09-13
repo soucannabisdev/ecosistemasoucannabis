@@ -5,14 +5,12 @@ const fileUpload = require('express-fileupload');
 const dotenv = require('dotenv');
 dotenv.config();
 
-console.log(process.env)
-
 
 const app = express();
 app.use(bodyParser.json());
 app.use(fileUpload());
 app.use(cors({
-  origin: process.env.REACT_APP_URL,
+  origin: "*",
   credentials: true 
 }));
 

@@ -10,7 +10,7 @@ router.get('/template-info', async (req, res) => {
     const verToken = await directusRequest("/items/Users_Api?filter[token][_eq]=" + token + "", '', "GET")
 
     if (verToken) {
-        const templateInfo = await zapsignRequest("/templates/"+process.env.REACT_ZAPSIGN_TEMPLATE_CONTRACT, "", "GET")
+        const templateInfo = await zapsignRequest("/templates/"+process.env.ZAPSIGN_TEMPLATE_CONTRACT, "", "GET")
         res.send(templateInfo)   
         res.status(200)
     } else {
@@ -30,7 +30,7 @@ router.post('/create-contract', async (req, res) => {
         const templateInfo = await zapsignRequest("/models/create-doc/" , 
       {
         "sandbox": true,
-        "template_id": process.env.REACT_ZAPSIGN_TEMPLATE_CONTRACT,
+        "template_id": process.env.ZAPSIGN_TEMPLATE_CONTRACT,
         "signer_name": "souCannabis",
         "send_automatic_email": true,
         "send_automatic_whatsapp": false,
@@ -53,11 +53,5 @@ router.post('/assign-contracts', async (req, res) => {
 
    res.status(200).send("OK")
 });
-
-
-
-
-
-
 
 module.exports = router;

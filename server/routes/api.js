@@ -11,8 +11,6 @@ router.post('/login', async (req, res) => {
 
     const userData = await directusRequest("/items/Users_Api?filter[email][_eq]=" + req.body.email + "", '', "GET")
 
-    console.log(userData)
-
     const randomToken = crypto.randomBytes(32).toString('hex');
 
     console.log('Generated API token:', randomToken);

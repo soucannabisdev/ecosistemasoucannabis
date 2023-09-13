@@ -308,3 +308,9 @@ textarea#reason_treatment_text {
 textarea{
   height:100px
 }
+
+.icon-menu-item {
+  float: left;
+  margin:0 10px
+
+}

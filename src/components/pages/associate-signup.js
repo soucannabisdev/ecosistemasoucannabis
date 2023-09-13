@@ -18,6 +18,7 @@ const AssociateSignUp = () => {
   const [user, setUser] = useState({});
   const [inputError, setInputError] = useState(false);
   const [fieldsError, setFieldsError] = useState(false);
+  const [validateForm, setValidateForm] = useState();
   const [cpfError, setCpfError] = useState(false);
   const [rgError, setRgError] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(true);
@@ -81,9 +82,9 @@ const AssociateSignUp = () => {
     });
   };
 
-  const handleChandePhoneBlur = (event) =>{    
+  const handleChandePhoneBlur = (event) => {
     const validatePhone = formData.phone
-    if(event.target.value && !validatePhone.includes("+55")){
+    if (event.target.value && !validatePhone.includes("+55")) {
       setShowPopup(true)
     }
   }
@@ -174,62 +175,72 @@ const AssociateSignUp = () => {
   const updateUser = async (event) => {
     event.preventDefault();
 
-    console.log(formData)
-    var fieldsNull = []
+    var emptyFields = []
 
-    function isEmpty(formData) {
-      for (let key in formData) {
-        if (formData.hasOwnProperty(key)) {
-          if (formData[key] === null || formData[key] === undefined || formData[key] === "" || formData[key] === []) {
-            fieldsNull.push(key)
-            if (key != "phone" && key != "status" && key != "associate_status" && key != "reason_treatment") {
-              document.querySelector("#" + key).className = "form-control input-login input-empty"
-            }
+    console.log("____________________")
 
-          } else {
-            if (key != "phone" && key != "status" && key != "associate_status" && key != "reason_treatment") {
-              document.querySelector("#" + key).className = "form-control input-login"
-            }
+    for (let key in formData) {
+      if (formData.hasOwnProperty(key)) {
+        if (formData[key] == null || formData[key] == undefined || formData[key] == "" || formData[key] == []) {
+          emptyFields.push(key)
+          if (key != "phone" && key != "status" && key != "associate_status" && key != "reason_treatment") {
+            document.querySelector("#" + key).className = "form-control input-login input-empty"
           }
-
-          if (key == "reason_treatment") {
-            document.querySelector("#" + key).className = "form-control input-login css-b62m3t-container input-empty"
-          }
-
-          if (formData.reason_treatment == [] || formData.reason_treatment == null) {
-            document.querySelector("#reason_treatment").className = "css-b62m3t-container input-empty"
-          } else {
-            document.querySelector("#reason_treatment").className = "css-b62m3t-container"
+        } else {
+          if (key != "phone" && key != "status" && key != "associate_status" && key != "reason_treatment") {
+            document.querySelector("#" + key).className = "form-control input-login"
           }
         }
-      }
 
-      const validateCPF = formData.cpf_associate
-      if(validateCPF && validateCPF.includes("_")){
-       setCpfError(true)
-      setTimeout(() => {
-       setCpfError(false)
-      }, 6000)
-      }
 
-      const validateRg = formData.rg_associate
-      if(validateRg && validateRg.includes("_")){
-        
-        setRgError(true)
-      setTimeout(() => {
-       setRgError(false)
-      }, 6000)
-      }
+        if (key == "reason_treatment") {
+          document.querySelector("#" + key).className = "form-control input-login css-b62m3t-container input-empty"
+        }
 
-      setFieldsError(true)
-      setTimeout(() => {
-      setFieldsError(false)
-      }, 6000)
+        if (formData.reason_treatment == [] || formData.reason_treatment == null) {
+          document.querySelector("#reason_treatment").className = "css-b62m3t-container input-empty"
+        } else {
+          document.querySelector("#reason_treatment").className = "css-b62m3t-container"
+        }
+      }
     }
 
-    if (!isEmpty(formData)) {
+    if (emptyFields != []) {
+      setValidateForm(true)
+    } else {
+      setValidateForm(false)
+    }
 
-      console.log(formData)
+
+    const validateCPF = formData.cpf_associate
+    if (validateCPF && validateCPF.includes("_")) {
+      setCpfError(true)
+      setTimeout(() => {
+        setCpfError(false)
+      }, 6000)
+
+    }
+
+    const validateRg = formData.rg_associate
+    if (validateRg && validateRg.includes("_")) {
+      setRgError(true)
+      setTimeout(() => {
+        setRgError(false)
+      }, 6000)
+
+    }
+
+    setFieldsError(true)
+    setTimeout(() => {
+      setFieldsError(false)
+    }, 6000)
+
+    console.log(emptyFields)
+
+
+    if (emptyFields == "") {
+
+      console.log("OK")
 
       await apiRequest("/directus/update", { "userId": user.id, "formData": formData }, "POST")
         .then(response => {
@@ -241,7 +252,7 @@ const AssociateSignUp = () => {
 
       if (formData.responsable_type == "another") {
 
-         window.location.assign("/cadastro-paciente");
+        window.location.assign("/cadastro-paciente");
 
       } else {
         window.location.assign("/documentos");
@@ -254,225 +265,224 @@ const AssociateSignUp = () => {
 
   return (
     <div>
-       <Modal show={showPopup} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Você é estrangeiro?</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
+      <Modal show={showPopup} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Você é estrangeiro?</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
           <h5>Se seu número for de outro país clique SIM</h5>
-            <button class="btn btn-primary button-modal" variant="secondary" onClick={() => handleChoice(true)}>
-              Sim
-            </button>
-            <button class="btn btn-warning warning-button-modal  button-modal" variant="primary" onClick={() => handleChoice(false)}>
-              Não, digitei errado
-            </button>
-          </Modal.Body>
-        </Modal>
+          <button class="btn btn-primary button-modal" variant="secondary" onClick={() => handleChoice(true)}>
+            Sim
+          </button>
+          <button class="btn btn-warning warning-button-modal  button-modal" variant="primary" onClick={() => handleChoice(false)}>
+            Não, digitei errado
+          </button>
+        </Modal.Body>
+      </Modal>
 
-    <Formik>
-            
-      <Form onSubmit={updateUser} className="form-container ">
-        <h1 className="sub-title">Você é responsável pelo seu próprio tratamento?</h1>
-        <br></br>
-        <div className="form-control input-login" id="responsable_type">
-          <input type="radio" className="btn-check" onClick={responsable_himself} name="resposable" id="btnradio1" value="himself" ></input>
-          <label className="btn btn-outline-primary radio-input" htmlFor="btnradio1">
-            Sim, sou responsável pelo MEU PRÓPRIO tratamento
-          </label>
-          <input type="radio" className="btn-check" onClick={responsable_another} name="resposable" id="btnradio2" value="another" ></input>
-          <label className="btn btn-outline-primary radio-input" htmlFor="btnradio2">
-            Sou responsável pelo tratamento de OUTRA PESSOA
-          </label>
-          <input type="radio" className="btn-check" onClick={responsable_pet} name="resposable" id="btnradio3" value="pet" ></input>
-          <label className="btn btn-outline-primary radio-input" htmlFor="btnradio3">
-            Sou responsável por um PET
-          </label>
-        </div>
+      <Formik>
 
-        <br></br>
-        <div>
-          <div className="mb-3">
-            <label className="form-label" htmlFor="name_associate">Primeiro nome</label>
-            <input class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.name_associate} type="text" id="name_associate" name="name_associate" ></input>
-          </div>
-
-          <div className="mb-3">
-            <label className="form-label" htmlFor="lastname_associate">Sobrenome</label>
-            <input class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.lastname_associate} type="text" id="lastname_associate" name="lastname_associate" ></input>
-          </div>
-
-          <div className="mb-3">
-            <label className="form-label" htmlFor="birthday_associate">Data de nascimento</label>
-            <input class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.birthday_associate} type="date" id="birthday_associate" name="birthday_associate" ></input>
-          </div>
-
-          <div className="mb-3">
-            <label className="form-label" htmlFor="gender">Identidade de gênero</label>
-            <GenderInput name="gender" handleChangeInput={handleChangeInput} />
-          </div>
+        <Form onSubmit={updateUser} className="form-container ">
+          <h1 className="sub-title">Você é responsável pelo seu próprio tratamento?</h1>
           <br></br>
+          <div className="form-control input-login" id="responsable_type">
+            <input type="radio" className="btn-check" onClick={responsable_himself} name="resposable" id="btnradio1" value="himself" ></input>
+            <label className="btn btn-outline-primary radio-input" htmlFor="btnradio1">
+              Sim, sou responsável pelo MEU PRÓPRIO tratamento
+            </label>
+            <input type="radio" className="btn-check" onClick={responsable_another} name="resposable" id="btnradio2" value="another" ></input>
+            <label className="btn btn-outline-primary radio-input" htmlFor="btnradio2">
+              Sou responsável pelo tratamento de OUTRA PESSOA
+            </label>
+            <input type="radio" className="btn-check" onClick={responsable_pet} name="resposable" id="btnradio3" value="pet" ></input>
+            <label className="btn btn-outline-primary radio-input" htmlFor="btnradio3">
+              Sou responsável por um PET
+            </label>
+          </div>
+
           <br></br>
-          <div className="mb-3">
-            <label className="form-label" htmlFor="nationality">Nacionalidade</label>
-            <NationalityInput name="nacionality" handleChangeInput={handleChangeInput} />
+          <div>
+            <div className="mb-3">
+              <label className="form-label" htmlFor="name_associate">Primeiro nome</label>
+              <input class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.name_associate} type="text" id="name_associate" name="name_associate" ></input>
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label" htmlFor="lastname_associate">Sobrenome</label>
+              <input class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.lastname_associate} type="text" id="lastname_associate" name="lastname_associate" ></input>
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label" htmlFor="birthday_associate">Data de nascimento</label>
+              <input class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.birthday_associate} type="date" id="birthday_associate" name="birthday_associate" ></input>
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label" htmlFor="gender">Identidade de gênero</label>
+              <GenderInput name="gender" handleChangeInput={handleChangeInput} />
+            </div>
+            <br></br>
+            <div className="mb-3">
+              <label className="form-label" htmlFor="nationality">Nacionalidade</label>
+              <NationalityInput name="nacionality" handleChangeInput={handleChangeInput} />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label" htmlFor="cpf_associate">CPF</label>
+              <Field class="form-control input-login" onChange={handleChangeInput} value={formData.cpf_associate} onBlur={handleChangeInput} name="cpf_associate" id="cpf_associate" validate={validateCPFAssociate}>
+                {({ field, form }) => (
+                  <InputMask
+                    mask="999.999.999-99"
+                    value={formData.cpf_associate}
+                    onChange={handleChangeInput}
+                    onBlur={handleChangeInput}
+                  >
+                    {(inputProps) => (
+                      <input
+                        type="text"
+                        id="cpf_associate"
+                        name="cpf_associate"
+                        className="form-control"
+                        {...inputProps}
+                      />
+                    )}
+                  </InputMask>
+                )}
+              </Field>
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label" htmlFor="rg_associate">RG</label>
+              <Field class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.rg_associate} name="rg_associate" validate={validateRGAssociate}>
+                {({ field, form }) => (
+                  <InputMask
+                    mask="9.999.999"
+                    value={formData.rg_associate}
+                    onChange={handleChangeInput}
+                    onBlur={handleChangeInput}
+                  >
+                    {(inputProps) => (
+                      <input
+                        type="text"
+                        id="rg_associate"
+                        name="rg_associate"
+                        className="form-control"
+                        {...inputProps}
+                      />
+                    )}
+                  </InputMask>
+                )}
+              </Field>
+            </div>
+
+
+            <div className="mb-3">
+              <label className="form-label" htmlFor="emiiter_rg_associate">Orgão emissor</label>
+              <input class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.emiiter_rg_associate} type="text" id="emiiter_rg_associate" name="emiiter_rg_associate"></input>
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label" htmlFor="marital_status">Estado civil</label>
+              <input class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.marital_status} type="text" id="marital_status" name="marital_status"></input>
+            </div>
+            <br></br>
+            <br></br>
+            <div className="mb-3">
+              <label className="form-label" htmlFor="email">Email</label>
+              <EmailInput
+                onBlur={handleChangeInput}
+                handleChangeInput={handleChangeInput}
+                setButtonDisabled={setButtonDisabled}
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label" htmlFor="email">Telefone</label>
+              <PhoneInput
+                id="phone"
+                className="form-control"
+                placeholder="<-- Selecione o país | (DDD)Telefone"
+                value={formData.phone}
+                onChange={handleChangeInputPhone}
+                onBlur={handleChandePhoneBlur}
+                name="phone" />
+              <ErrorMessage name="phone" component="div" />
+            </div>
+            <br></br>
+            <br></br>
+            <div className="mb-3">
+              <label className="form-label" htmlFor="street">Rua</label>
+              <input class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.street} type="text" id="street" name="street"></input>
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label" htmlFor="number">Número</label>
+              <input class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.number} type="text" id="number" name="number"></input>
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label" htmlFor="complement">Complemento</label>
+              <input class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.complement} type="text" id="complement" name="complement"></input>
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label" htmlFor="neighborhood">Bairro</label>
+              <input class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.neighborhood} type="text" id="neighborhood" name="neighborhood"></input>
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label" htmlFor="city">Cidade</label>
+              <input class="form-control input-login" onChange={handleChangeInput} value={formData.city} type="text" id="city" name="city"></input>
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label" htmlFor="state">Estado</label>
+              <select class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.state} type="text" id="state" name="state" >
+                <option value="">Selecione...</option>
+                {statesData.map(state => (
+                  <option key={state.value} value={state.value}>
+                    {state.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label" htmlFor="cep">CEP</label>
+              <input class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.cep} type="text" id="cep" name="cep"></input>
+            </div>
+            <br></br>
+            <br></br>
+            <div className="mb-3">
+              <label className="form-label" htmlFor="reason_treatment">Motivo principal para o tratamento</label>
+              <MultiSelectField onChange={handleSelectionChange} value={formData.reason_treatment} name="reason_treatment" />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label" htmlFor="reason_treatment_text">Descreva com suas palavras o motivo do seu tratamento</label>
+              <Field onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.reason_treatment_text} as="textarea" id="reason_treatment_text" name="reason_treatment_text" />
+            </div>
+
+            <button class="btn btn-success btn-lg btn-float-right" type="submit">Enviar dados</button>
           </div>
 
-          <div className="mb-3">
-            <label className="form-label" htmlFor="cpf_associate">CPF</label>
-            <Field class="form-control input-login" onChange={handleChangeInput} value={formData.cpf_associate} onBlur={handleChangeInput} name="cpf_associate" id="cpf_associate" validate={validateCPFAssociate}>
-              {({ field, form }) => (
-                <InputMask
-                  mask="999.999.999-99"
-                  value={formData.cpf_associate}
-                  onChange={handleChangeInput}
-                  onBlur={handleChangeInput}
-                >
-                  {(inputProps) => (
-                    <input
-                      type="text"
-                      id="cpf_associate"
-                      name="cpf_associate"
-                      className="form-control"
-                      {...inputProps}
-                    />
-                  )}
-                </InputMask>
-              )}
-            </Field>
-          </div>
-
-          <div className="mb-3">
-            <label className="form-label" htmlFor="rg_associate">RG</label>
-            <Field class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.rg_associate} name="rg_associate" validate={validateRGAssociate}>
-              {({ field, form }) => (
-                <InputMask
-                  mask="9.999.999"
-                  value={formData.rg_associate}
-                  onChange={handleChangeInput}
-                  onBlur={handleChangeInput}
-                >
-                  {(inputProps) => (
-                    <input
-                      type="text"
-                      id="rg_associate"
-                      name="rg_associate"
-                      className="form-control"
-                      {...inputProps}
-                    />
-                  )}
-                </InputMask>
-              )}
-            </Field>
-          </div>
-
-
-          <div className="mb-3">
-            <label className="form-label" htmlFor="emiiter_rg_associate">Orgão emissor</label>
-            <input class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.emiiter_rg_associate} type="text" id="emiiter_rg_associate" name="emiiter_rg_associate"></input>
-          </div>
-
-          <div className="mb-3">
-            <label className="form-label" htmlFor="marital_status">Estado civil</label>
-            <input class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.marital_status} type="text" id="marital_status" name="marital_status"></input>
-          </div>
-          <br></br>
-          <br></br>
-          <div className="mb-3">
-            <label className="form-label" htmlFor="email">Email</label>
-            <EmailInput
-              onBlur={handleChangeInput}
-              handleChangeInput={handleChangeInput}
-              setButtonDisabled={setButtonDisabled}
-            />
-          </div>
-          <div className="mb-3">
-            <label className="form-label" htmlFor="email">Telefone</label>
-            <PhoneInput
-              id="phone"
-              className="form-control"
-              placeholder="<-- Selecione o país | (DDD)Telefone"
-              value={formData.phone}
-              onChange={handleChangeInputPhone}
-              onBlur={handleChandePhoneBlur}
-              name="phone" />
-            <ErrorMessage name="phone" component="div" />
-          </div>
-          <br></br>
-          <br></br>
-          <div className="mb-3">
-            <label className="form-label" htmlFor="street">Rua</label>
-            <input class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.street} type="text" id="street" name="street"></input>
-          </div>
-
-          <div className="mb-3">
-            <label className="form-label" htmlFor="number">Número</label>
-            <input class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.number} type="text" id="number" name="number"></input>
-          </div>
-
-          <div className="mb-3">
-            <label className="form-label" htmlFor="complement">Complemento</label>
-            <input class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.complement} type="text" id="complement" name="complement"></input> 
-          </div>
-
-          <div className="mb-3">
-            <label className="form-label" htmlFor="neighborhood">Bairro</label>
-            <input class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.neighborhood} type="text" id="neighborhood" name="neighborhood"></input>
-          </div>
-
-          <div className="mb-3">
-            <label className="form-label" htmlFor="city">Cidade</label>
-            <input class="form-control input-login" onChange={handleChangeInput} value={formData.city} type="text" id="city" name="city"></input>
-          </div>
-
-          <div className="mb-3">
-            <label className="form-label" htmlFor="state">Estado</label>
-            <select class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.state} type="text" id="state" name="state" >
-              <option value="">Selecione...</option>
-              {statesData.map(state => (
-                <option key={state.value} value={state.value}>
-                  {state.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="mb-3">
-            <label className="form-label" htmlFor="cep">CEP</label>
-            <input class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.cep} type="text" id="cep" name="cep"></input>
-          </div>
-          <br></br>
-          <br></br>
-          <div className="mb-3">
-            <label className="form-label" htmlFor="reason_treatment">Motivo principal para o tratamento</label>
-            <MultiSelectField onChange={handleSelectionChange} value={formData.reason_treatment} name="reason_treatment" />
-          </div>
-
-          <div className="mb-3">
-            <label className="form-label" htmlFor="reason_treatment_text">Descreva com suas palavras o motivo do seu tratamento</label>
-            <Field onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.reason_treatment_text} as="textarea" id="reason_treatment_text" name="reason_treatment_text" />
-          </div>
-
-          <button type="submit">Submit</button>
-        </div>
-       
-        {fieldsError && (
-          <AlertError message="Você precisa preencher todos os campos" />
-        )}
-        {cpfError && (
-          <div class="alert2">
-          <AlertError  message="O CPF precisa estar completo" />
-          </div>
-        )}
+          {fieldsError && (
+            <AlertError message="Você precisa preencher todos os campos" />
+          )}
+          {cpfError && (
+            <div class="alert2">
+              <AlertError message="O CPF precisa estar completo" />
+            </div>
+          )}
           {rgError && (
-          <div class="alert3">
-          <AlertError  message="O RG precisa estar completo" />
-          </div>
-        )}
+            <div class="alert3">
+              <AlertError message="O RG precisa estar completo" />
+            </div>
+          )}
 
 
 
-      </Form>
-    </Formik>
+        </Form>
+      </Formik>
     </div>
   );
 };

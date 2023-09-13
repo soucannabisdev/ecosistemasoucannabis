@@ -200,7 +200,7 @@ const FileUploadComponent = () => {
                 console.error(error);
             })
 
-       /* const bodyRequest = { contract: fileId, associate_status: 4 }
+        const bodyRequest = { contract: fileId, associate_status: 4 }
         await apiRequest("/directus/update", { "userId": user.id, "formData": bodyRequest }, "POST")
 
             .then(response => {
@@ -208,7 +208,7 @@ const FileUploadComponent = () => {
             })
             .catch(error => {
                 console.error(error);
-            });*/
+            });
 
         setcontract(true)
         window.location.assign("/consulta");

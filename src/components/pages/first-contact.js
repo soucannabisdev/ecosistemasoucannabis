@@ -91,17 +91,17 @@ function Contact() {
       await apiRequest("/chatwoot/send-message-api", JSON.stringify(formData), "POST")
         .then(response => {
           console.log(response)
-          if (!response == []) {
+          if (response != []) {
             setMsgWhats(true)
             setTimeout(() => {
               setMsgWhats(false)
             }, 6000)
-          } else {
+          }else{
             setErrorConn(true)
           }
         })
         .catch(error => {
-          console.error(error);
+          console.error(error);          
         });
 
 
@@ -110,8 +110,6 @@ function Contact() {
         "name": formData.name,
         "phone_number": formData.phoneSoma
       }), "POST")
-        .then(response => {
-        })
         .catch(error => {
           console.error(error);
         });

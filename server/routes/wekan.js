@@ -8,12 +8,12 @@ router.post('/create-card', async (req, res) => {
 
     const token = req.headers.authorization
 
-    if (token == "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6ImFkbWluIiwiaWF0IjoxNjg4ODU0MDQ3fQ.rouBF2M_r2UCJfUcUrlhggINHuyJnfCK7IqmO35p5bk") {
+    const verToken = await directusRequest("/items/Users_Api?filter[token][_eq]=" + token + "", '', "GET")
+    if (verToken) {
+        const userData = await wekanRequest("/boards/3PAZguhSgdaKuE8Y3/lists/GeSdgYe7G7bwosocg/cards", req.body, "POST")
+           console.log(userData)
 
-        const userData = await wekanRequest("boards/pxg4ZXFfNMDJjN8EB/lists/qqWz6usyZR3oXzMMn/cards", req.body, "POST")
-        //    console.log(userData)
-
-        await wekanRequest("boards/pxg4ZXFfNMDJjN8EB/lists/qqWz6usyZR3oXzMMn/cards/" + userData._id, { "customFields": req.body.customFields }, "PUT")
+      //  await wekanRequest("boards/3PAZguhSgdaKuE8Y3/lists/GeSdgYe7G7bwosocg/cards/" + userData._id, { "customFields": req.body.customFields }, "PUT")
 
         res.send("Card created!")
         res.status(200)

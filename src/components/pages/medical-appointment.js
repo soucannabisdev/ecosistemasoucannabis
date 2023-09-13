@@ -34,7 +34,7 @@ function Contact() {
     <div style={{textAlign:"center", fontSize:"18px"}}>
      <div>Clique no botão abaixo para agendar sua consulta médica</div> 
      <br></br>
-     <Link to={`http://localhost/easyappointments2/?u=${user.user_code}`}>Agendar Consulta</Link>
+     <Link target="_blank" to={`https://agendamento.ecosistemasoucannabis.ong.br/?u=${user.user_code}`}>Agendar Consulta</Link>
       <b style={{fontSize:"22px"}}></b>
       <br></br>
       <br></br>

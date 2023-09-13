@@ -12,7 +12,7 @@ async function zapsignRequest(query, data, method) {
           'Content-Type': 'application/json'
       },
         redirect: 'follow',
-        url: 'https://api.zapsign.com.br/api/v1'+query+'?api_token='+process.env.REACT_ZAPSIGN_API_TOKEN,
+        url: process.env.ZAPSIGN_URL+query+'?api_token='+process.env.ZAPSIGN_API_TOKEN,
         data : JSON.stringify(data)
       };
       

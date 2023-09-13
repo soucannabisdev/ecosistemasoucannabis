@@ -3,7 +3,8 @@ const express = require('express');
 const router = express.Router();
 const chatWootRequest = require('./modules/chatWootRequest')
 const directusRequest = require('./modules/directusRequest');
-
+const dotenv = require('dotenv');
+dotenv.config();
 
 router.post('/send-message-api', async (req, res) => {
 
@@ -35,7 +36,7 @@ router.post('/send-message-chat', async (req, res) => {
         var sourceId = 0
         var conversationId = 0
 
-        const url = "https://atendimento.ecosistemasoucannabis.ong.br/public/api/v1/inboxes/U1fZCx8kvMv8TLFFQB5ZHZqh/contacts"
+        const url = process.env.CHATWOOT_URL+"/public/api/v1/inboxes/"+process.env.CHANNEL_ID+"/contacts"
         
         let config = {
             method: 'POST',
