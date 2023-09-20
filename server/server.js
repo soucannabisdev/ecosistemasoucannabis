@@ -10,8 +10,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use(fileUpload());
 app.use(cors({
-  origin: "*",
-  credentials: true 
+  origin: '*',
+  credentials: true
 }));
 
 

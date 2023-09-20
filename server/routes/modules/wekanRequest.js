@@ -14,10 +14,12 @@ async function wekanRequest(query, data, method) {
         data: data
       }
     
-    const response = await axios.request(config);
+   const response = await axios.request(config);
     
     return response.data;
    
 }
 
 module.exports = wekanRequest;
+
+
