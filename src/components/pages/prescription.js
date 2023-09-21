@@ -90,7 +90,7 @@ function Prescription() {
       ]
     }
 
-    await apiRequest('/wekan/create-card', body, 'POST')
+    await apiRequest('/api/wekan/create-card', body, 'POST')
       .then(response => {
         console.log(response)
       })
