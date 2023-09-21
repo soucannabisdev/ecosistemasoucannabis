@@ -10,7 +10,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(fileUpload());
 app.use(cors({
-  origin: '*',
+  origin: 'https://cadastro.ecosistemasoucannabis.ong.br',
   credentials: true
 }));
 
@@ -21,11 +21,10 @@ const wekan = require('./routes/wekan')
 const api = require('./routes/api')
 const zapsign = require('./routes/zapsign')
 
-app.use('/directus', direcuts); 
-app.use('/chatwoot', chatwoot)
-app.use('/wekan', wekan)
-app.use('/api', api)
-app.use('/zapsign', zapsign)
+app.use('/api/directus', direcuts); 
+app.use('/api/chatwoot', chatwoot)
+app.use('/api/wekan', wekan)
+app.use('/api/zapsign', zapsign)
 
 
 app.listen(process.env.REACT_APP_SERVER_PORT, () => {
