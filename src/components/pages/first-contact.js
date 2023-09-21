@@ -44,7 +44,7 @@ function Contact() {
     event.preventDefault();
     var value = event.target.value
 
-    await apiRequest("/directus/update", { "userId": user.id, "formData": { "associate_status": value } }, "POST")
+    await apiRequest("/api/directus/update", { "userId": user.id, "formData": { "associate_status": value } }, "POST")
       .then(response => {
       })
       .catch(error => {
@@ -88,7 +88,7 @@ function Contact() {
     if (isEmpty(formData)) {
       setInputError(true)
     } else {
-      await apiRequest("/chatwoot/send-message-api", JSON.stringify(formData), "POST")
+      await apiRequest("/api/chatwoot/send-message-api", JSON.stringify(formData), "POST")
         .then(response => {
           console.log(response)
           if (response != []) {
@@ -105,7 +105,7 @@ function Contact() {
         });
 
 
-      await apiRequest("/chatwoot/send-message-chat", JSON.stringify({
+      await apiRequest("/api/chatwoot/send-message-chat", JSON.stringify({
         "email": formData.email,
         "name": formData.name,
         "phone_number": formData.phoneSoma

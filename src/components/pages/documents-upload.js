@@ -58,7 +58,7 @@ const FileUploadComponent = () => {
 
         const file1 = event.target.files[0]
 
-        const createFolder = await apiRequest("/directus/create-folder", { "name": user.user_code }, "POST")
+        const createFolder = await apiRequest("/api/directus/create-folder", { "name": user.user_code }, "POST")
         var userFolder = createFolder.id
         console.log("User Folder: " + userFolder)
         localStorage.setItem("user_folder", userFolder)
@@ -83,7 +83,7 @@ const FileUploadComponent = () => {
             })
 
         const bodyRequest = { rg_proof: fileId }
-        await apiRequest("/directus/update", { "userId": user.id, "formData": bodyRequest }, "POST")
+        await apiRequest("/api/directus/update", { "userId": user.id, "formData": bodyRequest }, "POST")
 
             .then(response => {
                 console.log(response)
@@ -123,7 +123,7 @@ const FileUploadComponent = () => {
             })
 
         const bodyRequest = { proof_of_address: fileId }
-        await apiRequest("/directus/update", { "userId": user.id, "formData": bodyRequest }, "POST")
+        await apiRequest("/api/directus/update", { "userId": user.id, "formData": bodyRequest }, "POST")
 
             .then(response => {
                 console.log(response)
@@ -163,7 +163,7 @@ const FileUploadComponent = () => {
             })
 
         const bodyRequest = { rg_patient_proof: fileId }
-        await apiRequest("/directus/update", { "userId": user.id, "formData": bodyRequest }, "POST")
+        await apiRequest("/api/directus/update", { "userId": user.id, "formData": bodyRequest }, "POST")
 
             .then(response => {
                 console.log(response)
@@ -201,7 +201,7 @@ const FileUploadComponent = () => {
             })
 
         const bodyRequest = { contract: fileId, associate_status: 4 }
-        await apiRequest("/directus/update", { "userId": user.id, "formData": bodyRequest }, "POST")
+        await apiRequest("/api/directus/update", { "userId": user.id, "formData": bodyRequest }, "POST")
 
             .then(response => {
                 console.log(response)
@@ -248,7 +248,7 @@ const FileUploadComponent = () => {
         user.date = formattedDate
 
         var userData = []
-        const templateInfo = await apiRequest("/zapsign/template-info", "", "GET")
+        const templateInfo = await apiRequest("/api/zapsign/template-info", "", "GET")
 
         var inputs = templateInfo.inputs
         inputs.forEach(async function (input, i) {
@@ -261,7 +261,7 @@ const FileUploadComponent = () => {
        
         console.log(await userData)
 
-       const createContract = await apiRequest("/zapsign/create-contract", {"userData":userData, "cod_id":user.id}, "POST")
+       const createContract = await apiRequest("/api/zapsign/create-contract", {"userData":userData, "cod_id":user.id}, "POST")
         console.log(createContract.signers[0].sign_url)
         setGenerateContract(createContract.signers[0].sign_url)
     }

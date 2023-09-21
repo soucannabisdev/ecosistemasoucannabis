@@ -129,7 +129,7 @@ const PacientSignup = () => {
 
     console.log(formData)
 
-    await apiRequest("/directus/create-user", formData, "POST")
+    await apiRequest("/api/directus/create-user", formData, "POST")
       .then(response => {
 
       })

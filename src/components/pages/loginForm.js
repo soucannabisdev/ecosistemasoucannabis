@@ -26,7 +26,7 @@ function LoginForm() {
 
   const userLogin = async (event) => {
     event.preventDefault()
-    await apiRequest("/directus/login", { "email": emailInput, "pass": passInput }, "POST")
+    await apiRequest("/api/directus/login", { "email": emailInput, "pass": passInput }, "POST")
       .then(async response => {
         if (!response) {
           console.log("E-mail ou senha inválidos")

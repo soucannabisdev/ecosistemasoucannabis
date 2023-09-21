@@ -16,7 +16,7 @@ function Contact() {
 
   const medicalAppointmentYes = async () => {
 
-    await apiRequest("/directus/update", {"userId":user.id, "formData":{"associate_status": 5} }, "POST")
+    await apiRequest("/api/directus/update", {"userId":user.id, "formData":{"associate_status": 5} }, "POST")
 
     .then(response => {
         console.log(response)

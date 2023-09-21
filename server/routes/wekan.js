@@ -10,10 +10,10 @@ router.post('/create-card', async (req, res) => {
 
     const verToken = await directusRequest("/items/Users_Api?filter[token][_eq]=" + token + "", '', "GET")
     if (verToken) {
-        console.log("OK")
-      const userData = await wekanRequest("/boards/"+WEKAN_ASSOCIATES_BOARD_ID+"/lists/"+WEKAN_ASSOCIATES_LIST_ID+"/cards", req.body, "POST")
-           console.log(userData)
-        await wekanRequest("boards/"+WEKAN_ASSOCIATES_BOARD_ID+"/lists/"+WEKAN_ASSOCIATES_LIST_ID+"/cards/" + userData._id, { "customFields": req.body.customFields }, "PUT")
+        console.log(req.body)
+      const userData = await wekanRequest("/boards/"+process.env.WEKAN_ASSOCIATES_BOARD_ID+"/lists/"+process.env.WEKAN_ASSOCIATES_LIST_ID+"/cards", JSON.stringify(req.body), "POST")
+         console.log(userData)
+        await wekanRequest("/boards/"+process.env.WEKAN_ASSOCIATES_BOARD_ID+"/lists/"+process.env.WEKAN_ASSOCIATES_LIST_ID+"/cards/" + userData._id, { "customFields": req.body.customFields }, "PUT")
 
         res.send({message:"Card created!"})
         res.status(200)
@@ -23,12 +23,17 @@ router.post('/create-card', async (req, res) => {
     }
 });
 
+router.get('/', async (req, res) => {
+    res.send("ok")
+  })
+
+
 router.post('/webhook-approve-associate', async (req, res) => {
 
     console.log(req.body)
     let cod_user
 
-    await wekanRequest("/api/boards/"+WEKAN_MEDICAL_BOARD_ID+"/lists/" + req.body.listId + "/cards/" + req.body.cardId, {}, "GET")
+    await wekanRequest("/api/boards/"+process.env.WEKAN_MEDICAL_BOARD_ID+"/lists/" + req.body.listId + "/cards/" + req.body.cardId, {}, "GET")
         .then(response => {
         //    console.log(response.customFields)
 

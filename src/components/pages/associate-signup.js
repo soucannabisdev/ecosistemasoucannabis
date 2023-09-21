@@ -242,7 +242,7 @@ const AssociateSignUp = () => {
 
       console.log("OK")
 
-      await apiRequest("/directus/update", { "userId": user.id, "formData": formData }, "POST")
+      await apiRequest("/api/directus/update", { "userId": user.id, "formData": formData }, "POST")
         .then(response => {
 
         })

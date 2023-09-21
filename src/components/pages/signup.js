@@ -21,14 +21,14 @@ function Signup() {
   const signUp = async (event) => {
     event.preventDefault()
 
-    var serchEmail =  await apiRequest("/directus/login", {"email":emailInput}, "POST")
+    var serchEmail =  await apiRequest("/api/directus/login", {"email":emailInput}, "POST")
 
     if (serchEmail) {
       setErrorEmail(true)
       setTimeout(() => { setErrorEmail(false); }, 5000);
     } else {
       
-      const createUser = await apiRequest("/directus/create-user", { "email_account": emailInput, "pass_account": passInput, "associate_status": 0 }, "POST")
+      const createUser = await apiRequest("/api/directus/create-user", { "email_account": emailInput, "pass_account": passInput, "associate_status": 0 }, "POST")
 
       if(createUser){
         setLoginSucess(true)
