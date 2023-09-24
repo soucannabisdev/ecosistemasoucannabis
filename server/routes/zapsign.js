@@ -49,7 +49,9 @@ router.post('/create-contract', async (req, res) => {
 
 router.post('/assign-contracts', async (req, res) => {
 
-   await directusRequest("/items/Users/" + req.body.external_id, {associate_status: 4 }, "PATCH")
+    console.log(req.body)
+
+   await directusRequest("/items/Users/" + req.body.external_id, {associate_status: 4, contract: req.body.signers[0].sign_url }, "PATCH")
 
    res.status(200).send("OK")
 });

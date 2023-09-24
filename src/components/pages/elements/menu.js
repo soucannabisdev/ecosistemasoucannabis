@@ -22,13 +22,13 @@ const MenuTopo = () => {
   };
   
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <nav className="navbar navbar-expand-lg navbar-light fixed-top">
       <div className="container-fluid">
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
             <li className="nav-item">
               {user &&
-                <a className="nav-link" href="#">{user.email_account}</a>
+                <span className="nav-link" href="#">{user.email_account}</span>
               }
             </li>
        

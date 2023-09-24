@@ -48,10 +48,6 @@ function Prescription() {
         console.error(error);
       });
 
-      if (user.associate_status > 6) {
-        window.location.assign("/")
-      }
-
     const bodyRequest = { medical_prescription: fileId }
     await apiRequest("/api/directus/update", { "userId": user.id, "formData": bodyRequest }, "POST")
     await apiRequest("/api/directus/update", { "userId": user.id, "formData": {associate_status:6} }, "POST")
@@ -64,24 +60,22 @@ function Prescription() {
       });
 
 
-      window.location.assign("/cadastro")
-  };
-
-
-
-  
+    window.location.assign("/cadastro")
+  }; 
 
   return (
     <div className="form-container">
-      <h1 className="sub-title">Envie sua receita médica abaixo: </h1>
-      {!user.medical_prescription && (
+      <h1 className="title">Sua consulta foi agendada com sucesso! </h1>
+      <h1 className="sub-title">Após realizar a consulta com o médico, ele enviará o arquivo da sua receita médica, para dar andamento em seu cadastro, envie o arquivo pelo botão abaixo: </h1>
+      <br></br>
+      <br></br>
         <Form >
           <Form.Group controlId="formFile1">
-            <Form.Label className="label-upload">Receita Médica</Form.Label>
+            <Form.Label className="label-upload">Enviar receita Médica</Form.Label>
             <Form.Control className="input-upload" type="file" onChange={handleFileChange} />
           </Form.Group>
         </Form>
-      )}
+
      
     </div>
 

@@ -12,7 +12,12 @@ function Contact() {
 
   }, []);
 
+
   const [user, setUser] = useState({});
+
+  if (user.associate_status > 5) {
+    window.location.assign("/")
+  }
 
   const medicalAppointmentYes = async () => {
 
@@ -30,10 +35,8 @@ function Contact() {
   }
 
   const medicalAppointmentYNo = async () => {
-
       window.location.href = `https://agendamento.ecosistemasoucannabis.ong.br/?u=${user.user_code}`
     }
-
 
 
   return (

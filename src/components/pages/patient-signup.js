@@ -26,6 +26,8 @@ const AssociateSignUp = () => {
   const handleClose = () => setShowPopup(false);
   const handleShow = () => setShowPopup(true);
 
+  var codeUser = localStorage.getItem("user_code")
+
   useEffect(() => {
     (async () => {
       const userData = await User();
@@ -45,7 +47,7 @@ const AssociateSignUp = () => {
 
   const [formData, setFormData] = useState({
     status: "published",
-    responsable_type: null,
+    responsable_type: "patient",
     name_associate: null,
     lastname_associate: null,
     birthday_associate: null,
@@ -64,9 +66,9 @@ const AssociateSignUp = () => {
     state: null,
     cep: null,
     reason_treatment: null,
-    mobile_number:null,
+    mobile_number: null,
     reason_treatment_text: null,
-    associate_status: 3
+    associate_status: 1
   }
   );
 
@@ -129,21 +131,6 @@ const AssociateSignUp = () => {
     return undefined;
   };
 
-  const responsable_himself = (event) => {
-    var responsableType = event.target.value
-    setFormData({ ...formData, responsable_type: responsableType })
-  };
-
-  const responsable_another = (event) => {
-    var responsableType = event.target.value
-    setFormData({ ...formData, responsable_type: responsableType })
-  };
-
-  const responsable_pet = (event) => {
-    var responsableType = event.target.value
-    setFormData({ ...formData, responsable_type: responsableType })
-  };
-
   const statesData = [
     { value: 'AC', label: 'Acre' },
     { value: 'AL', label: 'Alagoas' },
@@ -183,13 +170,14 @@ const AssociateSignUp = () => {
 
     for (let key in formData) {
       if (formData.hasOwnProperty(key)) {
+        console.log(key)
         if (formData[key] == null || formData[key] == undefined || formData[key] == "" || formData[key] == []) {
           emptyFields.push(key)
-          if (key != "mobile_number" && key != "status" && key != "associate_status" && key != "reason_treatment") {
+          if (key != "mobile_number" && key != "status" && key != "associate_status" && key != "reason_treatment" && key != "responsable_type" && key != "responsable_code") {
             document.querySelector("#" + key).className = "form-control input-login input-empty"
           }
         } else {
-          if (key != "mobile_number" && key != "status" && key != "associate_status" && key != "reason_treatment") {
+          if (key != "mobile_number" && key != "status" && key != "associate_status" && key != "reason_treatment" && key != "responsable_type" && key != "responsable_code") {
             document.querySelector("#" + key).className = "form-control input-login"
           }
         }
@@ -244,9 +232,13 @@ const AssociateSignUp = () => {
     console.log(emptyFields)
 
 
+
+
     if (emptyFields == "" || emptyFields == []) {
       setFieldsError(false)
-      await apiRequest("/api/directus/update", { "userId": user.id, "formData": formData }, "POST")
+      formData.responsable_code = codeUser
+
+      await apiRequest("/api/directus/create-user", formData, "POST")
         .then(response => {
 
         })
@@ -254,13 +246,7 @@ const AssociateSignUp = () => {
           console.error(error);
         });
 
-      if (formData.responsable_type == "another") {
-
-         window.location.assign("/cadastro-paciente");
-
-      } else {
-         window.location.assign("/documentos");
-      }
+      window.location.assign("/documentos");
 
     }
 
@@ -290,20 +276,7 @@ const AssociateSignUp = () => {
         <Form onSubmit={updateUser} className="form-container ">
           <h1 className="sub-title">Você é responsável pelo seu próprio tratamento?</h1>
           <br></br>
-          <div className="form-control input-login" id="responsable_type">
-            <input type="radio" className="btn-check" onClick={responsable_himself} name="resposable" id="btnradio1" value="himself" ></input>
-            <label className="btn btn-outline-primary radio-input" htmlFor="btnradio1">
-              Sim, sou responsável pelo MEU PRÓPRIO tratamento
-            </label>
-            <input type="radio" className="btn-check" onClick={responsable_another} name="resposable" id="btnradio2" value="another" ></input>
-            <label className="btn btn-outline-primary radio-input" htmlFor="btnradio2">
-              Sou responsável pelo tratamento de OUTRA PESSOA
-            </label>
-            <input type="radio" className="btn-check" onClick={responsable_pet} name="resposable" id="btnradio3" value="pet" ></input>
-            <label className="btn btn-outline-primary radio-input" htmlFor="btnradio3">
-              Sou responsável por um PET
-            </label>
-          </div>
+
 
           <br></br>
           <div>

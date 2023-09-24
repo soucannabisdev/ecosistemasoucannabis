@@ -135,7 +135,9 @@ function Contact() {
   };
 
   return (
-    <div>
+    <div className="form-container bg1" >
+        <h1 class="title"> Acolhimento</h1>
+                <h1 class="sub-title">Preencha o formulário com seus dados para entrar em nossa fila de atendimento.</h1>
       {!inputError && (
         <Modal show={showPopup} onHide={handleClose}>
           <Modal.Header closeButton>

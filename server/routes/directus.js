@@ -130,25 +130,35 @@ router.post('/create-user', async (req, res) => {
     console.log("/create-user")
 
     const token = req.headers.authorization
+    console.log(req.body)
+    var formData = {}
 
-    const hashPass = await new Promise((resolve, reject) => {
-        bcrypt.hash(req.body.pass_account, 10, (err, hash) => {
-            if (err) {
-                console.error('Erro ao criar o hash:', err);
-                reject(err);
-            } else {
-                resolve(hash);
-            }
+    if (req.body.email_account) {
+        const hashPass = await new Promise((resolve, reject) => {
+            bcrypt.hash(req.body.pass_account, 10, (err, hash) => {
+                if (err) {
+                    console.error('Erro ao criar o hash:', err);
+                    reject(err);
+                } else {
+                    resolve(hash);
+                }
+            });
         });
-    });
 
-    const verToken = await directusRequest("/items/Users_Api?filter[token][_eq]=" + token + "", '', "GET")
-    if (verToken) {
-        const userData = await directusRequest("/items/Users", {
+        formData = {
             email_account: req.body.email_account,
             pass_account: hashPass,
             associate_status: 0
-        }, "POST")
+        }
+    }
+
+    if (req.body.responsable_type) {
+        formData = req.body
+    }
+
+    const verToken = await directusRequest("/items/Users_Api?filter[token][_eq]=" + token + "", '', "GET")
+    if (verToken) {
+        await directusRequest("/items/Users", formData, "POST")
         res.send(true)
         res.status(200)
     } else {
@@ -200,7 +210,7 @@ router.post('/create-folder', async (req, res) => {
     console.log(req.body)
 
     const verToken = await directusRequest("/items/Users_Api?filter[token][_eq]=" + token + "", '', "GET")
-    if (verToken) {       
+    if (verToken) {
         const createFolder = await directusRequest("/folders", req.body, "POST")
         res.send(createFolder)
         res.status(200)

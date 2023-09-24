@@ -10,12 +10,10 @@ router.post('/create-card', async (req, res) => {
 
     const verToken = await directusRequest("/items/Users_Api?filter[token][_eq]=" + token + "", '', "GET")
     if (verToken) {
-        console.log(req.body)
-      const userData = await wekanRequest("/boards/"+process.env.WEKAN_ASSOCIATES_BOARD_ID+"/lists/"+process.env.WEKAN_ASSOCIATES_LIST_ID+"/cards", JSON.stringify(req.body), "POST")
-         console.log(userData)
-        await wekanRequest("/boards/"+process.env.WEKAN_ASSOCIATES_BOARD_ID+"/lists/"+process.env.WEKAN_ASSOCIATES_LIST_ID+"/cards/" + userData._id, { "customFields": req.body.customFields }, "PUT")
+        const userData = await wekanRequest("/boards/" + process.env.WEKAN_ASSOCIATES_BOARD_ID + "/lists/" + process.env.WEKAN_ASSOCIATES_LIST_ID + "/cards", JSON.stringify(req.body), "POST")
+        await wekanRequest("/boards/" + process.env.WEKAN_ASSOCIATES_BOARD_ID + "/lists/" + process.env.WEKAN_ASSOCIATES_LIST_ID + "/cards/" + userData._id, { "customFields": req.body.customFields }, "PUT")
 
-        res.send({message:"Card created!"})
+        res.send({ message: "Card created!" })
         res.status(200)
     } else {
         res.status(401).json({ mensagem: 'Credenciais inválidas' });
@@ -25,47 +23,41 @@ router.post('/create-card', async (req, res) => {
 
 router.get('/', async (req, res) => {
     res.send("ok")
-  })
-
+})
 
 router.post('/webhook-approve-associate', async (req, res) => {
 
     console.log(req.body)
     let cod_user
 
-    await wekanRequest("/api/boards/"+process.env.WEKAN_MEDICAL_BOARD_ID+"/lists/" + req.body.listId + "/cards/" + req.body.cardId, {}, "GET")
+    await wekanRequest("/boards/" + process.env.WEKAN_ASSOCIATES_BOARD_ID + "/lists/" + req.body.listId + "/cards/" + req.body.cardId, {}, "GET")
         .then(response => {
-        //    console.log(response.customFields)
+           const fields = response.customFields
 
-        console.log(response)
-
-            const fields = response.customFields
-
-       /*     for (const obj of fields) {
-                if (obj._id === "KmW28whGveR7G7SM2") {
-                    cod_user = obj.value;
-                    break;
-                }
-            }
-            return cod_user*/
+                 for (const obj of fields) {
+                     if (obj._id === process.env.WEKAN_ASSOCIATES_CUSTOMFIELD_ID) {
+                         cod_user = obj.value;
+                         break;
+                     }
+                 }
+                 return cod_user
 
         })
         .catch(error => {
             console.error(error);
         });
 
+  
+
     let data = JSON.stringify({
         "code_user": cod_user
     });
 
-  //  console.log(cod_user)
-
-/*    const userData = await directusRequest("/items/Users?filter[user_code][_eq]=" + cod_user + "", '', "GET")
-    console.log(userData)
-
-    await directusRequest("/items/Users/" + userData.id, { "associate_status": 6 }, "PATCH")
-
-*/
+        const userData = await directusRequest("/items/Users?filter[user_code][_eq]=" + cod_user + "", '', "GET")
+    
+        await directusRequest("/items/Users/" + userData.id, { "associate_status":8 }, "PATCH")
+    
+    
     res.status(200).send('OK');
 });
 
