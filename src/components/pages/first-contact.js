@@ -211,7 +211,7 @@ function Contact() {
 
           <br></br>
           <button class="btn btn-primary btn-lg" type="submit" disabled={buttonDisabled} onClick={contact}>Solicitar contato</button>
-          <button class="btn btn-success btn-lg btn-float-right" disabled={submit} type="button" onClick={nocontact} value={2}>Seguir com o cadastro</button>
+          <button class="btn btn-success btn-lg btn-float-right" type="button" onClick={nocontact} value={2}>Seguir com o cadastro</button>
         </Form>
       </Formik>
       <br></br>

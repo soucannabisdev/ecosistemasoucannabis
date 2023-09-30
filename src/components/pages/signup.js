@@ -26,15 +26,12 @@ function Signup() {
     if (serchEmail) {
       setErrorEmail(true)
       setTimeout(() => { setErrorEmail(false); }, 5000);
-    } else {
-      
-      const createUser = await apiRequest("/api/directus/create-user", { "email_account": emailInput, "pass_account": passInput, "associate_status": 0 }, "POST")
-
-      if(createUser){
+    } else {      
+      const userData = await apiRequest("/api/directus/create-user", {email_account: emailInput, associate_status: 0 }, "POST")
+      localStorage.setItem("user_code", await userData.user_code)
+      if(userData){
         setLoginSucess(true)
-        window.location.assign("/login");
-      }else{
-        console.log("erro")
+        window.location.assign("/cadastro-associado");
       }
       
     }
@@ -52,30 +49,25 @@ function Signup() {
 
     <div class="container">
      
-      {errorEmail &&
+      <div class="row justify-content-center">
+        <div class="col-md-6 form-signup">
+        {errorEmail &&
         <div class="alert alert-danger" role="alert">
           Este endereço de e-mail já está sendo usado.
         </div>
       }
-
-      <div class="row justify-content-center">
-        <div class="col-md-6 form-signup">
-          <h1 class="sub-title">Preencha com seu e-mail e defina uma senha</h1>
+          <h1 class="sub-title">Faça seu cadastro</h1>
           <form onSubmit={signUp}>
             <div class="form-group">
             <label class="label-login" for="email">E-mail:</label>
               <input type="email" class="form-control input-login" onChange={emailHandleChange} value={emailInput} id="email" placeholder="Digite seu email"></input>
             </div>
-            <div class="form-group">
-            <label class="label-login" for="email">Senha:</label>
-              <input type="password" class="form-control input-login" onChange={passHandleChange} value={passInput} id="password" placeholder="Digite sua senha"></input>
-            </div>
             <br></br>
             <button type="submit" onClick={signUp} class="btn btn-primary btn-lg btn-signup">Fazer Cadastro</button>
           </form>
 
-        </div>
-      </div>
+        </div>   
+      </div>     
     </div>
   );
 }

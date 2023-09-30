@@ -19,7 +19,11 @@ z-index: -1;
 
 nav {
   background-color: #4e774d;
-    box-shadow: 0 0 10px #000;
+    box-shadow: 0 0 10px #000;    
+}
+
+.navbar{
+  padding-left:80px
 }
 
 input.PhoneInputInput {
@@ -60,6 +64,7 @@ h1.sub-title{
 .form-container {
     max-width: 600px;
     padding: 2rem;
+    margin-left: 235px;
   }
   
   .form-container label {
@@ -103,7 +108,7 @@ h1.sub-title{
   
   .sidebar {
     position: fixed;
-    width: 30%;
+    width: 25%;
     height: 100%;
     background: linear-gradient(#e5e5e5, #cfd6db);
     top:50px;
@@ -112,7 +117,7 @@ h1.sub-title{
   }
   
   .content {
-    width: 58%;
+    width: 75%;
     padding: 100px 20px 20px 50px;
     float:right;
   }
@@ -199,25 +204,30 @@ opacity: 1;
   font-size:18px
 }
 
-.form-login{
+.form-login, .form-signup{
     margin-top:30px;
-    background-color:#0d6efd;
+    background-color:#0d6efd6b;
     padding:50px;
-    margin-left:130px
+    width: 436px;
+    box-shadow: 0 0 30px #000;
+    border-radius: 30px;
 
 }
 .form-signup{
-    margin-top:30px;
-    background-color:#198754;
-    padding:50px;
-    margin-left:130px
+    background-color:#1987547a;
+}
 
+
+.login-div {
+  margin: 0 144px 0 0;
+  width:422px
 }
 .btn-signup{
   float:right
 }
-.btn-login, .btn-float-right{
-    float:right
+.btn-login{
+    background-color:#0d6dfdb0;
+    border:#0d6dfdb0
 }
 
 button.btn.btn-primary.btn-lg:disabled {
@@ -244,7 +254,9 @@ button.btn.btn-primary.btn-lg:disabled {
   font-weight: 600;
   box-shadow: 0px 3px 6px #000
 }
-
+.btn-float-right{
+  float:right;
+}
 
 .label-upload:hover {
 	background-color: #123573;
@@ -350,4 +362,24 @@ textarea{
   float: left;
   margin:0 10px
 
+}
+
+.btn-contact {
+  width: 268px;
+  color: #1b385f !important;
+  font-weight: bold;
+  float: right;
+  font-size: 20px;
+}
+
+.text-contact{
+  padding-bottom: 30px;
+  font-size:22px
+}
+
+.lost-pass {
+  float: right;
+  text-decoration: none;
+  margin-bottom: 30px;
+  cursor: pointer;
 }

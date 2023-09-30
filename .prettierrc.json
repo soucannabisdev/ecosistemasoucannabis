@@ -1,0 +1,15 @@
+{
+  "printWidth": 1000,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "overrides": [
+    {
+      "files": ["*.js"],
+      "options": {
+        "parser": "babel",
+        "htmlWhitespaceSensitivity": "ignore",
+        "arrowParens": "avoid"
+      }
+    }
+  ]
+}

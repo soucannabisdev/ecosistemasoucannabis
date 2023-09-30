@@ -72,6 +72,7 @@ function Prescription() {
   
 
   return (
+    <div className="">
     <div className="form-container">
       <h1 className="sub-title">Envie sua receita médica abaixo: </h1>
       {!user.medical_prescription && (
@@ -82,7 +83,7 @@ function Prescription() {
           </Form.Group>
         </Form>
       )}
-     
+     </div>
     </div>
 
   );

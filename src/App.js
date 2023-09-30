@@ -13,6 +13,8 @@ import Home from './components/pages/home'
 import MedicalAppointment from './components/pages/medical-appointment'
 import Prescription from './components/pages/prescription'
 import PrescriptionAppointment from './components/pages/prescription-appointment'
+import Welcome from './components/pages/welcome'
+import LostPass from './components/pages/lost-password'
 import User from './modules/User'
 import "./styles/general.css"
 
@@ -22,6 +24,7 @@ function App() {
   const [userCode, setUserCode] = useState(false);
   const [hiddenButtons, setHiddenButtons] = useState(true);
   const [loading, setLoading] = useState(true);
+  const [hiddenLogin, setHiddenLogin] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -33,11 +36,22 @@ function App() {
       setUserCode(localStorage.getItem("user_code"))
     } else {
       setHiddenButtons(false)
-    } 
+    }
 
     setTimeout(() => {
       setLoading(false);
     }, 2000);
+
+    const url = window.location.href;
+    var page = url.split("/")
+    page = page[3].split("?")
+    page = page[0]
+
+    console.log(page)
+
+    if (page == "nova-senha") {
+      setHiddenLogin(true)
+    }
 
   }, []);
 
@@ -52,11 +66,20 @@ function App() {
 
   return (
     <Router>
-      {!user && (
+      {hiddenLogin && (
         <div class="container vertical-center">
-          <div class="text-center">
-            <img src="logo.svg" width="50%" />
-            <h1 class="title">Ecosistema SouCannabis</h1>
+          <div class="text-center login-div">
+            <Routes>
+              <Route path="/nova-senha" element={<LostPass />} />
+            </Routes>
+          </div>
+        </div>
+      )}
+      {!user && (
+        <div class="container vertical-center" hidden={hiddenLogin}>
+          <div class="text-center login-div">
+            <img src="logo.svg" width="30%" />
+            <h1 class="sub-title">Ecosistema SouCannabis</h1>
             <div class="row">
               <Link to="/login" class="btn btn-lg btn-primary btn-login" hidden={hiddenButtons}>Login</Link>
               <Link to="/cadastro" class="btn btn-lg btn-success" hidden={hiddenButtons}>Criar minha conta</Link>
@@ -79,7 +102,8 @@ function App() {
             </div>
             <div class="content">
               <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<Home />} />,
+                <Route path="/bem-vindo" element={<Welcome />} />
                 <Route path="/solicitacao-contato" element={<Contact />} />
                 <Route path="/cadastro-associado" element={<AssociateSignup />} />
                 <Route path="/cadastro-paciente" element={<PatientSignup />} />

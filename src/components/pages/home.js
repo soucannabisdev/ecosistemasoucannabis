@@ -14,7 +14,14 @@ function Home() {
 
     }, []);
 
- 
+    if(user.associate_status == 0){
+        window.location.assign("/bem-vindo");
+    }
+
+    if(user.associate_status < 2){
+        window.location.assign("/cadastro-associado");
+    }
+
     if(user.associate_status == 2){
         window.location.assign("/cadastro-associado");
     }
@@ -32,19 +39,8 @@ function Home() {
     }
 
 
-    const homeSuccess = async () => {
-        window.location.assign("/solicitacao-contato");
-    }
-
     return (
-        <div className="form-container bg1">
-            <div>
-                <h1 class="title"> Olá, seja bem-vindo(a) à Associação Sou Cannabis. </h1>
-                <h1 class="sub-title">Siga todos os passos deste guia para se tornar um Associado e fazer o seu primeiro pedido em nossa associação.</h1>
-                <div class="container d-flex justify-content-center align-items-center">
-                    <button class="btn btn-primary btn-lg" onClick={homeSuccess}>Iniciar Cadastro</button>
-                </div>
-            </div></div>
+       <></>
     );
 }
 

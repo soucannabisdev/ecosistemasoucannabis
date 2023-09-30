@@ -49,7 +49,7 @@ router.post('/send-message-chat', async (req, res) => {
             data: JSON.stringify({
                 "email": req.body.email,
                 "name": req.body.name,
-                "phone_number": req.body.phone_number
+                "phone_number": req.body.phone_number,                
             })
         };
 
@@ -91,7 +91,7 @@ router.post('/send-message-chat', async (req, res) => {
                 'Accept': 'application/json; charset=utf-8',
             },
             data: JSON.stringify({
-                "content": "Contato em Fila de Espera - Nome: "+req.body.name,
+                "content": req.body.message,
             })
         })
             .then((response) => {

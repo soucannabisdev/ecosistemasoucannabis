@@ -55,7 +55,6 @@ const AssociateSignUp = () => {
     rg_associate: null,
     emiiter_rg_associate: null,
     marital_status: null,
-    email: null,
     street: null,
     number: null,
     complement: null,
@@ -64,9 +63,10 @@ const AssociateSignUp = () => {
     state: null,
     cep: null,
     reason_treatment: null,
-    mobile_number:null,
+    mobile_number: null,
     reason_treatment_text: null,
-    associate_status: 3
+    associate_status: 3,
+    pass_account: null,
   }
   );
 
@@ -252,14 +252,14 @@ const AssociateSignUp = () => {
         })
         .catch(error => {
           console.error(error);
-        });
+        });    
 
       if (formData.responsable_type == "another") {
 
-         window.location.assign("/cadastro-paciente");
+        window.location.assign("/cadastro-paciente");
 
       } else {
-         window.location.assign("/documentos");
+        window.location.assign("/documentos");
       }
 
     }
@@ -393,12 +393,8 @@ const AssociateSignUp = () => {
             <br></br>
             <br></br>
             <div className="mb-3">
-              <label className="form-label" htmlFor="email">Email</label>
-              <EmailInput
-                onBlur={handleChangeInput}
-                handleChangeInput={handleChangeInput}
-                setButtonDisabled={setButtonDisabled}
-              />
+              <label className="form-label" htmlFor="email">Defina uma senha para sua conta</label>
+              <input class="form-control input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.pass_account} type="password" id="pass_account" name="pass_account"></input>
             </div>
             <div className="mb-3">
               <label className="form-label" htmlFor="email">Telefone</label>

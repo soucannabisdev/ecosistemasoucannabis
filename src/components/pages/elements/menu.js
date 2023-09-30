@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import User from '../../../modules/User'
+import Contact from '../modals/contact'
 import { Dropdown } from 'react-bootstrap';
 
 const MenuTopo = () => {
@@ -23,6 +24,7 @@ const MenuTopo = () => {
   
   return (
     <nav className="navbar navbar-expand-lg navbar-light fixed-top">
+      
       <div className="container-fluid">
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
