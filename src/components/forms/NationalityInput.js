@@ -4,44 +4,40 @@ import { Formik, Form, Field } from 'formik';
 const NationalityInput = ({ handleChangeInput }) => {
   const [hiddenInput, setHiddenInput] = useState(false);
 
+  function handleChange(e){
+    if (e.target.value === 'outro') {
+      setHiddenInput(true);
+    } else {
+      setHiddenInput(false);
+    }
+
+  }
+
   return (
-    <Formik
-      initialValues={{ nationality: '' }}
-      onSubmit={(values) => {
-      }}
-    >
-      {({ handleChange }) => (
-        <Form>
-          <Field
-            className="form-control" 
+        <form>
+          <select
+            className="form-input" 
             as="select"
             id="nationality"
             name="nationality"
             onChange={(e) => {
               handleChange(e);
               handleChangeInput(e);
-              if (e.target.value === 'outro') {
-                setHiddenInput(true);
-              } else {
-                setHiddenInput(false);
-              }
             }}
           >
             <option value="">Selecione...</option>
             <option value="brasileiro(a)">Brasileiro(a)</option>
             <option value="outro">Outra nacionalidade</option>
-          </Field>
+          </select>
+          <br></br>
           <br></br>
           {hiddenInput && (
-            <Field  className="form-control" type="text"  name="nationality" 
+            <input placeholder='Digite sua nacionalidade'  className="form-input" type="text"  name="nationality" 
             onChange={(e) => {
-                handleChange(e);
                 handleChangeInput(e);
               }}/>
           )}
-        </Form>
-      )}
-    </Formik>
+        </form>
   );
 };
 

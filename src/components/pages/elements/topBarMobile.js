@@ -4,7 +4,7 @@ import User from "../../../modules/User";
 import CheckIcon from "./checkIcon";
 import Contact from "../modals/contact";
 
-const Sidebar = () => {
+const TopBarMobile = () => {
   const [user, setUser] = useState({});
 
   useEffect(() => {
@@ -16,32 +16,31 @@ const Sidebar = () => {
 
   return (
     <div>
-      <div>
-        <div className="bg-green text-white">
-          <ul className="listPages">
-            {user.associate_status === 0 && (
+          <div class="">
+          <ul class="list-unstyled topMenuMobile">
+          {user.associate_status === 0 && (
               <div>
                 <Link to="/cadastro-associado">
                   <li className="item-selected">
-                    <CheckIcon status={1} size={32} />
+                    <CheckIcon status={1} size={12} />
                     Cadastro de associado
                   </li>
                 </Link>
                 <Link>
                   <li className="disabled">
-                    <CheckIcon status={1} size={32} />
+                    <CheckIcon status={1} size={12} />
                     Documentação
                   </li>
                 </Link>
                 <Link>
                   <li className="disabled">
-                    <CheckIcon status={1} size={32} />
+                    <CheckIcon status={1} size={12} />
                     Consulta Medica
                   </li>
                 </Link>
                 <Link>
                   <li className="disabled">
-                    <CheckIcon status={1} size={32} />
+                    <CheckIcon status={1} size={12} />
                     Aprovação do cadastro
                   </li>
                 </Link>
@@ -51,25 +50,25 @@ const Sidebar = () => {
               <div>
                 <Link to="/cadastro-associado">
                   <li className="item-selected">
-                    <CheckIcon status={1} size={32} />
+                    <CheckIcon status={1} size={12} />
                     Cadastro de associado
                   </li>
                 </Link>
                 <Link>
                   <li className="disabled">
-                    <CheckIcon status={1} size={32} />
+                    <CheckIcon status={1} size={12} />
                     Documentação
                   </li>
                 </Link>
                 <Link>
                   <li className="disabled">
-                    <CheckIcon status={1} size={32} />
+                    <CheckIcon status={1} size={12} />
                     Consulta Medica
                   </li>
                 </Link>
                 <Link>
                   <li className="disabled">
-                    <CheckIcon status={1} size={32} />
+                    <CheckIcon status={1} size={12} />
                     Aprovação do cadastro
                   </li>
                 </Link>
@@ -80,25 +79,25 @@ const Sidebar = () => {
               <div>
                 <Link>
                   <li className="line-through">
-                    <CheckIcon status={2} size={32} />
+                    <CheckIcon status={2} size={12} />
                     Cadastro de associado
                   </li>
                 </Link>
                 <Link to="/documentos">
                   <li className="item-selected">
-                    <CheckIcon status={1} size={32} />
+                    <CheckIcon status={1} size={12} />
                     Documentação
                   </li>
                 </Link>
                 <Link>
                   <li className="disabled">
-                    <CheckIcon status={1} size={32} />
+                    <CheckIcon status={1} size={12} />
                     Consulta Medica
                   </li>
                 </Link>
                 <Link>
                   <li className="disabled">
-                    <CheckIcon status={1} size={32} />
+                    <CheckIcon status={1} size={12} />
                     Aprovação do cadastro
                   </li>
                 </Link>
@@ -109,25 +108,25 @@ const Sidebar = () => {
               <div>
                 <Link>
                   <li className="line-through">
-                    <CheckIcon status={2} size={32} />
+                    <CheckIcon status={2} size={12} />
                     Cadastro de associado
                   </li>
                 </Link>
                 <Link to="/documentos">
                   <li className="line-through">
-                    <CheckIcon status={2} size={32} />
+                    <CheckIcon status={2} size={12} />
                     Documentação
                   </li>
                 </Link>
                 <Link>
                   <li className="item-selected">
-                    <CheckIcon status={1} size={32} />
+                    <CheckIcon status={1} size={12} />
                     Consulta Medica
                   </li>
                 </Link>
                 <Link>
                   <li className="disabled">
-                    <CheckIcon status={1} size={32} />
+                    <CheckIcon status={1} size={12} />
                     Aprovação do cadastro
                   </li>
                 </Link>
@@ -138,25 +137,25 @@ const Sidebar = () => {
               <div>
                 <Link>
                   <li className="line-through">
-                    <CheckIcon status={2} size={32} />
+                    <CheckIcon status={2} size={12} />
                     Cadastro de associado
                   </li>
                 </Link>
                 <Link to="/documentos">
                   <li className="line-through">
-                    <CheckIcon status={2} size={32} />
+                    <CheckIcon status={2} size={12} />
                     Documentação
                   </li>
                 </Link>
                 <Link>
                   <li className="line-through">
-                    <CheckIcon status={2} size={32} />
+                    <CheckIcon status={2} size={12} />
                     Consulta Medica
                   </li>
                 </Link>
                 <Link>
                   <li className="disabled">
-                    <CheckIcon status={1} size={32} />
+                    <CheckIcon status={1} size={12} />
                     Aprovação do cadastro
                   </li>
                 </Link>
@@ -167,31 +166,31 @@ const Sidebar = () => {
               <div>
                 <Link>
                   <li className="line-through">
-                    <CheckIcon status={2} size={32} />
+                    <CheckIcon status={2} size={12} />
                     Solicitação de contato
                   </li>
                 </Link>
                 <Link>
                   <li className="line-through">
-                    <CheckIcon status={2} size={32} />
+                    <CheckIcon status={2} size={12} />
                     Cadastro de associado
                   </li>
                 </Link>
                 <Link>
                   <li className="line-through">
-                    <CheckIcon status={2} size={32} />
+                    <CheckIcon status={2} size={12} />
                     Documentação
                   </li>
                 </Link>
                 <Link>
                   <li className="line-through">
-                    <CheckIcon status={2} size={32} />
+                    <CheckIcon status={2} size={12} />
                     Consulta Medica
                   </li>
                 </Link>
                 <Link to="/cadastro-aprovado">
                   <li className="item-selected">
-                    <CheckIcon status={1} size={32} />
+                    <CheckIcon status={1} size={12} />
                     Aprovação do cadastro
                   </li>
                 </Link>
@@ -201,31 +200,31 @@ const Sidebar = () => {
               <div>
                 <Link>
                   <li className="line-through">
-                    <CheckIcon status={2} size={32} />
+                    <CheckIcon status={2} size={12} />
                     Solicitação de contato
                   </li>
                 </Link>
                 <Link>
                   <li className="line-through">
-                    <CheckIcon status={2} size={32} />
+                    <CheckIcon status={2} size={12} />
                     Cadastro de associado
                   </li>
                 </Link>
                 <Link>
                   <li className="line-through">
-                    <CheckIcon status={2} size={32} />
+                    <CheckIcon status={2} size={12} />
                     Documentação
                   </li>
                 </Link>
                 <Link>
                   <li className="line-through">
-                    <CheckIcon status={2} size={32} />
+                    <CheckIcon status={2} size={12} />
                     Consulta Medica
                   </li>
                 </Link>
                 <Link to="/cadastro-aprovado">
                   <li className="item-selected">
-                    <CheckIcon status={2} size={32} />
+                    <CheckIcon status={2} size={12} />
                     Aprovação do cadastro
                   </li>
                 </Link>
@@ -233,13 +232,8 @@ const Sidebar = () => {
             )}
           </ul>
         </div>
-        <br></br>
-        <br></br>
-        <br></br>
-        <Contact />
-      </div>
     </div>
   );
 };
 
-export default Sidebar;
+export default TopBarMobile;

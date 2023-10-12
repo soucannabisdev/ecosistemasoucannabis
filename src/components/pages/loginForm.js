@@ -26,7 +26,6 @@ function LoginForm() {
     event.preventDefault();
     await apiRequest("/api/directus/login", { email: emailInput, pass: passInput }, "POST").then(async response => {
       if (!response) {
-        console.log("E-mail ou senha inválidos");
         setLoginEmailError(true);
         setLogged(false);
         setTimeout(() => {
@@ -71,13 +70,13 @@ function LoginForm() {
                 <label class="label-login" for="email">
                   E-mail:
                 </label>
-                <input type="email" class="form-control input-login" onChange={emailHandleChange} value={emailInput} id="email" placeholder="Digite seu email"></input>
+                <input type="email" class="form-input input-login" onChange={emailHandleChange} value={emailInput} id="email" placeholder="Digite seu email"></input>
               </div>
               <div class="form-group">
                 <label class="label-login" for="password">
                   Senha:
                 </label>
-                <input type="password" class="form-control input-login" onChange={passHandleChange} value={passInput} id="password" placeholder="Digite sua senha"></input>
+                <input type="password" class="form-input input-login" onChange={passHandleChange} value={passInput} id="password" placeholder="Digite sua senha"></input>
               </div>
               <LostPass />
               <button type="submit" onClick={userLogin} class="btn btn-success btn-lg">

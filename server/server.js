@@ -19,14 +19,11 @@ app.use(cors({
 
 const direcuts = require('./routes/directus')
 const chatwoot = require('./routes/chatwoot')
-const wekan = require('./routes/wekan')
-const api = require('./routes/api')
 const zapsign = require('./routes/zapsign')
 const email = require('./routes/email')
 
 app.use('/api/directus', direcuts); 
 app.use('/api/chatwoot', chatwoot)
-app.use('/api/wekan', wekan)
 app.use('/api/zapsign', zapsign)
 app.use('/api/email', email)
 

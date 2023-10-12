@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import directusRequestUpload from "../../modules/directusRequestUpload";
 import apiRequest from "../../modules/apiRequest";
 import User from "../../modules/User";
@@ -7,27 +7,26 @@ import AlertError from "../forms/AlertError";
 import { Link } from "react-router-dom";
 
 const FileUploadComponent = () => {
-  const [file1, setFile1] = useState(null);
-  const [file2, setFile2] = useState(null);
-  const [file3, setFile3] = useState(null);
-  const [file4, setFile4] = useState(null);
   const [user, setUser] = useState({});
   const [rgProof, setRgProof] = useState(false);
   const [rg_patient_proof, setRg_patient_proof] = useState(false);
   const [proof_of_address, setProof_of_address] = useState(false);
-  const [contract, setcontract] = useState(false);
+  const [contract, setContract] = useState(false);
   const [generateContract, setGenerateContract] = useState(true);
   const [docsError, setDocsError] = useState(false);
   const [visible, setVisible] = useState(true);
-  const [events, setEvents] = useState([]);
-  const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingB, setIsLoadingB] = useState(false);
+  const [isLoadingC, setIsLoadingC] = useState(false);
 
   var userData = {};
 
-  setTimeout(async () => {
-    userData = await User();
-    setUser(userData);
-  }, 2000);
+  if (process.env.REACT_APP_ZAPSIGN == "true") {
+    setTimeout(async () => {
+      userData = await User();
+      setUser(userData);
+    }, 4000);
+  }
 
   if (user.associate_status == 4) {
     window.location.assign("/consulta");
@@ -55,9 +54,9 @@ const FileUploadComponent = () => {
         setProof_of_address(true);
       }
       if (userData.contract == null) {
-        setcontract(false);
+        setContract(false);
       } else {
-        setcontract(true);
+        setContract(true);
       }
       if (userData.responsable_type == "himself" || userData.responsable_type == "pet") {
         setVisible(true);
@@ -68,7 +67,7 @@ const FileUploadComponent = () => {
   }, []);
 
   const handleFile1Change = async event => {
-    setFile1(event.target.files[0]);
+    setIsLoading(true);
 
     const file1 = event.target.files[0];
 
@@ -90,7 +89,6 @@ const FileUploadComponent = () => {
     await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
       .then(response => {
         fileId = response.id;
-        console.log(fileId);
         return fileId;
       })
       .catch(error => {
@@ -100,17 +98,25 @@ const FileUploadComponent = () => {
     const bodyRequest = { rg_proof: fileId };
     await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST")
       .then(response => {
-        console.log(response);
+        setRgProof(true);
+        setIsLoading(false);
       })
       .catch(error => {
         console.error(error);
       });
 
+    await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST")
+      .then(response => {})
+      .catch(error => {
+        console.error(error);
+      });
+
     setRgProof(true);
+    setIsLoading(false);
   };
 
   const handleFile2Change = async event => {
-    setFile2(event.target.files[0]);
+    setIsLoadingB(true);
 
     const file2 = event.target.files[0];
 
@@ -125,8 +131,6 @@ const FileUploadComponent = () => {
 
     var fileId = "";
 
-    console.log(formData);
-
     await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
       .then(response => {
         fileId = response.id;
@@ -138,21 +142,28 @@ const FileUploadComponent = () => {
 
     const bodyRequest = { proof_of_address: fileId };
     await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST")
-      .then(response => {
-        console.log(response);
-      })
+      .then(response => {})
       .catch(error => {
         console.error(error);
       });
 
-    zapsign();
+    await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST")
+      .then(response => {})
+      .catch(error => {
+        console.error(error);
+      });
+
+    if (process.env.REACT_APP_ZAPSIGN == "true") {
+      zapsign();
+    }
     setTimeout(() => {
       setProof_of_address(true);
+      setIsLoadingB(false);
     }, 5000);
   };
 
   const handleFile3Change = async event => {
-    setFile3(event.target.files[0]);
+    setIsLoadingC(true);
 
     const file3 = event.target.files[0];
 
@@ -178,14 +189,63 @@ const FileUploadComponent = () => {
 
     const bodyRequest = { rg_patient_proof: fileId };
     await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST")
-      .then(response => {
-        console.log(response);
-      })
+      .then(response => {})
+      .catch(error => {
+        console.error(error);
+      });
+
+    await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST")
+      .then(response => {})
       .catch(error => {
         console.error(error);
       });
 
     setRg_patient_proof(true);
+    setIsLoadingC(false);
+  };
+
+  const handleFile4Change = async event => {
+    setIsLoadingC(true);
+
+    const file4 = event.target.files[0];
+
+    var userFolder = localStorage.getItem("user_folder");
+
+    file4.storage = "local";
+    file4.filename_download = file4.name;
+
+    var formData = new FormData();
+    formData.append("folder", userFolder);
+    formData.append("file", file4);
+
+    var fileId = "";
+
+    await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
+      .then(response => {
+        fileId = response.id;
+        return fileId;
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
+    const bodyRequest = { contract: fileId, associate_status: 4 };
+    await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST")
+      .then(response => {})
+      .catch(error => {
+        console.error(error);
+      });
+
+    await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST")
+      .then(response => {})
+      .catch(error => {
+        console.error(error);
+      });
+
+    setRg_patient_proof(true);
+    setIsLoadingC(false);
+
+    window.location.assign("/consulta");
   };
 
   const zapsign = async () => {
@@ -214,7 +274,6 @@ const FileUploadComponent = () => {
     });
 
     const createContract = await apiRequest("/api/zapsign/create-contract", { userData: userData, cod_id: user.id }, "POST");
-    console.log(createContract.signers[0].sign_url);
     setGenerateContract(createContract.signers[0].sign_url);
   };
 
@@ -226,7 +285,14 @@ const FileUploadComponent = () => {
         {!rgProof && (
           <Form>
             <Form.Group controlId="formFile1">
-              <Form.Label className="label-upload">Documento de Identidade do Responsável</Form.Label>
+              <Form.Label className="label-upload">
+                {isLoading && (
+                  <span class="loading-text">
+                    <img class="animated-icon" width="40" src="/icons/data-cloud.gif" /> Carregando documento... <img class="animated-icon" width="40" src="/icons/data-cloud.gif" />
+                  </span>
+                )}
+                {!isLoading && <span>Documento de Identidade do Responsável</span>}
+              </Form.Label>
               <Form.Control className="input-upload" type="file" onChange={handleFile1Change} />
             </Form.Group>
           </Form>
@@ -241,7 +307,14 @@ const FileUploadComponent = () => {
         {!proof_of_address && (
           <Form>
             <Form.Group controlId="formFile2">
-              <Form.Label className="label-upload">Comprovante de residência</Form.Label>
+              <Form.Label className="label-upload">
+                {isLoadingB && (
+                  <span class="loading-text">
+                    <img class="animated-icon" width="40" src="/icons/data-cloud.gif" /> Carregando documento... <img class="animated-icon" width="40" src="/icons/data-cloud.gif" />
+                  </span>
+                )}
+                {!isLoadingB && <span>Comprovante de residência</span>}
+              </Form.Label>
               <Form.Control className="input-upload" type="file" onChange={handleFile2Change} />
             </Form.Group>
           </Form>
@@ -255,7 +328,14 @@ const FileUploadComponent = () => {
         {!rg_patient_proof && (
           <Form hidden={visible}>
             <Form.Group controlId="formFile3">
-              <Form.Label className="label-upload">Documento de Identidade do paciente</Form.Label>
+              <Form.Label className="label-upload">
+                {isLoadingC && (
+                  <span class="loading-text">
+                    <img class="animated-icon" width="40" src="/icons/data-cloud.gif" /> Carregando documento... <img class="animated-icon" width="40" src="/icons/data-cloud.gif" />
+                  </span>
+                )}
+                {!isLoadingC && <span>Documento de Identidade do paciente</span>}
+              </Form.Label>
               <Form.Control className="input-upload" type="file" onChange={handleFile3Change} />
             </Form.Group>
           </Form>
@@ -264,37 +344,41 @@ const FileUploadComponent = () => {
         {rg_patient_proof && (
           <div class="document-send">
             <Form.Label hidden={visible} className="label-upload send-ok">
-              Documento de Identidade já enviado
+              Documento de Identidade enviado
             </Form.Label>
           </div>
         )}
         <br></br>
-        {/*<Link to="https://database.ecosistemasoucannabis.ong.br/assets/2099cd80-16af-4863-bb45-af7b29ece349?download=&access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU2ZjAzMTVmLTc5ZWEtNGQ0ZS04Mzg0LTI3NTMxZTNmNDU2MiIsInJvbGUiOiI3ZWE3NzA0Mi1hZDhlLTQ5YTgtOTg3YS0zMzRkYThhYTI2MjEiLCJhcHBfYWNjZXNzIjp0cnVlLCJhZG1pbl9hY2Nlc3MiOnRydWUsImlhdCI6MTY5NTQwMDA4MiwiZXhwIjoxNjk1NDAwOTgyLCJpc3MiOiJkaXJlY3R1cyJ9.1ewPiN75rH4zX258leVMfG6LeYAuyBUPIZF0-xx_tTY" className="label-upload">Download do Contrato</Link>/*}
+        {process.env.REACT_APP_ZAPSIGN == "false" && (
+          <div>
+            <Link to="https://database.ecosistemasoucannabis.ong.br/assets/2099cd80-16af-4863-bb45-af7b29ece349?download=&access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU2ZjAzMTVmLTc5ZWEtNGQ0ZS04Mzg0LTI3NTMxZTNmNDU2MiIsInJvbGUiOiI3ZWE3NzA0Mi1hZDhlLTQ5YTgtOTg3YS0zMzRkYThhYTI2MjEiLCJhcHBfYWNjZXNzIjp0cnVlLCJhZG1pbl9hY2Nlc3MiOnRydWUsImlhdCI6MTY5NTQwMDA4MiwiZXhwIjoxNjk1NDAwOTgyLCJpc3MiOiJkaXJlY3R1cyJ9.1ewPiN75rH4zX258leVMfG6LeYAuyBUPIZF0-xx_tTY" className="label-upload">
+              Download do Contrato
+            </Link>
 
+            {!contract && (
+              <Form>
+                <Form.Group controlId="formFile4">
+                  <Form.Label className="label-upload">
+                    {isLoading && (
+                      <span class="loading-text">
+                        <img class="animated-icon" width="40" src="/icons/data-cloud.gif" /> Carregando documento... <img class="animated-icon" width="40" src="/icons/data-cloud.gif" />
+                      </span>
+                    )}
+                    {!isLoading && <span>Enviar contrato assinado</span>}
+                  </Form.Label>
+                  <Form.Control type="file" className="input-upload" onChange={handleFile4Change} />
+                </Form.Group>
+              </Form>
+            )}
+            {contract && (
+              <div class="document-send">
+                <Form.Label className="label-upload send-ok">Contrato já enviado</Form.Label>
+              </div>
+            )}
+          </div>
+        )}
 
-                {/*!contract && (
-                    <Form>
-                        <Form.Group controlId="formFile4">
-                            <Form.Label className="label-upload">Enviar contrato assinado</Form.Label>
-                            <Form.Control type="file" className="input-upload" onChange={handleFile4Change} />
-                        </Form.Group>
-                    </Form>
-                )}
-                {contract && (
-                    <div class="document-send">
-                        <Form.Label className="label-upload send-ok">Contrato já enviado</Form.Label>
-
-                    </div>
-                )*/}
-        {/*
-                <Form>
-                    <Form.Group controlId="formFile4">
-                        <Link onClick={zapsign} className="label-upload">Gerar um contrato com Zapsign</Link>
-                    </Form.Group>
-                </Form>
-
-                */}
-        <a className="label-upload" target="_blank" href={generateContract} hidden={!proof_of_address}>
+        <a className="label-upload" target="_blank" href={generateContract} hidden={!proof_of_address || process.env.REACT_APP_ZAPSIGN == "false"}>
           Assinar Termo de Responsabilidade
         </a>
       </div>

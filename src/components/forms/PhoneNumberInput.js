@@ -1,42 +1,29 @@
-import React, { useState } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import PhoneInput from 'react-phone-number-input'
+import React, { useState } from "react";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
+const PhoneNumberInput = ({handleChangeInput}) => {
+  const [phone, setPhone] = useState("");
 
-const PhoneNumberInput = () => {
-  const [phone, setPhone] = useState('');
-  const [buttonDisable, setButtonDisable] = useState(true);
-
-  const [value, setValue] = useState()
+  const handleChange = (value, country) => {
+    setPhone(value);
+  };
 
   return (
     <div>
-      <Formik
-        initialValues={{ phone: '' }}
-        validate={values => {
-
-          console.log(values.phone)
-
-          const errors = {};
-
-          if (!values.phone) {
-            errors.phone = 'Required';
-          }
-          return errors;
+      <PhoneInput
+        className="form-control-phone"
+        country={"br"}
+        value={phone}
+        onChange={(e) => {
+          handleChange(e);
+          handleChangeInput(e);
         }}
-      >
-        {({ handleChange }) => (
-          <Form>
-            <PhoneInput
-              id="phone"            
-              placeholder="Enter phone number"
-              value={value}
-              onChange={setValue}
-              name="phone" />          
-            <ErrorMessage name="phone" component="div" />
-          </Form>
-        )}
-      </Formik>
+        inputProps={{
+          name: "phone",
+          required: true,
+        }}
+      />
     </div>
   );
 };

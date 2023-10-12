@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -6,48 +7,46 @@ html, body {
 }
 
 body::before {
-content: "";
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-background-color: #132712;
-opacity: 0.9;
-z-index: -1;
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #132712;
+  opacity: 0.9;
+  z-index: -1;
 }
 
 nav {
   background-color: #4e774d;
-    box-shadow: 0 0 10px #000;    
+  box-shadow: 0 0 10px #000;
 }
 
-.navbar{
-  padding-left:80px
+.navbar {
+  padding-left: 80px;
 }
 
 input.PhoneInputInput {
   border: none;
-  background:none
+  background: none;
 }
 
-h1.title{
-    color:#fff;
-    text-align:center
+h1.title {
+  color: #fff;
+  text-align: center;
 }
 
-
-h1.sub-title{
-    color:#fff;
-    text-align:center;
-    font-size:25px;
-    margin:20px 0
+h1.sub-title {
+  color: #fff;
+  text-align: center;
+  font-size: 25px;
+  margin: 20px 0;
 }
 
-.btn-login{
-    margin:20px 0
+.btn-login {
+  margin: 20px 0;
 }
-
 
 .vertical-center {
   display: flex;
@@ -57,86 +56,85 @@ h1.sub-title{
   margin-left: 157px;
 }
 
-.line-through{
+.line-through {
   text-decoration: line-through;
 }
 
 .form-container {
-    max-width: 600px;
-    padding: 2rem;
-    margin-left: 235px;
-  }
-  
-  .form-container label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-  }
-  
-  .form-container textarea {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .form-container textarea.invalid-input {
-    border-color: red;
-  }
-  
-  .form-container .error-message {
-    color: red;
-    margin-top: 0.5rem;
-  }
-  
-  .form-container button[type="submit"] {
-    padding: 0.5rem 1rem;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .form-container button[type="submit"]:hover {
-    background-color: #0056b3;
-  }
-  
-  .wrapper {
-    height: 100%;
-  }
-  
-  .sidebar {
-    position: fixed;
-    width: 25%;
-    height: 100%;
-    background: linear-gradient(#e5e5e5, #cfd6db);
-    top:50px;
-    box-shadow: 0 0 36px #000;
-      
-  }
-  
-  .content {
-    width: 75%;
-    padding: 100px 20px 20px 50px;
-    float:right;
-  }
-  
-  .disabled {
-    color: #a1a0a0;
-    border-bottom: 1px solid #afafaf;
-    background-color: #7d838b;
+  max-width: 600px;
+  padding: 2rem;
+  margin-left: 235px;
 }
-  .listPages > div > a, .listPages > a{
-  color:#378dfc;
-  text-decoration:none;
-  font-size:21px;
-  font-weight:bold;
-  
-  }
 
-  ul.listPages {
-    padding-left: 0;
+.form-container label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.form-container textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-container textarea.invalid-input {
+  border-color: red;
+}
+
+.form-container .error-message {
+  color: red;
+  margin-top: 0.5rem;
+}
+
+.form-container button[type="submit"] {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-container button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+.wrapper {
+  height: 100%;
+}
+
+.sidebar {
+  position: fixed;
+  width: 25%;
+  height: 100%;
+  background: linear-gradient(#e5e5e5, #cfd6db);
+  top: 50px;
+  box-shadow: 0 0 36px #000;
+}
+
+.content {
+  width: 75%;
+  padding: 100px 20px 20px 50px;
+  float: right;
+}
+
+.disabled {
+  color: #a1a0a0;
+  border-bottom: 1px solid #afafaf;
+  background-color: #7d838b;
+}
+.listPages > div > a,
+.listPages > a {
+  color: #378dfc;
+  text-decoration: none;
+  font-size: 21px;
+  font-weight: bold;
+}
+
+ul.listPages {
+  padding-left: 0;
 }
 
 .item-selected {
@@ -144,18 +142,18 @@ h1.sub-title{
   color: #fff;
 }
 
-  
-  .listPages > div  > a > li,  .listPages > a > li{
-    list-style: none;
-    height: 96px;
-    padding: 31px 20px 40px 20px;
-  
-  }
-
-  body{background-color:#d9e3f1
+.listPages > div > a > li,
+.listPages > a > li {
+  list-style: none;
+  height: 96px;
+  padding: 31px 20px 40px 20px;
 }
 
-.form-control {
+body {
+  background-color: #d9e3f1;
+}
+
+.form-input {
   width: 100%;
   padding: 1rem 1.5rem;
   font-size: 1rem;
@@ -173,6 +171,16 @@ h1.sub-title{
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
+.form-control-phone > .form-control {
+  width: 100%;
+  height: 58px;
+  background-color: #f0f5fa;
+}
+
+.selected-flag {
+  background-color: #f0f5fa;
+}
+
 .errorInput {
   color: red;
   padding-top: 9px;
@@ -182,52 +190,53 @@ h1.sub-title{
 
 body {
   background: url("https://soucannabis.ong.br/wp-content/uploads/2023/05/holding-farmer-holding-cannabis-leaf.jpg");
-    background-repeat: no-repeat; 
-    background-size: cover; 
-background-opacity: 0.1; 
-opacity: 1; 
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-opacity: 0.1;
+  opacity: 1;
 }
 
-.input-empty{
-  border:3px solid red !important
+.input-empty {
+  border: 3px solid red !important;
 }
 
-.label-login, .form-label, .white{
-    color:#fff
+.label-login,
+.form-label,
+.white {
+  color: #fff;
 }
 
-.input-login{
-    margin-bottom:20px
+.input-login {
+  margin-bottom: 20px;
 }
 
-.radio-input{
-  font-size:18px
+.radio-input {
+  font-size: 18px;
 }
 
-.form-login, .form-signup{
-    margin-top:30px;
-    background-color:#0d6efd6b;
-    padding:50px;
-    width: 436px;
-    box-shadow: 0 0 30px #000;
-    border-radius: 30px;
-
+.form-login,
+.form-signup {
+  margin-top: 30px;
+  background-color: #0d6efd6b;
+  padding: 50px;
+  width: 436px;
+  box-shadow: 0 0 30px #000;
+  border-radius: 30px;
 }
-.form-signup{
-    background-color:#1987547a;
+.form-signup {
+  background-color: #1987547a;
 }
-
 
 .login-div {
   margin: 0 144px 0 0;
-  width:422px
+  width: 422px;
 }
-.btn-signup{
-  float:right
+.btn-signup {
+  float: right;
 }
-.btn-login{
-    background-color:#0d6dfdb0;
-    border:#0d6dfdb0
+.btn-login {
+  background-color: #0d6dfdb0;
+  border: #0d6dfdb0;
 }
 
 button.btn.btn-primary.btn-lg:disabled {
@@ -252,17 +261,18 @@ button.btn.btn-primary.btn-lg:disabled {
   margin-bottom: 20px;
   color: #000;
   font-weight: 600;
-  box-shadow: 0px 3px 6px #000
+  box-shadow: 0px 3px 6px #000;
 }
-.btn-float-right{
-  float:right;
+.btn-float-right {
+  float: right;
 }
 
 .label-upload:hover {
-	background-color: #123573;
   box-shadow: 0px 0px 0px #000;
-  cursor:pointer;
-  color:#fff
+  cursor: pointer;
+  color: #180d46;
+  font-size: 22px;
+  width: 50%;
 }
 
 a.label-upload {
@@ -284,23 +294,22 @@ p.loading-text {
   color: #fff;
   margin-top: 10px;
   font-size: 14px;
-  margin-left:7px
+  margin-left: 7px;
 }
 
 .label-upload:active {
-	background-color: #123573;
-  box-shadow: 0px 0px 0px #000
+  box-shadow: 0px 0px 0px #000;
 }
 
 .input-upload {
-	border: 0;
-    clip: rect(1px, 1px, 1px, 1px);
-    height: 1px; 
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
+  border: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
 }
 
 .send-ok {
@@ -308,7 +317,7 @@ p.loading-text {
   color: #fff;
   font-weight: 100;
   font-size: 20px;
-  box-shadow: 0px 0px 0px #000
+  box-shadow: 0px 0px 0px #000;
 }
 
 .custom-alert {
@@ -319,22 +328,22 @@ p.loading-text {
   transition: top 0.5s ease-in-out;
 }
 
-.alert2{
-  top:120px
+.alert2 {
+  top: 120px;
 }
 
-.message{
-  font-size:18px
+.message {
+  font-size: 18px;
 }
 
 .css-13cymwt-control {
   height: 58px;
-  background-color:#f0f5fa;
-  border-radius:6px
+  background-color: #f0f5fa;
+  border-radius: 6px;
 }
 
 textarea#reason_treatment_text {
-  background-color:#f0f5fa;
+  background-color: #f0f5fa;
 }
 
 .alert2 > .custom-alert {
@@ -345,23 +354,22 @@ textarea#reason_treatment_text {
   top: 270px;
 }
 
-.warning-button-modal{
-  font-weight:bold;
-  margin-left:10px
+.warning-button-modal {
+  font-weight: bold;
+  margin-left: 10px;
 }
 
-.button-modal{
-  margin-top:20px
+.button-modal {
+  margin-top: 20px;
 }
 
-textarea{
-  height:100px
+textarea {
+  height: 100px;
 }
 
 .icon-menu-item {
   float: left;
-  margin:0 10px
-
+  margin: 0 10px;
 }
 
 .btn-contact {
@@ -372,9 +380,9 @@ textarea{
   font-size: 20px;
 }
 
-.text-contact{
+.text-contact {
   padding-bottom: 30px;
-  font-size:22px
+  font-size: 22px;
 }
 
 .lost-pass {
@@ -382,4 +390,85 @@ textarea{
   text-decoration: none;
   margin-bottom: 30px;
   cursor: pointer;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+.animated-icon {
+  mix-blend-mode: multiply;
+}
+
+@media screen and (max-width: 600px) {
+  .form-container {
+    padding: 5%;
+    margin: 0;
+  }
+  .item-selected {
+    font-size: 18px;
+    text-align: left;
+    padding-left: 10px;
+  }
+
+  .topMenuMobile {
+    margin-top: 30px;
+  }
+
+  .disabled {
+    text-align: left;
+    font-size: 18px;
+    background: none;
+    padding-left:10px;
+    opacity:.5;
+    text-decoration: none;
+  }
+
+  .icon-menu-item {
+    margin: 0;
+  }
+  .line-through {
+    text-align: left;
+    color: #ccc;
+    font-size: 18px;
+    background-color: #7b7b7b;
+    padding-left:10px
+  }
+  .icon-menu-item {
+    margin-right: 10px;
+}
+
+.topMenuMobile >  div > a > li {
+    height: 35px !important;
+    padding-top: 3px;
+}
+a{text-decoration: none;}
+.form-label {
+  width: 90%;
+  font-size:18px;
+  line-height:22px;
+  padding:5px;
+  text-wrap: pretty;
+}
+
 }

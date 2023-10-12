@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
+import React, { useState } from "react";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 
 const PopupComponent = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -8,9 +8,7 @@ const PopupComponent = () => {
   const handleClose = () => setShowPopup(false);
   const handleShow = () => setShowPopup(true);
 
-  const handleChoice = (choice) => {
-    // Faça algo com a escolha do usuário aqui
-    console.log(`Usuário escolheu: ${choice}`);
+  const handleChoice = () => {
     handleClose();
   };
 
@@ -26,10 +24,10 @@ const PopupComponent = () => {
         </Modal.Header>
         <Modal.Body>
           <p>Escolha uma das opções abaixo:</p>
-          <Button variant="secondary" onClick={() => handleChoice('Opção 1')}>
+          <Button variant="secondary" onClick={() => handleChoice("Opção 1")}>
             Opção 1
           </Button>
-          <Button variant="primary" onClick={() => handleChoice('Opção 2')}>
+          <Button variant="primary" onClick={() => handleChoice("Opção 2")}>
             Opção 2
           </Button>
         </Modal.Body>

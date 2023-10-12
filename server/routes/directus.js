@@ -223,6 +223,25 @@ router.post("/files", async (req, res) => {
   }
 });
 
+router.post("/upload-files", async (req, res) => {
+  const token = req.headers.authorization;
+console.log(req.body)
+
+  const verToken = await directusRequest("/items/Users_Api?filter[token][_eq]=" + token + "", "", "GET");
+  if (verToken) {
+    const formData = {
+      Users_id: req.body.userId,
+      directus_files_id: req.body.fileId
+    }
+    const userData = await directusRequest("/items/Users_files", formData, "POST");
+    res.send(userData);
+    res.status(200);
+  } else {
+    res.status(401).json({ mensagem: "Credenciais inválidas" });
+    res.status(401);
+  }
+});
+
 router.post("/create-folder", async (req, res) => {
   const token = req.headers.authorization;
 

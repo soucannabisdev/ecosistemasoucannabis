@@ -4,45 +4,42 @@ import { Formik, Form, Field } from 'formik';
 const GenderSelect = ({ handleChangeInput }) => {
   const [hiddenInput, setHiddenInput] = useState(false);
 
+  function handleChange(e){
+    if (e.target.value === 'outro') {
+      setHiddenInput(true);
+    } else {
+      setHiddenInput(false);
+    }
+
+  }
+
   return (
-    <Formik
-      initialValues={{ gender: '', other_gender: '' }}
-      onSubmit={(values) => {
-      }}
-    >
-      {({ handleChange }) => (
-        <Form>
-          <Field
-            className="form-control" 
+
+        <form>
+          <select
+            className="form-input" 
             as="select"
             id="gender"
             name="gender"
             onChange={(e) => {
               handleChange(e);
               handleChangeInput(e);
-              if (e.target.value === 'outro') {
-                setHiddenInput(true);
-              } else {
-                setHiddenInput(false);
-              }
             }}
           >
             <option value="">Selecione...</option>
             <option value="masculino">Masculino</option>
             <option value="feminino">Feminino</option>
             <option value="outro">Outro Gênero</option>
-          </Field>
+          </select>
+          <br></br>
           <br></br>
           {hiddenInput && (
-            <Field  className="form-control" type="text" name="gender" placeholder="Digite outro gênero"  
+            <input   className="form-input" type="text" name="gender" placeholder="Digite o gênero que se identifica"  
             onChange={(e) => {
-                handleChange(e);
                 handleChangeInput(e);
               }}/>
           )}
-        </Form>
-      )}
-    </Formik>
+        </form>
   );
 };
 
