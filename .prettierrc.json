@@ -1,5 +1,5 @@
 {
-  "printWidth": 1000,
+  "printWidth": 999,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "overrides": [
