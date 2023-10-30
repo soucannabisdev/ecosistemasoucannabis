@@ -29,7 +29,7 @@ const AssociateSignUp = () => {
       setUser(userData);
     })();
 
-    const timer = setTimeout(() => {}, 3000);
+    const timer = setTimeout(() => { }, 3000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -101,9 +101,9 @@ const AssociateSignUp = () => {
     handleClose();
   };
 
-  const validateCPFAssociate = value => {};
+  const validateCPFAssociate = value => { };
 
-  const validateRGAssociate = value => {};
+  const validateRGAssociate = value => { };
 
   const responsable_himself = event => {
     var responsableType = event.target.value;
@@ -243,7 +243,7 @@ const AssociateSignUp = () => {
     if (emptyFields == "" || emptyFields == [] || emptyFields[0] == "complement") {
       setFieldsError(false);
       await apiRequest("/api/directus/update", { userId: user.id, formData: formData }, "POST")
-        .then(response => {})
+        .then(response => { })
         .catch(error => {
           console.error(error);
         });
@@ -360,6 +360,7 @@ const AssociateSignUp = () => {
               Estado civil
             </label>
             <select class="form-input input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.marital_status} type="text" id="marital_status" name="marital_status">
+              <option value="">Selecione...</option>
               <option value="Solteiro">Solteiro(a)</option>
               <option value="Casado">Casado(a)</option>
               <option value="Viúvo">Viúvo(a)</option>

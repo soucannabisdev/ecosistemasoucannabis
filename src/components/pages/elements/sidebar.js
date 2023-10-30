@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import User from "../../../modules/User";
 import CheckIcon from "./checkIcon";
 import Contact from "../modals/contact";
+import Cart from "./cart";
 
 const Sidebar = () => {
   const [user, setUser] = useState({});
@@ -75,7 +76,6 @@ const Sidebar = () => {
                 </Link>
               </div>
             )}
-
             {user.associate_status === 3 && (
               <div>
                 <Link>
@@ -104,7 +104,6 @@ const Sidebar = () => {
                 </Link>
               </div>
             )}
-
             {user.associate_status === 4 && (
               <div>
                 <Link>
@@ -133,7 +132,6 @@ const Sidebar = () => {
                 </Link>
               </div>
             )}
-
             {user.associate_status === 5 && (
               <div>
                 <Link>
@@ -162,7 +160,6 @@ const Sidebar = () => {
                 </Link>
               </div>
             )}
-
             {user.associate_status === 6 && (
               <div>
                 <Link>
@@ -233,10 +230,11 @@ const Sidebar = () => {
             )}
           </ul>
         </div>
+        <Cart />
         <br></br>
         <br></br>
         <br></br>
-        <Contact />
+        {user.associate_status <= 7 && <Contact />}
       </div>
     </div>
   );

@@ -3,8 +3,6 @@ const cors = require("cors")
 const bodyParser = require("body-parser")
 const fileUpload = require('express-fileupload');
 const dotenv = require('dotenv');
-const http = require('http');
-const { Server } = require('ws');
 dotenv.config();
 
 
@@ -19,12 +17,12 @@ app.use(cors({
 
 const direcuts = require('./routes/directus')
 const chatwoot = require('./routes/chatwoot')
-const zapsign = require('./routes/zapsign')
+const docusign = require('./routes/docusign')
 const email = require('./routes/email')
 
 app.use('/api/directus', direcuts); 
 app.use('/api/chatwoot', chatwoot)
-app.use('/api/zapsign', zapsign)
+app.use('/api/docusign', docusign)
 app.use('/api/email', email)
 
 app.listen(process.env.REACT_APP_SERVER_PORT, () => {

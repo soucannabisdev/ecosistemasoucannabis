@@ -5,6 +5,7 @@ import EmailInput from '../../forms/EmailInput'
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
 import Modal from 'react-bootstrap/Modal';
+import PhoneInputs from "../../forms/PhoneNumberInput";
 
 const Contact = ({ type, redirect }) => {
 
@@ -52,23 +53,14 @@ const Contact = ({ type, redirect }) => {
 
   const contact = async (event) => {
     event.preventDefault();
-    var phoneNumber = formData.phone
 
-    if (phoneNumber) {
-      if (!phoneNumber.includes("+55")) {
-        handleShow(true)
-      }
-
-      var phone = phoneNumber.split("+")
-      formData.phoneSoma = phoneNumber
-
-      formData.phone = phone[1]
-    }
+    console.log(formData)
 
     function isEmpty(formData) {
       for (let key in formData) {
         if (formData.hasOwnProperty(key)) {
           if (formData[key] === null || formData[key] === undefined || formData[key] === "") {
+            console.log(key)
             return true;
           }
         }
@@ -94,11 +86,13 @@ const Contact = ({ type, redirect }) => {
           console.error(error);
         });
 
-
+        console.log(formData)
+        const phone = "+"+formData.phone
+        console.log(phone)
       await apiRequest("/api/chatwoot/send-message-chat", JSON.stringify({
         "email": formData.email,
         "name": formData.name,
-        "phone_number": formData.phoneSoma,
+        "phone_number": phone,
         "message": formData.message
       }), "POST")
         .catch(error => {
@@ -106,10 +100,7 @@ const Contact = ({ type, redirect }) => {
         });
     }
 
-    await apiRequest("/api/directus/update", { "userId": user.id, "formData": { associate_status: 6 } }, "POST")
-
     setSumbit(false)
-    window.location.assign(redirect)
   }
 
   const handleChangeInputPhone = (event) => {
@@ -190,12 +181,8 @@ const Contact = ({ type, redirect }) => {
               </div>
               <label>Telefone:</label>
               <div className="mb-3">
-                <PhoneInput
-                  className="form-control"
-                  placeholder="<-- Selecione o país | (DDD)Telefone"
-                  value={formData.phone}
-                  onChange={handleChangeInputPhone}
-                  name="phone" />
+              <PhoneInputs  value={formData.phone} onChange={handleChangeInputPhone} onBlur={handleChangeInputPhone} handleChangeInput={handleChangeInputPhone} name="phone" />
+                
               </div>
               {type != "appointment" && (
                 <label>Mensagem:</label>

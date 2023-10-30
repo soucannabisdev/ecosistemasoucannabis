@@ -21,12 +21,11 @@ const FileUploadComponent = () => {
 
   var userData = {};
 
-  if (process.env.REACT_APP_ZAPSIGN == "true") {
-    setTimeout(async () => {
-      userData = await User();
-      setUser(userData);
-    }, 4000);
-  }
+  setTimeout(async () => {
+    userData = await User();
+    setUser(userData);
+  }, 4000);
+
 
   if (user.associate_status == 4) {
     window.location.assign("/consulta");
@@ -63,7 +62,9 @@ const FileUploadComponent = () => {
       } else {
         setVisible(false);
       }
+
     })();
+
   }, []);
 
   const handleFile1Change = async event => {
@@ -106,7 +107,7 @@ const FileUploadComponent = () => {
       });
 
     await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST")
-      .then(response => {})
+      .then(response => { })
       .catch(error => {
         console.error(error);
       });
@@ -131,31 +132,30 @@ const FileUploadComponent = () => {
 
     var fileId = "";
 
-    await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
-      .then(response => {
-        fileId = response.id;
-        return fileId;
-      })
-      .catch(error => {
-        console.error(error);
-      });
-
-    const bodyRequest = { proof_of_address: fileId };
-    await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST")
-      .then(response => {})
-      .catch(error => {
-        console.error(error);
-      });
-
+      await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
+        .then(response => {
+          fileId = response.id;
+          return fileId;
+        })
+        .catch(error => {
+          console.error(error);
+        });
+  
+       const bodyRequest = { proof_of_address: fileId };
+      await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST")
+        .then(response => {})
+        .catch(error => {
+          console.error(error);
+        });
+  
     await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST")
-      .then(response => {})
-      .catch(error => {
-        console.error(error);
-      });
+        .then(response => {})
+        .catch(error => {
+          console.error(error);
+        });
 
-    if (process.env.REACT_APP_ZAPSIGN == "true") {
-      zapsign();
-    }
+    docusign();
+
     setTimeout(() => {
       setProof_of_address(true);
       setIsLoadingB(false);
@@ -189,13 +189,13 @@ const FileUploadComponent = () => {
 
     const bodyRequest = { rg_patient_proof: fileId };
     await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST")
-      .then(response => {})
+      .then(response => { })
       .catch(error => {
         console.error(error);
       });
 
     await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST")
-      .then(response => {})
+      .then(response => { })
       .catch(error => {
         console.error(error);
       });
@@ -231,13 +231,13 @@ const FileUploadComponent = () => {
 
     const bodyRequest = { contract: fileId, associate_status: 4 };
     await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST")
-      .then(response => {})
+      .then(response => { })
       .catch(error => {
         console.error(error);
       });
 
     await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST")
-      .then(response => {})
+      .then(response => { })
       .catch(error => {
         console.error(error);
       });
@@ -248,11 +248,8 @@ const FileUploadComponent = () => {
     window.location.assign("/consulta");
   };
 
-  const zapsign = async () => {
-    var fields = ["name_associate", "lastname_associate", "nacionality", "marital_status", "rg_associate", "cpf_associate", "emiiter_rg_associate", "email", "street", "number", "neighborhood", "city", "cep", "date"];
-
+  const docusign = async () => {
     const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-
     const currentDate = new Date();
     const day = currentDate.getDate();
     const month = currentDate.getMonth();
@@ -260,21 +257,83 @@ const FileUploadComponent = () => {
     const monthName = months[month];
     const formattedDate = `${day} de ${monthName} de ${year}`;
 
-    user.date = formattedDate;
+    const fullname = user.name_associate + " " + user.lastname_associate;
 
-    var userData = [];
-    const templateInfo = await apiRequest("/api/zapsign/template-info", "", "GET");
+    var userData = [
+      {
+        "name": "cardid",
+        "default_value": user.id,
+        "readonly": true
+      },
+      {
+        "name": "Nome do Responsavel",
+        "default_value": fullname,
+        "readonly": true
+      },
+      {
+        "name": "Estado Civil",
+        "default_value": user.marital_status,
+        "readonly": true
+      },
+      {
+        "name": "Nacionalidade",
+        "default_value": user.nationality,
+        "readonly": true
+      },
+      {
+        "name": "CPF",
+        "default_value": user.cpf_associate,
+        "readonly": true
+      },
+      {
+        "name": "RG",
+        "default_value": user.rg_associate,
+        "readonly": true
+      },
+      {
+        "name": "Orgao",
+        "default_value": user.emiiter_rg_associate,
+        "readonly": true
+      },
+      {
+        "name": "Rua",
+        "default_value": user.street,
+        "readonly": true
+      },
+      {
+        "name": "Numero",
+        "default_value": user.number,
+        "readonly": true
+      },
+      {
+        "name": "Bairro",
+        "default_value": user.neighborhood,
+        "readonly": true
+      },
+      {
+        "name": "Cidade",
+        "default_value": user.city,
+        "readonly": true
+      },
+      {
+        "name": "Estado",
+        "default_value": user.state,
+        "readonly": true
+      },
+      {
+        "name": "CEP",
+        "default_value": user.cep,
+        "readonly": true
+      },
+      {
+        "name": "Data",
+        "default_value": formattedDate,
+        "readonly": true
+      }
+    ];
 
-    var inputs = templateInfo.inputs;
-    inputs.forEach(async function (input, i) {
-      userData.push({
-        de: input.variable,
-        para: user[fields[i]],
-      });
-    });
-
-    const createContract = await apiRequest("/api/zapsign/create-contract", { userData: userData, cod_id: user.id }, "POST");
-    setGenerateContract(createContract.signers[0].sign_url);
+    const createContract = await apiRequest("/api/docusign/create-contract", userData, "POST");
+    setGenerateContract(process.env.REACT_APP_DOCUSIGN_URL + "/s/" + createContract[0].slug);
   };
 
   return (
@@ -378,7 +437,7 @@ const FileUploadComponent = () => {
           </div>
         )}
 
-        <a className="label-upload" target="_blank" href={generateContract} hidden={!proof_of_address || process.env.REACT_APP_ZAPSIGN == "false"}>
+        <a className="label-upload " target="_blank" href={generateContract} hidden={!proof_of_address || process.env.REACT_APP_ZAPSIGN == "false"}>
           Assinar Termo de Responsabilidade
         </a>
       </div>

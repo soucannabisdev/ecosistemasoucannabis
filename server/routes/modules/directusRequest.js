@@ -1,5 +1,5 @@
-const axios = require('axios');
-const dotenv = require('dotenv');
+const axios = require("axios");
+const dotenv = require("dotenv");
 dotenv.config();
 
 async function directusRequest(query, data, method) {
@@ -8,13 +8,13 @@ async function directusRequest(query, data, method) {
   let config = {
     method: method,
     headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Headers': 'Content-Type,Authorization,Access-Control-Allow-Origin,Access-Control-Allow-Headers',
-      'Authorization': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU2ZjAzMTVmLTc5ZWEtNGQ0ZS04Mzg0LTI3NTMxZTNmNDU2MiIsInJvbGUiOiI3ZWE3NzA0Mi1hZDhlLTQ5YTgtOTg3YS0zMzRkYThhYTI2MjEiLCJhcHBfYWNjZXNzIjp0cnVlLCJhZG1pbl9hY2Nlc3MiOnRydWUsImlhdCI6MTY4NjcwODM1MCwiZXhwIjoxNjg2NzA5MjUwLCJpc3MiOiJkaXJlY3R1cyJ9.Yzwml_u-KZr2OAd_pmyQkoMkuItE2WyczDuuo9wvDnc"
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "Content-Type,Authorization,Access-Control-Allow-Origin,Access-Control-Allow-Headers",
+      Authorization: process.env.REACT_APP_DIRECTUS_API_TOKEN,
     },
     maxBodyLength: Infinity,
     url: process.env.REACT_APP_DIRECTUS_API_URL + query,
-    data: data
+    data: data,
   };
 
   try {
@@ -24,10 +24,13 @@ async function directusRequest(query, data, method) {
     } else {
       requestData = response.data.data[0];
     }
-    // delete requestData.id; 
+
+    if (query == "/items/Products") {
+      requestData = response.data.data;
+    }
     return requestData;
   } catch (error) {
-    console.log("Erro")
+    console.log("Erro");
     console.log(error.response.data.errors);
   }
 }

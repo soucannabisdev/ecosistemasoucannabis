@@ -1,4 +1,3 @@
-import axios from "axios";
 import apiRequest from "./apiRequest";
 
 const userCode = localStorage.getItem("user_code");

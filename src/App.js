@@ -4,6 +4,7 @@ import LoginForm from "./components/pages/loginForm";
 import ApproveAssociate from "./components/pages/approveAssociate";
 import Contact from "./components/pages/first-contact";
 import Menu from "./components/pages/elements/menu";
+import MenuMobile from "./components/pages/elements/menu-mobile";
 import AssociateSignup from "./components/pages/associate-signup";
 import PatientSignup from "./components/pages/patient-signup";
 import Sidebar from "./components/pages/elements/sidebar";
@@ -17,7 +18,9 @@ import PrescriptionAppointment from "./components/pages/prescription-appointment
 import Welcome from "./components/pages/welcome";
 import LostPass from "./components/pages/lost-password";
 import User from "./modules/User";
+import Products from "./components/pages/shop/products";
 import "./styles/general.css";
+import { Dropdown } from 'react-bootstrap';
 
 function App() {
   const [user, setUser] = useState(false);
@@ -73,29 +76,58 @@ function App() {
         </div>
       )}
       {!user && (
-        <div class="container vertical-center" hidden={hiddenLogin}>
-          <div class="text-center login-div">
-            <img
-              src="/logo.svg"
-              width="30%
-            "
-            />
-            <h1 class="sub-title">Ecosistema SouCannabis</h1>
-            <div class="row">
-              <Link to="/login" class="btn btn-lg btn-primary btn-login" hidden={hiddenButtons}>
-                Login
-              </Link>
-              <Link to="/cadastro" class="btn btn-lg btn-success" hidden={hiddenButtons}>
-                Criar minha conta
-              </Link>
+        <div>
+          {window.innerWidth > 600 && (
+            <div class="container vertical-center" hidden={hiddenLogin}>
+              <div class="text-center login-div">
+                <img
+                  src="/logo.svg"
+                  width="30%"
+                />
+                <h1 class="sub-title">Ecosistema SouCannabis</h1>
+                <div class="row">
+                  <Link to="/login" class="btn btn-lg btn-primary btn-login" hidden={hiddenButtons}>
+                    Login
+                  </Link>
+                  <Link to="/cadastro" class="btn btn-lg btn-success" hidden={hiddenButtons}>
+                    Criar minha conta
+                  </Link>
+                </div>
+              </div>
+              <Routes>
+                <Route path="/login" element={<LoginForm />} />
+                <Route path="/cadastro" element={<Signup />} />
+              </Routes>
             </div>
-          </div>
-          <Routes>
-            <Route path="/login" element={<LoginForm />} />
-            <Route path="/cadastro" element={<Signup />} />
-          </Routes>
+          )}
+
+          {window.innerWidth < 600 && (
+             <div class="container mobile-login" hidden={hiddenLogin}>
+             <div class="text-center">
+               <img
+                 src="/logo.svg"
+                 width="30%"
+               />
+               <h1 class="sub-title">Ecosistema SouCannabis</h1>
+               <div class="row">
+                 <Link to="/login" class="btn btn-lg btn-primary btn-login" hidden={hiddenButtons}>
+                   Login
+                 </Link>
+                 <Link to="/cadastro" class="btn btn-lg btn-success" hidden={hiddenButtons}>
+                   Criar minha conta
+                 </Link>
+               </div>
+             </div>
+             <Routes>
+               <Route path="/login" element={<LoginForm />} />
+               <Route path="/cadastro" element={<Signup />} />
+             </Routes>
+           </div>
+          )}
         </div>
+
       )}
+
 
       {user && (
         <div>
@@ -117,15 +149,16 @@ function App() {
                   <Route path="/documentos" element={<UploadComponent />} />
                   <Route path="/consulta" element={<MedicalAppointment />} />
                   <Route path="/receita-medica" element={<Prescription />} />
-                  <Route path="/receita-medica-agendamento" element={<PrescriptionAppointment />} />
-                  <Route path="/cadastro" element={<ApproveAssociate />} />
+                  <Route path="/receita-medica-agendamento" element={<PrescriptionAppointment />} /> <Route path="/cadastro" element={<ApproveAssociate />} />
                 </Routes>
               </div>
             </div>
           )}
 
           {window.innerWidth < 600 && (
+
             <div class="wrapper">
+              <MenuMobile />
               <TopBarMobile />
               <div class="">
                 <Routes>
@@ -145,6 +178,9 @@ function App() {
           )}
         </div>
       )}
+      <Routes>
+        <Route path="/loja" element={<Products />} />
+      </Routes>
     </Router>
   );
 }

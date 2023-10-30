@@ -54,7 +54,6 @@ router.post("/user", async (req, res) => {
 
 router.post("/user-appointment", async (req, res) => {
   const token = req.headers.authorization;
-  console.log(req.body);
 
   const verToken = await directusRequest("/items/Users_Api?filter[token][_eq]=" + token + "", "", "GET");
   if (verToken) {
@@ -111,7 +110,7 @@ router.post("/user-appointment", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  console.log("/login");
+
   const token = req.headers.authorization;
 
   const verToken = await directusRequest("/items/Users_Api?filter[token][_eq]=" + token + "", "", "GET");
@@ -120,7 +119,6 @@ router.post("/login", async (req, res) => {
 
     var passwordMatch = false;
 
-    console.log(req.body);
 
     if (userData) {
       var pass = req.body.pass;
@@ -131,7 +129,6 @@ router.post("/login", async (req, res) => {
       }
     }
 
-    console.log(passwordMatch);
 
     if (userData) {
       res.send(userData);
@@ -141,12 +138,22 @@ router.post("/login", async (req, res) => {
     res.status(200);
   } else {
     res.status(401).json({ mensagem: "Credenciais inválidas" });
-    console.log("Credenciais inválidas");
   }
 });
 
+router.post("/search", async (req, res) => {
+  const token = req.headers.authorization;
+
+  const verToken = await directusRequest("/items/Users_Api?filter[token][_eq]=" + token + "", "", "GET");
+  if (verToken) {
+    const userData = await directusRequest(req.body.query, "", "GET");
+    res.send(userData);
+  }
+
+  res.status(200).end();
+});
+
 router.post("/create-user", async (req, res) => {
-  console.log("/create-user");
 
   const token = req.headers.authorization;
   var formData = {};
@@ -170,8 +177,6 @@ router.post("/create-user", async (req, res) => {
 
     const user = await directusRequest("/items/Users?filter[email_account][_eq]=" + formData.email_account + "", "", "GET");
 
-    console.log(user);
-
     res.send(user);
     res.status(200);
   } else {
@@ -190,8 +195,6 @@ router.post("/update", async (req, res) => {
 
     var userPass = encrypt(pass, secretKey);
     formData.pass_account = userPass;
-
-    console.log(userPass);
   }
 
   const verToken = await directusRequest("/items/Users_Api?filter[token][_eq]=" + token + "", "", "GET");
@@ -225,14 +228,13 @@ router.post("/files", async (req, res) => {
 
 router.post("/upload-files", async (req, res) => {
   const token = req.headers.authorization;
-console.log(req.body)
 
   const verToken = await directusRequest("/items/Users_Api?filter[token][_eq]=" + token + "", "", "GET");
   if (verToken) {
     const formData = {
       Users_id: req.body.userId,
-      directus_files_id: req.body.fileId
-    }
+      directus_files_id: req.body.fileId,
+    };
     const userData = await directusRequest("/items/Users_files", formData, "POST");
     res.send(userData);
     res.status(200);
@@ -244,8 +246,6 @@ console.log(req.body)
 
 router.post("/create-folder", async (req, res) => {
   const token = req.headers.authorization;
-
-  console.log(req.body);
 
   const verToken = await directusRequest("/items/Users_Api?filter[token][_eq]=" + token + "", "", "GET");
   if (verToken) {
@@ -263,10 +263,23 @@ router.post("/webhook-update", async (req, res) => {
 
   if (data.payload.status == "associado") {
     const userData = await directusRequest("/items/Users?filter[id][_eq]=" + data.keys[0] + "", "", "GET");
-    console.log(userData);
 
     await directusRequest("/items/Users/" + data.keys[0], { associate_status: 8 }, "PATCH");
     sendEmail(userData.email_account, "Você foi aprovado como associdado", "Olá " + userData.name_associate + ", seu cadastro como associado da souCannabis foi aprovado, acesse essa página para acessar sua conta.");
+  }
+});
+
+router.get("/products", async (req, res) => {
+  const token = req.headers.authorization;
+  const verToken = await directusRequest("/items/Users_Api?filter[token][_eq]=" + token + "", "", "GET");
+
+  if (verToken) {
+    const userData = await directusRequest("/items/Products", "", "GET");
+    res.send(userData);
+    res.status(200);
+  } else {
+    res.status(401).json({ mensagem: "Credenciais inválidas" });
+    res.status(401);
   }
 });
 

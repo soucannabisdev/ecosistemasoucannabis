@@ -30,7 +30,7 @@ const AssociateSignUp = () => {
       setUser(userData);
     })();
 
-    const timer = setTimeout(() => {}, 3000);
+    const timer = setTimeout(() => { }, 3000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -81,47 +81,10 @@ const AssociateSignUp = () => {
     });
   };
 
-  const handleChandePhoneBlur = event => {
-    const validatePhone = formData.mobile_number;
-    if (event.target.value && !validatePhone.includes("+55")) {
-      setShowPopup(true);
-    }
-  };
-
-  const handleChangeInputPhone = event => {
-    setFormData({
-      ...formData,
-      ["mobile_number"]: event,
-    });
-    setInputError(false);
-  };
   const handleChoice = choice => {
     handleClose();
   };
 
-  const validateCPFAssociate = value => {
-    if (!value) {
-      return "O CPF é obrigatório";
-    }
-    const cleanedValue = value.replace(/[^\d]/g, "");
-    if (cleanedValue.length !== 11) {
-      return "O CPF deve ter 11 dígitos";
-    }
-    setFormData({ ...formData, cpf_associate: value });
-    return undefined;
-  };
-
-  const validateRGAssociate = value => {
-    if (!value) {
-      return "O RG é obrigatório";
-    }
-    const cleanedValue = value.replace(/[^\d]/g, "");
-    if (cleanedValue.length !== 7) {
-      return "O RG deve ter 7 dígitos";
-    }
-    setFormData({ ...formData, rg_associate: value });
-    return undefined;
-  };
 
   const statesData = [
     { value: "AC", label: "Acre" },
@@ -248,10 +211,14 @@ const AssociateSignUp = () => {
       formData.responsable_code = codeUser;
 
       await apiRequest("/api/directus/create-user", formData, "POST")
-        .then(response => {})
-        .catch(error => {
-          console.error(error);
-        });
+
+      const searchUser = await apiRequest("/api/directus/search", { query: "/items/Users?filter[responsable_code][_eq]=" + codeUser }, "POST")
+
+   await apiRequest("/api/directus/update", { userId: user.id, formData: { responsible_for: searchUser.user_code } }, "POST")
+      .then(response => { })
+      .catch(error => {
+        console.error(error);
+      });
 
       window.location.assign("/documentos");
     }
@@ -345,6 +312,7 @@ const AssociateSignUp = () => {
               Estado civil
             </label>
             <select class="form-input input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.marital_status} type="text" id="marital_status" name="marital_status">
+              <option value="">Selecione...</option>
               <option value="Solteiro">Solteiro(a)</option>
               <option value="Casado">Casado(a)</option>
               <option value="Viúvo">Viúvo(a)</option>

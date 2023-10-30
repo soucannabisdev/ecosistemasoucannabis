@@ -432,15 +432,16 @@ textarea {
   }
 
   .topMenuMobile {
-    margin-top: 30px;
+    margin-top: 50px;
+    margin-bottom: 40px;
   }
 
   .disabled {
     text-align: left;
     font-size: 18px;
     background: none;
-    padding-left:10px;
-    opacity:.5;
+    padding-left: 10px;
+    opacity: 0.5;
     text-decoration: none;
   }
 
@@ -452,23 +453,128 @@ textarea {
     color: #ccc;
     font-size: 18px;
     background-color: #7b7b7b;
-    padding-left:10px
+    padding-left: 10px;
   }
   .icon-menu-item {
     margin-right: 10px;
-}
+  }
 
-.topMenuMobile >  div > a > li {
+  .topMenuMobile > div > a > li {
     height: 35px !important;
     padding-top: 3px;
-}
-a{text-decoration: none;}
-.form-label {
-  width: 90%;
-  font-size:18px;
-  line-height:22px;
-  padding:5px;
-  text-wrap: pretty;
+  }
+  a {
+    text-decoration: none;
+  }
+  .form-label {
+    width: 90%;
+    font-size: 18px;
+    line-height: 22px;
+    padding: 5px;
+    text-wrap: pretty;
+  }
+  span.nav-link {
+    font-size: 10px;
+    float: right;
+  }
+
+  button#dropdown-basic {
+    font-size: 10px;
+    margin-right: 10px;
+  }
+  .navbar {
+    padding-left: 15px;
+  }
+
+  .logo-load {
+    min-height: 100vh; /* 100% da altura da viewport */
+    display: flex;
+    justify-content: left;
+    align-items: left;
+  }
+
+  p.loading-text {
+    color: #fff;
+    margin-top: 10px;
+    font-size: 14px;
+    margin-left: 7px;
+  }
+  .container.vertical-center {
+    justify-content: left;
+  }
+  .vertical-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin-left: 80px;
+  }
+  .mobile-login {
+    padding: 40px !important;
+  }
+
+  .form-login,
+  .form-signup {
+    margin-top: 30px;
+    background-color: #0d6efd6b;
+    padding: 20px;
+    width: 436px;
+    box-shadow: 0 0 30px #000;
+    border-radius: 30px;
+  }
+  .form-signup {
+    background-color: #146c438f;
+  }
+  .lost-pass,
+  .btn-signup {
+    font-size: 12px;
+  }
+  button.btn.btn-success.btn-lg {
+    margin-left: 18%;
+    font-size: 15px;
+  }
+  h1 {
+    font-size: 22px;
+  }
+  h1.sub-title {
+    font-size: 20px;
+  }
+  .custom-alert {
+    bottom: 700px;
+    top: auto;
+    right: 347px;
 }
 
+.alert2 > .custom-alert {
+    top: auto;
+    bottom: 500px;
+}
+
+.alert3 > .custom-alert {
+    top: auto;
+    bottom: 600px;
+}
+.label-upload{
+  padding-top:15px
+}
+.label-upload:hover, .label-upload:active {
+  display: block;
+  width: 90%;
+  height: 55px;
+  padding: 0 auto;
+  background-color: #e3bf0df2;
+  border-radius: 2px;
+  font-size: 1em;
+  line-height: 2.5em;
+  text-align: center;
+  font-size: 18px;
+  color: #000;
+  font-weight: 600;
+  box-shadow: 0px 3px 6px #000;
+  padding-top:5px
+}
+a.label-upload {
+  width: 90%;
+  padding: 0;
+}
 }
