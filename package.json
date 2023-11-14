@@ -40,8 +40,8 @@
   },
   "scripts": {
     "server": "nodemon server/server.js",
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "start": "npm start",
+    "build": "npm run build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
