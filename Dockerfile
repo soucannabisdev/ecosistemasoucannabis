@@ -5,10 +5,10 @@ FROM node:18
 WORKDIR /app
 
 # Copia os arquivos necessários para o contêiner
-COPY package*.json ./
-COPY public/ ./public
-COPY src/ ./src
-COPY server/ ./server
+COPY package*.json ./app
+COPY public/ ./app/public
+COPY src/ ./app/src
+COPY server/ ./app/server
 
 # Instala as dependências do projeto
 RUN npm install
