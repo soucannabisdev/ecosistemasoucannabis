@@ -1,19 +1,23 @@
-# Use a imagem oficial do Node.js 18
+# Use uma imagem base com Node.js
 FROM node:18
 
-# Define o diretório de trabalho no contêiner como o diretório atual do Dockerfile
+# Crie e defina o diretório de trabalho
 WORKDIR /app
 
-# Copia os arquivos necessários para o contêiner
+# Copie o package.json e o package-lock.json para o diretório de trabalho
 COPY package*.json ./
-COPY public/ ./
-COPY src/ ./
-COPY server/ ./
 
-# Instala as dependências do projeto
+# Instale as dependências
 RUN npm install
-# Expõe a porta 3000 (ou a porta que o aplicativo React está configurado para usar)
-EXPOSE 400
 
-# Comando para iniciar o aplicativo quando o contêiner for iniciado
+# Copie os arquivos do aplicativo para o diretório de trabalho
+COPY . .
+
+# Construa o aplicativo React
+RUN npm run build
+
+# Exponha a porta 3000, que é a porta padrão para aplicativos React
+EXPOSE 3000
+
+# Comando para iniciar o aplicativo quando o contêiner for executado
 CMD ["npm", "start"]
