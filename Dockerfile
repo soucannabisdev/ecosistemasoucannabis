@@ -5,7 +5,7 @@ FROM node:18
 WORKDIR /app
 
 # Copia os arquivos necessários para o contêiner
-COPY package*.json ./
+COPY package*.json ./app
 COPY public/ ./app
 COPY src/ ./app
 COPY server/ ./app
