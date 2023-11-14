@@ -2,7 +2,7 @@
 FROM node:18
 
 # Define o diretório de trabalho no contêiner como o diretório atual do Dockerfile
-WORKDIR $PWD
+WORKDIR /app
 
 # Copia os arquivos necessários para o contêiner
 COPY package*.json ./
