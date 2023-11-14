@@ -41,7 +41,7 @@
   "scripts": {
     "server": "nodemon server/server.js",
     "start": "serve build -s -n -L -p $PORT",
-    "build": "react-app-rewired build",
+    "build": "serve -s build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
