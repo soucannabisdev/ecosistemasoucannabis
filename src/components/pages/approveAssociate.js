@@ -23,7 +23,7 @@ function ApproveAssociate() {
   const approve = async event => {
     event.preventDefault();
 
-    await apiRequest("/api/directus/update", { userId: user.id, formData: { associate_status: 7, status: "wait-aprove" } }, "POST");
+    await apiRequest("/api/directus/update", { userId: user.id, formData: { associate_status: 7, status: "aguardando-aprovacao" } }, "POST");
 
     setMsg(true);
   };

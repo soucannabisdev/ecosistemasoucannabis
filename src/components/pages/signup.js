@@ -18,8 +18,8 @@ function Signup() {
     const validateEmail = !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(emailInput);
 
     if (!validateEmail) {
-      var serchEmail = await apiRequest("/api/directus/login", { email: emailInput }, "POST");
-
+      const serchEmail = await apiRequest("/api/directus/search", { query: "/items/Users?filter[email_account][_eq]=" + emailInput }, "POST")
+      console.log(serchEmail)
       if (serchEmail) {
         setErrorEmail(true);
         setTimeout(() => {
@@ -28,6 +28,7 @@ function Signup() {
       } else {
         const userData = await apiRequest("/api/directus/create-user", { email_account: emailInput, associate_status: 0 }, "POST");
         localStorage.setItem("user_code", await userData.user_code);
+        console.log(userData)
         if (userData) {
           window.location.assign("/bem-vindo");
         }

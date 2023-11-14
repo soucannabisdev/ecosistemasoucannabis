@@ -69,6 +69,7 @@ const Contact = ({ type, redirect }) => {
     }
 
     if (isEmpty(formData)) {
+  
       setInputError(true)
     } else {
       await apiRequest("/api/chatwoot/send-message-api", JSON.stringify(formData), "POST")

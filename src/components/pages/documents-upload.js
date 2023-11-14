@@ -12,7 +12,7 @@ const FileUploadComponent = () => {
   const [rg_patient_proof, setRg_patient_proof] = useState(false);
   const [proof_of_address, setProof_of_address] = useState(false);
   const [contract, setContract] = useState(false);
-  const [generateContract, setGenerateContract] = useState(true);
+  const [generateContract, setGenerateContract] = useState(false);
   const [docsError, setDocsError] = useState(false);
   const [visible, setVisible] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -79,15 +79,18 @@ const FileUploadComponent = () => {
     await apiRequest("/api/directus/update", { userId: user.id, formData: { user_path: userFolder } }, "POST");
 
     file1.storage = "local";
-    file1.filename_download = file1.name;
+
+    var fileName = file1.name
+    fileName = fileName.split(".")
+    const nameFile = "RG."+fileName[1]
 
     var formData = new FormData();
     formData.append("folder", userFolder);
-    formData.append("file", file1);
+    formData.append("file", file1, nameFile);
 
     var fileId = "";
 
-    await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
+   await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
       .then(response => {
         fileId = response.id;
         return fileId;
@@ -110,7 +113,7 @@ const FileUploadComponent = () => {
       .then(response => { })
       .catch(error => {
         console.error(error);
-      });
+      })
 
     setRgProof(true);
     setIsLoading(false);
@@ -126,35 +129,39 @@ const FileUploadComponent = () => {
     file2.storage = "local";
     file2.filename_download = file2.name;
 
+    var fileName = file2.name
+    fileName = fileName.split(".")
+    const nameFile = "COMP-RESIDENCIA."+fileName[1]
+
     var formData = new FormData();
     formData.append("folder", userFolder);
-    formData.append("file", file2);
+    formData.append("file", file2, nameFile);
 
     var fileId = "";
 
-      await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
-        .then(response => {
-          fileId = response.id;
-          return fileId;
-        })
-        .catch(error => {
-          console.error(error);
-        });
-  
-       const bodyRequest = { proof_of_address: fileId };
-      await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST")
-        .then(response => {})
-        .catch(error => {
-          console.error(error);
-        });
-  
-    await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST")
-        .then(response => {})
-        .catch(error => {
-          console.error(error);
-        });
+    await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
+      .then(response => {
+        fileId = response.id;
+        return fileId;
+      })
+      .catch(error => {
+        console.error(error);
+      });
 
-    docusign();
+    const bodyRequest = { proof_of_address: fileId };
+    await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST")
+      .then(response => { })
+      .catch(error => {
+        console.error(error);
+      });
+
+    await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST")
+      .then(response => { })
+      .catch(error => {
+        console.error(error);
+      });
+
+    docuseal();
 
     setTimeout(() => {
       setProof_of_address(true);
@@ -172,9 +179,13 @@ const FileUploadComponent = () => {
     file3.storage = "local";
     file3.filename_download = file3.name;
 
+    var fileName = file3.name
+    fileName = fileName.split(".")
+    const nameFile = "RG-PACIENTE."+fileName[1]
+
     var formData = new FormData();
     formData.append("folder", userFolder);
-    formData.append("file", file3);
+    formData.append("file", file3, nameFile);
 
     var fileId = "";
 
@@ -204,51 +215,7 @@ const FileUploadComponent = () => {
     setIsLoadingC(false);
   };
 
-  const handleFile4Change = async event => {
-    setIsLoadingC(true);
-
-    const file4 = event.target.files[0];
-
-    var userFolder = localStorage.getItem("user_folder");
-
-    file4.storage = "local";
-    file4.filename_download = file4.name;
-
-    var formData = new FormData();
-    formData.append("folder", userFolder);
-    formData.append("file", file4);
-
-    var fileId = "";
-
-    await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
-      .then(response => {
-        fileId = response.id;
-        return fileId;
-      })
-      .catch(error => {
-        console.error(error);
-      });
-
-    const bodyRequest = { contract: fileId, associate_status: 4 };
-    await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST")
-      .then(response => { })
-      .catch(error => {
-        console.error(error);
-      });
-
-    await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST")
-      .then(response => { })
-      .catch(error => {
-        console.error(error);
-      });
-
-    setRg_patient_proof(true);
-    setIsLoadingC(false);
-
-    window.location.assign("/consulta");
-  };
-
-  const docusign = async () => {
+  const docuseal = async () => {
     const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
     const currentDate = new Date();
     const day = currentDate.getDate();
@@ -261,7 +228,7 @@ const FileUploadComponent = () => {
 
     var userData = [
       {
-        "name": "cardid",
+        "name": "usercode",
         "default_value": user.id,
         "readonly": true
       },
@@ -332,8 +299,12 @@ const FileUploadComponent = () => {
       }
     ];
 
-    const createContract = await apiRequest("/api/docusign/create-contract", userData, "POST");
-    setGenerateContract(process.env.REACT_APP_DOCUSIGN_URL + "/s/" + createContract[0].slug);
+    const createContract = await apiRequest("/api/docuseal/create-contract", userData, "POST");
+    setGenerateContract(process.env.REACT_APP_DOCUSEAL_URL + "/s/" + createContract[0].slug);
+
+    const bodyRequest = { contract: process.env.REACT_APP_DOCUSEAL_URL + "/s/" + createContract[0].slug };
+    await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST")
+
   };
 
   return (
@@ -350,7 +321,7 @@ const FileUploadComponent = () => {
                     <img class="animated-icon" width="40" src="/icons/data-cloud.gif" /> Carregando documento... <img class="animated-icon" width="40" src="/icons/data-cloud.gif" />
                   </span>
                 )}
-                {!isLoading && <span>Documento de Identidade do Responsável</span>}
+                {!isLoading && <span>Documento de Identidade</span>}
               </Form.Label>
               <Form.Control className="input-upload" type="file" onChange={handleFile1Change} />
             </Form.Group>
@@ -408,36 +379,8 @@ const FileUploadComponent = () => {
           </div>
         )}
         <br></br>
-        {process.env.REACT_APP_ZAPSIGN == "false" && (
-          <div>
-            <Link to="https://database.ecosistemasoucannabis.ong.br/assets/2099cd80-16af-4863-bb45-af7b29ece349?download=&access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU2ZjAzMTVmLTc5ZWEtNGQ0ZS04Mzg0LTI3NTMxZTNmNDU2MiIsInJvbGUiOiI3ZWE3NzA0Mi1hZDhlLTQ5YTgtOTg3YS0zMzRkYThhYTI2MjEiLCJhcHBfYWNjZXNzIjp0cnVlLCJhZG1pbl9hY2Nlc3MiOnRydWUsImlhdCI6MTY5NTQwMDA4MiwiZXhwIjoxNjk1NDAwOTgyLCJpc3MiOiJkaXJlY3R1cyJ9.1ewPiN75rH4zX258leVMfG6LeYAuyBUPIZF0-xx_tTY" className="label-upload">
-              Download do Contrato
-            </Link>
 
-            {!contract && (
-              <Form>
-                <Form.Group controlId="formFile4">
-                  <Form.Label className="label-upload">
-                    {isLoading && (
-                      <span class="loading-text">
-                        <img class="animated-icon" width="40" src="/icons/data-cloud.gif" /> Carregando documento... <img class="animated-icon" width="40" src="/icons/data-cloud.gif" />
-                      </span>
-                    )}
-                    {!isLoading && <span>Enviar contrato assinado</span>}
-                  </Form.Label>
-                  <Form.Control type="file" className="input-upload" onChange={handleFile4Change} />
-                </Form.Group>
-              </Form>
-            )}
-            {contract && (
-              <div class="document-send">
-                <Form.Label className="label-upload send-ok">Contrato já enviado</Form.Label>
-              </div>
-            )}
-          </div>
-        )}
-
-        <a className="label-upload " target="_blank" href={generateContract} hidden={!proof_of_address || process.env.REACT_APP_ZAPSIGN == "false"}>
+        <a className="label-upload " target="_blank" href={generateContract || user.contract} hidden={!proof_of_address}>
           Assinar Termo de Responsabilidade
         </a>
       </div>

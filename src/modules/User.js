@@ -14,7 +14,6 @@ async function User() {
   } catch (error) {
     console.log(error);
   }
-
   return requestData;
 }
 

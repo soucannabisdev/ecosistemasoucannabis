@@ -575,6 +575,17 @@ textarea {
 }
 a.label-upload {
   width: 90%;
-  padding: 0;
+  padding: 5px;
+  font-size: 18px;
+}
+.btn-contact {
+  width: 150px;    
+  font-size: 12px;
+  height:30px;
+  padding:0
+}
+
+.btn-contact > svg {
+  width: 20px;
 }
 }

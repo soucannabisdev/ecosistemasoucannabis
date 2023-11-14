@@ -37,7 +37,6 @@ router.post("/user", async (req, res) => {
 
   if (verToken) {
     const userData = await directusRequest("/items/Users?filter[user_code][_eq]=" + req.body.code_user + "", "", "GET");
-
     if (userData) {
       delete userData.status;
       delete userData.sort;
@@ -119,7 +118,6 @@ router.post("/login", async (req, res) => {
 
     var passwordMatch = false;
 
-
     if (userData) {
       var pass = req.body.pass;
       var userPass = decrypt(userData.pass_account, secretKey);
@@ -128,7 +126,6 @@ router.post("/login", async (req, res) => {
         passwordMatch = true;
       }
     }
-
 
     if (userData) {
       res.send(userData);
@@ -159,6 +156,7 @@ router.post("/create-user", async (req, res) => {
   var formData = {};
 
   const verToken = await directusRequest("/items/Users_Api?filter[token][_eq]=" + token + "", "", "GET");
+
   if (verToken) {
     if (req.body.email_account) {
       formData = {
@@ -173,11 +171,8 @@ router.post("/create-user", async (req, res) => {
 
     // sendEmail(req.body.email_account, 'Bem-vindo à souCannabis', 'Olá, sejá bem vindo ao nosso sistema de cadastramento do usuários, siga os passos para se tornar um associado.')
 
-    await directusRequest("/items/Users", formData, "POST");
-
-    const user = await directusRequest("/items/Users?filter[email_account][_eq]=" + formData.email_account + "", "", "GET");
-
-    res.send(user);
+    const createUser = await directusRequest("/items/Users", formData, "POST");
+    res.send(createUser);
     res.status(200);
   } else {
     res.status(401).json({ mensagem: "Credenciais inválidas" });

@@ -19,7 +19,7 @@ async function directusRequest(query, data, method) {
 
   try {
     const response = await axios.request(config);
-    if (query == "/folders") {
+    if (query == "/folders" || query == "/items/Users") {
       requestData = response.data.data;
     } else {
       requestData = response.data.data[0];

@@ -134,10 +134,6 @@ const AssociateSignUp = () => {
           }
         }
 
-        if (key == "reason_treatment") {
-          document.querySelector("#" + key).className = "form-input input-login css-b62m3t-container input-empty";
-        }
-
         if (formData.reason_treatment == [] || formData.reason_treatment == null) {
           document.querySelector("#reason_treatment").className = "css-b62m3t-container input-empty";
         } else {
@@ -145,6 +141,17 @@ const AssociateSignUp = () => {
         }
       }
     }
+
+    console.log(emptyFields)
+
+    if (emptyFields.length == 2) {
+      if (emptyFields.includes("reason_treatment") || emptyFields.includes("reason_treatment_text")) {
+        emptyFields = [];
+      }
+
+    }
+
+    console.log(emptyFields)
 
     if (emptyFields != []) {
       setValidateForm(true);
@@ -162,24 +169,26 @@ const AssociateSignUp = () => {
       emptyFields.push("cpf");
     } else {
       function realCPF(cpf) {
-        cpf = cpf.replace(/[^\d]+/g, "");
-        if (cpf.length !== 11) return false;
+        if (formData.cpf_associate) {
+          cpf = cpf.replace(/[^\d]+/g, "");
+          if (cpf.length !== 11) return false;
 
-        let soma = 0;
-        for (let i = 0; i < 9; i++) {
-          soma += parseInt(cpf.charAt(i)) * (10 - i);
+          let soma = 0;
+          for (let i = 0; i < 9; i++) {
+            soma += parseInt(cpf.charAt(i)) * (10 - i);
+          }
+          let resto = 11 - (soma % 11);
+          let digito1 = resto === 10 || resto === 11 ? 0 : resto;
+
+          soma = 0;
+          for (let i = 0; i < 10; i++) {
+            soma += parseInt(cpf.charAt(i)) * (11 - i);
+          }
+          resto = 11 - (soma % 11);
+          let digito2 = resto === 10 || resto === 11 ? 0 : resto;
+
+          return parseInt(cpf.charAt(9)) === digito1 && parseInt(cpf.charAt(10)) === digito2;
         }
-        let resto = 11 - (soma % 11);
-        let digito1 = resto === 10 || resto === 11 ? 0 : resto;
-
-        soma = 0;
-        for (let i = 0; i < 10; i++) {
-          soma += parseInt(cpf.charAt(i)) * (11 - i);
-        }
-        resto = 11 - (soma % 11);
-        let digito2 = resto === 10 || resto === 11 ? 0 : resto;
-
-        return parseInt(cpf.charAt(9)) === digito1 && parseInt(cpf.charAt(10)) === digito2;
       }
 
       if (!realCPF(validateCPF)) {
@@ -205,21 +214,22 @@ const AssociateSignUp = () => {
     setTimeout(() => {
       setFieldsError(false);
     }, 6000);
-
-    if (emptyFields == "" || emptyFields == [] || emptyFields[0] == "complement") {
+    if (emptyFields == "" || emptyFields == []) {
       setFieldsError(false);
       formData.responsable_code = codeUser;
+
+      console.log(formData);
+
+      formData.reason_treatment = user.reason_treatment
+      formData.reason_treatment_text = user.reason_treatment_text
 
       await apiRequest("/api/directus/create-user", formData, "POST")
 
       const searchUser = await apiRequest("/api/directus/search", { query: "/items/Users?filter[responsable_code][_eq]=" + codeUser }, "POST")
 
-   await apiRequest("/api/directus/update", { userId: user.id, formData: { responsible_for: searchUser.user_code } }, "POST")
-      .then(response => { })
-      .catch(error => {
-        console.error(error);
-      });
-
+      await apiRequest("/api/directus/update", { userId: user.id, formData: { responsible_for: searchUser.user_code } }, "POST")
+      await apiRequest("/api/directus/update", { userId: user.id, formData: { reason_treatment: null, reason_treatment_text: null } }, "POST")
+      
       window.location.assign("/documentos");
     }
   };
@@ -378,20 +388,11 @@ const AssociateSignUp = () => {
           </div>
           <br></br>
           <br></br>
-          <div className="mb-3">
-            <label className="form-label" htmlFor="reason_treatment">
-              Motivo principal para o tratamento
-            </label>
-            <MultiSelectField onChange={handleSelectionChange} value={formData.reason_treatment} name="reason_treatment" />
+          *----*
+          <div className="mb-3" style={{ display: "none" }}>
+            <MultiSelectField onChange={handleSelectionChange} value="hidden" name="reason_treatment" hidden />
+            <textarea onChange={handleChangeInput} onBlur={handleChangeInput} value="hidden" as="textarea" id="reason_treatment_text" name="reason_treatment_text" hidden />
           </div>
-
-          <div className="mb-3">
-            <label className="form-label" htmlFor="reason_treatment_text">
-              Descreva com suas palavras o motivo do seu tratamento <LabelInfo message="Informe com suas palavras os motivos do seu tratamento" id="trattxt" />
-            </label>
-            <textarea onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.reason_treatment_text} as="textarea" id="reason_treatment_text" name="reason_treatment_text" />
-          </div>
-
           <button class="btn btn-success btn-lg btn-float-right" type="submit">
             Enviar dados
           </button>

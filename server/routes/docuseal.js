@@ -1,7 +1,7 @@
 const axios = require('axios')
 const express = require('express');
 const router = express.Router();
-const docusignRequest = require('./modules/docusignRequest');
+const docusealRequest = require('./modules/docusealRequest');
 const directusRequest = require('./modules/directusRequest');
 
 
@@ -31,7 +31,7 @@ router.post('/create-contract', async (req, res) => {
             ]
         });
 
-        const docusignContract = await docusignRequest("/submissions", body, "POST")
+        const docusignContract = await docusealRequest("/submissions", body, "POST")
         res.send(docusignContract)
         res.status(200)
     } else {
@@ -41,6 +41,7 @@ router.post('/create-contract', async (req, res) => {
 });
 
 router.post('/assign-contracts', async (req, res) => {
+    console.log(req.body)
     if (req.body.event_type == "form.completed") {
         await directusRequest("/items/Users/" + req.body.data.values[0].value, { associate_status: 4, contract: req.body.data.documents[0].url }, "PATCH")
     }

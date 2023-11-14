@@ -9,11 +9,11 @@ async function zapsignRequest(query, data, method) {
      let config = {
         method: method,
         headers: {
-          "X-Auth-Token": "Z3sy7javjUGmuGSdthKaUf",
+          "X-Auth-Token": process.env.DOCUSEAL_API_KEY,
           "content-type": "application/json"
       },
         redirect: 'follow',
-        url: "https://assinatura.ecosistemasoucannabis.ong.br/api"+query,
+        url: process.env.DOCUSEAL_URL_API+query,
         data : data
       };
       

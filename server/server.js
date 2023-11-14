@@ -17,12 +17,12 @@ app.use(cors({
 
 const direcuts = require('./routes/directus')
 const chatwoot = require('./routes/chatwoot')
-const docusign = require('./routes/docusign')
+const docuseal = require('./routes/docuseal')
 const email = require('./routes/email')
 
 app.use('/api/directus', direcuts); 
 app.use('/api/chatwoot', chatwoot)
-app.use('/api/docusign', docusign)
+app.use('/api/docuseal', docuseal)
 app.use('/api/email', email)
 
 app.listen(process.env.REACT_APP_SERVER_PORT, () => {
