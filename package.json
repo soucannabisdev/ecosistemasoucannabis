@@ -40,8 +40,8 @@
   },
   "scripts": {
     "server": "nodemon server/server.js",
-    "start": "serve build -s -n -L -p $PORT",
-    "build": "serve -s build",
+    "start": "PORT=8050 react-app-rewired start",
+    "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
