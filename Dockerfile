@@ -8,9 +8,9 @@ COPY public/ /app/public
 COPY src/ /app/src
 COPY package.json /app/
 COPY config-overrides.js /app/
-COPY .env /app/
+COPY .env.example /app/
 
-#RUN mv .env.example .env
+RUN mv .env.example .env
 RUN npm install
 
 EXPOSE 3000
