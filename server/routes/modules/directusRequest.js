@@ -10,10 +10,10 @@ async function directusRequest(query, data, method) {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers": "Content-Type,Authorization,Access-Control-Allow-Origin,Access-Control-Allow-Headers",
-      Authorization: process.env.REACT_APP_DIRECTUS_API_TOKEN,
+      Authorization: process.env.DIRECTUS_API_TOKEN,
     },
     maxBodyLength: Infinity,
-    url: process.env.REACT_APP_DIRECTUS_API_URL + query,
+    url: process.env.DIRECTUS_API_URL + query,
     data: data,
   };
 
