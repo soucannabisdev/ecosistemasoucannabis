@@ -20,7 +20,6 @@ async function zapsignRequest(query, data, method) {
       await axios.request(config)
       .then((response) => {
         requestData = response.data
-        console.log(requestData)
       })
       .catch((error) => {
         console.log(error);

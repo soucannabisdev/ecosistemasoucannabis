@@ -10,7 +10,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(fileUpload());
 app.use(cors({
-  origin: ['https://cadastro.ecosistemasoucannabis.ong.br'],
+  origin: ['http://216.238.107.72:8050'],
   credentials: true
 }));
 
