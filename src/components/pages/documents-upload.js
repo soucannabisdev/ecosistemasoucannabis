@@ -148,7 +148,7 @@ const FileUploadComponent = () => {
         console.error(error);
       });
 
-    const bodyRequest = { proof_of_address: fileId };
+    const bodyRequest = { proof_of_address: fileId, status:"proofs" };
     await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST")
       .then(response => { })
       .catch(error => {
@@ -230,6 +230,11 @@ const FileUploadComponent = () => {
       {
         "name": "usercode",
         "default_value": user.id,
+        "readonly": true
+      },
+      {
+        "name": "email",
+        "default_value": user.email_account,
         "readonly": true
       },
       {

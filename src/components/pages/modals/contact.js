@@ -38,14 +38,16 @@ const Contact = ({ type, redirect }) => {
       name: null,
       phone: null,
       email: null,
-      message:"Olá, gostaria de agendar uma consulta médica."
-    }    
+      message: "Olá, gostaria de agendar uma consulta médica.",
+      type: 1
+    }
   } else {
     formInfo = {
       name: null,
       phone: null,
       email: null,
-      message:null
+      message: null,
+      type: 0
     }
   }
 
@@ -69,7 +71,7 @@ const Contact = ({ type, redirect }) => {
     }
 
     if (isEmpty(formData)) {
-  
+
       setInputError(true)
     } else {
       await apiRequest("/api/chatwoot/send-message-api", JSON.stringify(formData), "POST")
@@ -87,14 +89,13 @@ const Contact = ({ type, redirect }) => {
           console.error(error);
         });
 
-        console.log(formData)
-        const phone = "+"+formData.phone
-        console.log(phone)
+      const phone = "+" + formData.phone
       await apiRequest("/api/chatwoot/send-message-chat", JSON.stringify({
         "email": formData.email,
         "name": formData.name,
         "phone_number": phone,
-        "message": formData.message
+        "message": formData.message,
+        "type": formData.type
       }), "POST")
         .catch(error => {
           console.error(error);
@@ -182,8 +183,8 @@ const Contact = ({ type, redirect }) => {
               </div>
               <label>Telefone:</label>
               <div className="mb-3">
-              <PhoneInputs  value={formData.phone} onChange={handleChangeInputPhone} onBlur={handleChangeInputPhone} handleChangeInput={handleChangeInputPhone} name="phone" />
-                
+                <PhoneInputs value={formData.phone} onChange={handleChangeInputPhone} onBlur={handleChangeInputPhone} handleChangeInput={handleChangeInputPhone} name="phone" />
+
               </div>
               {type != "appointment" && (
                 <label>Mensagem:</label>

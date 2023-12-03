@@ -26,7 +26,7 @@ function Signup() {
           setErrorEmail(false);
         }, 5000);
       } else {
-        const userData = await apiRequest("/api/directus/create-user", { email_account: emailInput, associate_status: 0 }, "POST");
+        const userData = await apiRequest("/api/directus/create-user", { email_account: emailInput, associate_status: 0, status:"signup"}, "POST")
         localStorage.setItem("user_code", await userData.user_code);
         console.log(userData)
         if (userData) {
