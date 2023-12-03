@@ -10,6 +10,7 @@ import MultiSelectField from "../forms/CIAPInput";
 import Modal from "react-bootstrap/Modal";
 import PhoneInputs from "../forms/PhoneNumberInput";
 
+
 const AssociateSignUp = () => {
   const [user, setUser] = useState({});
   const [inputError, setInputError] = useState(false);
@@ -44,7 +45,6 @@ const AssociateSignUp = () => {
   };
 
   const [formData, setFormData] = useState({
-    status: "published",
     responsable_type: null,
     name_associate: null,
     lastname_associate: null,
@@ -228,7 +228,9 @@ const AssociateSignUp = () => {
 
     if (emptyFields == "" || emptyFields == []) {
       setFieldsError(false);
-      await apiRequest("/api/directus/update", { userId: user.id, formData: formData }, "POST")
+      formData.status = "registered"
+      formData.log = "Registered OK"
+      await apiRequest("/api/directus/update", { userId: user.id, formData: formData}, "POST")
         .then(response => { })
         .catch(error => {
           console.error(error);
@@ -239,7 +241,10 @@ const AssociateSignUp = () => {
       } else {
         window.location.assign("/documentos");
       }
-    }
+    }else{
+      await apiRequest("/api/directus/update", { userId: user.id, formData:{status: "formerror", log:{"formError":{"emptyFields":emptyFields}}}}, "POST")
+      
+     }
   };
 
   return (

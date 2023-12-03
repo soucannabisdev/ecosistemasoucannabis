@@ -48,9 +48,7 @@ function Prescription() {
       window.location.assign("/");
     }
 
-    const bodyRequest = { medical_prescription: fileId };
-    await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST");
-    await apiRequest("/api/directus/update", { userId: user.id, formData: { associate_status: 6 } }, "POST");
+    await apiRequest("/api/directus/update", { userId: user.id, formData: { medical_prescription: fileId, associate_status: 6, status: "prescription"  } }, "POST");
 
     window.location.assign("/cadastro");
   };
