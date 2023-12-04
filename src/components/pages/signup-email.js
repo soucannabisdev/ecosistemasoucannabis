@@ -9,8 +9,7 @@ function SignupEmail() {
   const [errorEmail, setErrorEmail] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {}, 3000);
-
+    const timer = setTimeout(() => { }, 3000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -47,10 +46,10 @@ function SignupEmail() {
   };
 
   return (
-    <div className="container">
-      <h1 className="title" style={{ marginTop: "50px" }}>Cadastro de associado</h1>
-      <div className="row justify-content-center">
-        <div className="col-md-6 form-signup">
+    <div class="container">
+      <h1 class="title" style={{ marginTop: "50px" }}>Cadastro de associado</h1>
+      <div class="row justify-content-center">
+        <div class="col-md-6 form-signup">
           {errorEmail && (
             <div className="alert alert-danger" role="alert">
               Este endereço de e-mail já está sendo usado.
@@ -61,13 +60,11 @@ function SignupEmail() {
               Endereço de e-mail inválido
             </div>
           )}
-          <h1 className="sub-title">Preencha seu e-mail abaixo para iniciar seu cadastro de associado.</h1>
+
+          <h1 class="sub-title">Preencha seu e-mail abaixo para iniciar seu cadastro de associado.</h1>
           <form onSubmit={signUp}>
-            <div className="form-group">
-              <label className="label-login" htmlFor="email">
-                E-mail:
-              </label>
-              <input type="email" className="form-input input-login" onChange={emailHandleChange} value={emailInput} id="email" placeholder="Digite seu email" />
+            <div class="form-group">
+              <input type="email" class="form-input input-login" onChange={emailHandleChange} value={emailInput} id="email" placeholder="Digite seu email"></input>
             </div>
             <br />
             <button type="submit" className="btn btn-primary btn-lg btn-signup">
