@@ -9,7 +9,8 @@ function Signup() {
   const [errorEmail, setErrorEmail] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => { }, 3000);
+    const timer = setTimeout(() => {}, 3000);
+
     return () => clearTimeout(timer);
   }, []);
 
@@ -47,7 +48,9 @@ function Signup() {
 
   return (
     <div class="container">
+
       <h1 class="title" style={{ marginTop: "50px" }}>Cadastro de associado</h1>
+
       <div class="row justify-content-center">
         <div class="col-md-6 form-signup">
           {errorEmail && (
@@ -64,6 +67,12 @@ function Signup() {
           <h1 class="sub-title">Preencha seu e-mail abaixo para iniciar seu cadastro de associado.</h1>
           <form onSubmit={signUp}>
             <div class="form-group">
+          <h1 class="sub-title">Faça seu cadastro</h1>
+          <form onSubmit={signUp}>
+            <div class="form-group">
+              <label class="label-login" for="email">
+                E-mail:
+              </label>
               <input type="email" class="form-input input-login" onChange={emailHandleChange} value={emailInput} id="email" placeholder="Digite seu email"></input>
             </div>
             <br></br>

@@ -34,12 +34,12 @@
     "react-scripts": "5.0.1",
     "react-select": "^5.7.4",
     "react-spinners": "^0.13.8",
-    "react-tooltip": "^5.7.0",
+    "serve": "^14.2.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "server": "nodemon server/server.js",
-    "start": "PORT=8050 react-app-rewired start",
+    "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"

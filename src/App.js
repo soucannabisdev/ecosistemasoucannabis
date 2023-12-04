@@ -186,6 +186,7 @@ function App() {
       )}
       <Routes>
         <Route path="/loja" element={<Products />} />
+        <Route path="/seu-cadastro" element={<SignupEmail />} />
       </Routes>
     </Router>
   );
