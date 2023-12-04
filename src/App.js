@@ -51,7 +51,7 @@ function App() {
     page = page[3].split("?");
     page = page[0];
 
-    if (page == "nova-senha") {
+    if (page == "nova-senha" || page == "iniciar-cadastro") {
       setHiddenLogin(true);
     }
   }, []);
@@ -68,11 +68,16 @@ function App() {
   return (
     <Router>
       {hiddenLogin && (
-        <div class="container vertical-center">
-          <div class="text-center login-div">
-            <Routes>
-              <Route path="/nova-senha" element={<LostPass />} />
-            </Routes>
+        <div >          
+          <Routes>
+            <Route path="/iniciar-cadastro" element={<SignupEmail />} />
+          </Routes>
+          <div class="container vertical-center">
+            <div class="text-center login-div">
+              <Routes>
+                <Route path="/nova-senha" element={<LostPass />} />
+              </Routes>
+            </div>
           </div>
         </div>
       )}
@@ -103,27 +108,27 @@ function App() {
           )}
 
           {window.innerWidth < 600 && (
-             <div class="container mobile-login" hidden={hiddenLogin}>
-             <div class="text-center">
-               <img
-                 src="/logo.svg"
-                 width="30%"
-               />
-               <h1 class="sub-title">Ecosistema SouCannabis</h1>
-               <div class="row">
-                 <Link to="/login" class="btn btn-lg btn-primary btn-login" hidden={hiddenButtons}>
-                   Login
-                 </Link>
-                 <Link to="/cadastro" class="btn btn-lg btn-success" hidden={hiddenButtons}>
-                   Criar minha conta
-                 </Link>
-               </div>
-             </div>
-             <Routes>
-               <Route path="/login" element={<LoginForm />} />
-               <Route path="/cadastro" element={<Signup />} />
-             </Routes>
-           </div>
+            <div class="container mobile-login" hidden={hiddenLogin}>
+              <div class="text-center">
+                <img
+                  src="/logo.svg"
+                  width="30%"
+                />
+                <h1 class="sub-title">Ecosistema SouCannabis</h1>
+                <div class="row">
+                  <Link to="/login" class="btn btn-lg btn-primary btn-login" hidden={hiddenButtons}>
+                    Login
+                  </Link>
+                  <Link to="/cadastro" class="btn btn-lg btn-success" hidden={hiddenButtons}>
+                    Criar minha conta
+                  </Link>
+                </div>
+              </div>
+              <Routes>
+                <Route path="/login" element={<LoginForm />} />
+                <Route path="/cadastro" element={<Signup />} />
+              </Routes>
+            </div>
           )}
         </div>
 

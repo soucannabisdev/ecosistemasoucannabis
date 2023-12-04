@@ -10,6 +10,7 @@ function Signup() {
 
   useEffect(() => {
     const timer = setTimeout(() => {}, 3000);
+
     return () => clearTimeout(timer);
   }, []);
 
@@ -47,6 +48,9 @@ function Signup() {
 
   return (
     <div class="container">
+
+      <h1 class="title" style={{ marginTop: "50px" }}>Cadastro de associado</h1>
+
       <div class="row justify-content-center">
         <div class="col-md-6 form-signup">
           {errorEmail && (
@@ -60,6 +64,9 @@ function Signup() {
               Endereço de e-mail inválido
             </div>
           )}
+          <h1 class="sub-title">Preencha seu e-mail abaixo para iniciar seu cadastro de associado.</h1>
+          <form onSubmit={signUp}>
+            <div class="form-group">
           <h1 class="sub-title">Faça seu cadastro</h1>
           <form onSubmit={signUp}>
             <div class="form-group">
@@ -70,7 +77,7 @@ function Signup() {
             </div>
             <br></br>
             <button type="submit" onClick={signUp} class="btn btn-primary btn-lg btn-signup">
-              Fazer Cadastro
+              Iniciar cadastro
             </button>
           </form>
         </div>
