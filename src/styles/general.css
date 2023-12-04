@@ -152,7 +152,12 @@ ul.listPages {
 body {
   background-color: #d9e3f1;
 }
-
+select#reason_treatment {
+  width: 100%;
+  height: 64px;
+  padding-left: 10px;
+  border-radius: 7px;
+}
 .form-input {
   width: 100%;
   padding: 1rem 1.5rem;

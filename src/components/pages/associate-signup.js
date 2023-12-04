@@ -23,6 +23,8 @@ const AssociateSignUp = () => {
   const [showPopup, setShowPopup] = useState(false);
   const handleClose = () => setShowPopup(false);
   const handleShow = () => setShowPopup(true);
+  const [passError, setPassError] = useState(false);
+  const [phoneError, setPhoneError] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -221,6 +223,27 @@ const AssociateSignUp = () => {
       emptyFields.push("rg");
     }
 
+    const pass = formData.pass_account
+    if(formData.pass_account && pass.length <= 5){
+      setPassError(true)
+      setTimeout(() => {
+        setPassError(false);
+      }, 6000);
+
+      emptyFields.push("pass");
+    }
+
+    const mobilenumber = formData.mobile_number
+    console.log(mobilenumber)    
+    if(mobilenumber && mobilenumber.length < 13){
+      console.log(mobilenumber.length)
+      setPhoneError(true)
+      setTimeout(() => {
+        setPhoneError(false);
+      }, 6000);
+      emptyFields.push("mobile_number");
+    }
+
     setFieldsError(true);
     setTimeout(() => {
       setFieldsError(false);
@@ -242,8 +265,7 @@ const AssociateSignUp = () => {
         window.location.assign("/documentos");
       }
     }else{
-      await apiRequest("/api/directus/update", { userId: user.id, formData:{status: "formerror", log:{"formError":{"emptyFields":emptyFields}}}}, "POST")
-      
+      await apiRequest("/api/directus/update", { userId: user.id, formData:{status: "formerror", log:{"formError":{"emptyFields":emptyFields}}}}, "POST")    
      }
   };
 
@@ -465,6 +487,16 @@ const AssociateSignUp = () => {
         {cpfNotValid && (
           <div class="alert3">
             <AlertError message="O CPF digitado não é válido" />
+          </div>
+        )}
+        {phoneError && (
+          <div class="alert3">
+            <AlertError message="O telefone precisa estar completo" />
+          </div>
+        )}
+        {passError && (
+          <div class="alert3">
+            <AlertError message="A senha precisa ter pelo menos 6 dígitos" />
           </div>
         )}
       </form>
