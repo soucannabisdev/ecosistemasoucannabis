@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import User from "../../modules/User";
 import apiRequest from "../../modules/apiRequest";
+import MultipleFiles from "./elements/multipleFiles";
 import ContactModal from "../../components/pages/modals/contact";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import directusRequestUpload from "../../modules/directusRequestUpload";
 
-function Contact() {
+function MedicalAppointment() {
   useEffect(() => {
     (async () => {
       const userData = await User();
@@ -53,10 +54,11 @@ function Contact() {
       window.location.assign("/");
     }
 
-    await apiRequest("/api/directus/update", { userId: user.id, formData: { medical_prescription: fileId, associate_status: 6, status: "prescription"  } }, "POST")
+    //await apiRequest("/api/directus/update", { userId: user.id, formData: { medical_prescription: fileId, associate_status: 6, status: "prescription"  } }, "POST")
+    await apiRequest("/api/directus/update", { userId: user.id, formData: { medical_prescription: fileId, status: "prescription"  } }, "POST")
       .then(response => {
         setIsLoading(false);
-        window.location.assign("/cadastro");
+       // window.location.assign("/cadastro");
       })
       .catch(error => {
         console.error(error);
@@ -68,8 +70,6 @@ function Contact() {
     setPrescription(true);
   };
 
-  const medicalAppointmentYNo = async () => {};
-
   return (
     <div>
       <form className="form-container">
@@ -80,7 +80,7 @@ function Contact() {
           <label className="btn btn-outline-primary radio-input" htmlFor="btnradio1">
             Sim, já realizei uma consulta médica e tenho minha receita.
           </label>
-          <ContactModal redirect="/cadastro" onClick={medicalAppointmentYNo} type="appointment" />
+          <ContactModal redirect="/cadastro"  type="appointment" />
           <label className="btn btn-outline-primary radio-input" htmlFor="btnradio2">
             Não, gostaria de agendar uma consulta médica.
           </label>
@@ -100,13 +100,15 @@ function Contact() {
                 )}
                 {!isLoading && <span>Enviar receita média</span>}
               </Form.Label>
+              <h1 className="sub-title">Abaixo você pode enviar arquivos que complementem a sua receita como, laudos médicos, exames e outras receitas.</h1>
               <Form.Control className="input-upload" type="file" onChange={handleFileChange} />
             </Form.Group>
           </Form>
-        </div>
+         <MultipleFiles />
+        </div>        
       )}
     </div>
   );
 }
 
-export default Contact;
+export default MedicalAppointment;
