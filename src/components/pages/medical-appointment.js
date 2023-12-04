@@ -8,10 +8,19 @@ import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import directusRequestUpload from "../../modules/directusRequestUpload";
 
 function MedicalAppointment() {
+
+  const [medicalPrescrption, setMedicalPrescrption] = useState(false);
+
   useEffect(() => {
     (async () => {
       const userData = await User();
       setUser(userData);
+
+      if (userData.medical_prescription == null) {
+        setMedicalPrescrption(false);
+      } else {
+        setMedicalPrescrption(true);
+      }
     })();
   }, []);
 
@@ -54,16 +63,16 @@ function MedicalAppointment() {
       window.location.assign("/");
     }
 
-    //await apiRequest("/api/directus/update", { userId: user.id, formData: { medical_prescription: fileId, associate_status: 6, status: "prescription"  } }, "POST")
-    await apiRequest("/api/directus/update", { userId: user.id, formData: { medical_prescription: fileId, status: "prescription"  } }, "POST")
+    await apiRequest("/api/directus/update", { userId: user.id, formData: { medical_prescription: fileId, status: "prescription" } }, "POST")
       .then(response => {
         setIsLoading(false);
-       // window.location.assign("/cadastro");
       })
       .catch(error => {
         console.error(error);
       });
     await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST");
+
+    setMedicalPrescrption(true)
   };
 
   const medicalAppointmentYes = async () => {
@@ -80,7 +89,7 @@ function MedicalAppointment() {
           <label className="btn btn-outline-primary radio-input" htmlFor="btnradio1">
             Sim, já realizei uma consulta médica e tenho minha receita.
           </label>
-          <ContactModal redirect="/cadastro"  type="appointment" />
+          <ContactModal redirect="/cadastro" type="appointment" />
           <label className="btn btn-outline-primary radio-input" htmlFor="btnradio2">
             Não, gostaria de agendar uma consulta médica.
           </label>
@@ -89,7 +98,8 @@ function MedicalAppointment() {
 
       {prescription && (
         <div>
-          <h1 className="sub-title">Envie sua receita médica abaixo: </h1>
+          <h1 className="sub-title">Envie sua receita médica aqui: </h1>
+
           <Form>
             <Form.Group controlId="formFile1">
               <Form.Label className="label-upload">
@@ -98,14 +108,18 @@ function MedicalAppointment() {
                     <img class="animated-icon" width="40" src="/icons/data-cloud.gif" /> Carregando documento... <img class="animated-icon" width="40" src="/icons/data-cloud.gif" />
                   </span>
                 )}
-                {!isLoading && <span>Enviar receita média</span>}
+                {!isLoading && !medicalPrescrption && <span>Enviar receita médica</span>}
+                {medicalPrescrption && <div>
+                  <Form.Label className="label-upload send-ok">Receita médica enviada</Form.Label>
+                </div>}
               </Form.Label>
-              <h1 className="sub-title">Abaixo você pode enviar arquivos que complementem a sua receita como, laudos médicos, exames e outras receitas.</h1>
+              <br></br>
+              <p style={{ color: "#fff", textAlign: "center", fontSize: "18px" }}>Abaixo você pode enviar arquivos que complementem  a sua receita como, laudos médicos, exames e outras receitas.</p>
               <Form.Control className="input-upload" type="file" onChange={handleFileChange} />
             </Form.Group>
           </Form>
-         <MultipleFiles />
-        </div>        
+          <MultipleFiles />
+        </div>
       )}
     </div>
   );

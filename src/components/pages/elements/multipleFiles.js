@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import apiRequest from "../../../modules/apiRequest";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import User from "../../../modules/User";
 import directusRequestUpload from "../../../modules/directusRequestUpload";
 
 function MultipleFiles() {
@@ -10,6 +11,14 @@ function MultipleFiles() {
   const [file, setFile] = useState(null);
   const [isLoadingButton, setisLoadingButton] = useState(false);
   const [attachment, isAttachment] = useState(false);
+
+
+  useEffect(() => {
+    (async () => {
+      const userData = await User();
+      setUser(userData);
+    })();
+  }, []);
 
   const handleFile = async event => {
     setisLoadingButton(true);
@@ -41,37 +50,37 @@ function MultipleFiles() {
       window.location.assign("/");
     }
 
-    //await apiRequest("/api/directus/update", { userId: user.id, formData: { medical_prescription: fileId, associate_status: 6, status: "prescription"  } }, "POST")
-    await apiRequest("/api/directus/update", { userId: user.id, formData: { medical_prescription: fileId, status: "prescription"  } }, "POST")
-      .then(response => {
-        setisLoadingButton(false);
-       // window.location.assign("/cadastro");
-      })
-      .catch(error => {
-        console.error(error);
-      });
     await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST");
     isAttachment(true)
+    setisLoadingButton(false)
   };
+
+  async function nextPage() {
+    await apiRequest("/api/directus/update", { userId: user.id, formData: { associate_status: 6 } }, "POST")
+    window.location.assign("/cadastro");
+  }
+
 
   return (
     <div>
-        <div>
-          <Form>
-            <Form.Group controlId="formFile2">
-              <Form.Label className="label-upload">
-                {isLoadingButton && (
-                  <span class="loading-text">
-                    <img class="animated-icon" width="40" src="/icons/data-cloud.gif" /> Carregando documento... <img class="animated-icon" width="40" src="/icons/data-cloud.gif" />
-                  </span>
-                )}
-                {!isLoadingButton  && !attachment && <span>Anexar outros arquivos</span>}
-                {!isLoadingButton  && attachment && <span>Anexar mais um arquivo</span>}
-              </Form.Label>
-              <Form.Control className="input-upload" type="file" onChange={handleFile} />
-            </Form.Group>
-          </Form>
-        </div>        
+      <div>
+        <Form>
+          <Form.Group controlId="formFile2">
+            <Form.Label className="label-upload">
+              {isLoadingButton && (
+                <span class="loading-text">
+                  <img class="animated-icon" width="40" src="/icons/data-cloud.gif" /> Carregando documento... <img class="animated-icon" width="40" src="/icons/data-cloud.gif" />
+                </span>
+              )}
+              {!isLoadingButton && !attachment && <span>Anexar outros arquivos</span>}
+              {!isLoadingButton && attachment && <span>Anexar mais um arquivo</span>}
+            </Form.Label>
+            <div class="col-12 d-flex justify-content-center align-items-center" style={{ marginTop: "30px" }}><a onClick={(nextPage)} class="btn btn-primary btn-lg btn-signup">Já enviei todos os arquivos</a></div>
+            <Form.Control className="input-upload" type="file" onChange={handleFile} />
+          </Form.Group>
+        </Form>
+
+      </div>
     </div>
   );
 }
