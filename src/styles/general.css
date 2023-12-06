@@ -133,6 +133,15 @@ h1.sub-title {
   font-weight: bold;
 }
 
+.select-namefile {
+  width: 30% !important;
+  text-align:center;
+  height: 50px;
+  margin: 20px 0 40px;
+  border-radius: 10px;
+  padding:0 !important
+}
+
 ul.listPages {
   padding-left: 0;
 }
