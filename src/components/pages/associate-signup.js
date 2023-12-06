@@ -24,7 +24,7 @@ const AssociateSignUp = () => {
   const handleClose = () => setShowPopup(false);
   const handleShow = () => setShowPopup(true);
   const [passError, setPassError] = useState(false);
-  const [phoneError, setPhoneError] = useState(false);
+
 
   useEffect(() => {
     (async () => {
@@ -231,17 +231,6 @@ const AssociateSignUp = () => {
       }, 6000);
 
       emptyFields.push("pass");
-    }
-
-    const mobilenumber = formData.mobile_number
-    console.log(mobilenumber)    
-    if(mobilenumber && mobilenumber.length < 13){
-      console.log(mobilenumber.length)
-      setPhoneError(true)
-      setTimeout(() => {
-        setPhoneError(false);
-      }, 6000);
-      emptyFields.push("mobile_number");
     }
 
     setFieldsError(true);
@@ -487,11 +476,6 @@ const AssociateSignUp = () => {
         {cpfNotValid && (
           <div class="alert3">
             <AlertError message="O CPF digitado não é válido" />
-          </div>
-        )}
-        {phoneError && (
-          <div class="alert3">
-            <AlertError message="O telefone precisa estar completo" />
           </div>
         )}
         {passError && (

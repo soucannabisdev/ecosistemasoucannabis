@@ -44,9 +44,13 @@ function MedicalAppointment() {
     file.storage = "local";
     file.filename_download = file.name;
 
+    var fileName = file.name
+    fileName = fileName.split(".")
+    const nameFile = "Laudo-Medico-01."+fileName[1]
+
     var formData = new FormData();
     formData.append("folder", userFolder);
-    formData.append("file", file);
+    formData.append("file", file, nameFile);
 
     var fileId = "";
 
@@ -99,7 +103,6 @@ function MedicalAppointment() {
       {prescription && (
         <div>
           <h1 className="sub-title">Envie sua receita médica aqui: </h1>
-
           <Form>
             <Form.Group controlId="formFile1">
               <Form.Label className="label-upload">
@@ -114,11 +117,13 @@ function MedicalAppointment() {
                 </div>}
               </Form.Label>
               <br></br>
-              <p style={{ color: "#fff", textAlign: "center", fontSize: "18px" }}>Abaixo você pode enviar arquivos que complementem  a sua receita como, laudos médicos, exames e outras receitas.</p>
+              <p style={{ color: "#fff", textAlign: "center", fontSize: "20px", padding:"0 20%" }}>Abaixo você pode enviar arquivos que complementem a sua receita como, laudos médicos, exames e outras receitas.</p>
               <Form.Control className="input-upload" type="file" onChange={handleFileChange} />
             </Form.Group>
           </Form>
           <MultipleFiles />
+          <br></br>
+          <br></br>
         </div>
       )}
     </div>
