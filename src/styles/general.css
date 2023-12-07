@@ -368,6 +368,20 @@ textarea#reason_treatment_text {
   top: 270px;
 }
 
+.alert4 > .custom-alert {
+  top: 320px;
+}
+
+
+.alert4 > .custom-alert > .alert {
+  background-color: green;
+  border:none
+}
+
+.alert4 > .custom-alert > .alert > b{
+  color:#fff
+}
+
 .warning-button-modal {
   font-weight: bold;
   margin-left: 10px;

@@ -6,6 +6,8 @@ import MultipleFiles from "./elements/multipleFiles";
 import ContactModal from "../../components/pages/modals/contact";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import directusRequestUpload from "../../modules/directusRequestUpload";
+import AlertError from "../forms/AlertError";
+import Resizer from 'react-image-file-resizer';
 
 function MedicalAppointment() {
 
@@ -26,7 +28,7 @@ function MedicalAppointment() {
 
   const [user, setUser] = useState({});
   const [prescription, setPrescription] = useState(false);
-  const [file, setFile] = useState(null);
+  const [fileError, setFileError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   if (user.associate_status > 5) {
@@ -34,49 +36,69 @@ function MedicalAppointment() {
   }
 
   const handleFileChange = async event => {
-    setIsLoading(true);
-    setFile(event.target.files[0]);
-
     const userFolder = localStorage.getItem("user_folder");
 
-    const file = event.target.files[0];
+    const file = event.target.files[0]
 
     file.storage = "local";
     file.filename_download = file.name;
 
     var fileName = file.name
     fileName = fileName.split(".")
-    const nameFile = "Laudo-Medico-01."+fileName[1]
+    const nameFile = "Receita-Medica." + fileName[1]
 
-    var formData = new FormData();
-    formData.append("folder", userFolder);
-    formData.append("file", file, nameFile);
+    if (fileName[1] == "jpg" || fileName[1] == "jpeg" || fileName[1] == "png" || fileName[1] == "gif" || fileName[1] == "pdf") {
+      setIsLoading(true);
 
-    var fileId = "";
-
-    await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
-      .then(response => {
-        fileId = response.id;
-        return fileId;
-      })
-      .catch(error => {
-        console.error(error);
+      const compressedImage = await new Promise((resolve) => {
+        Resizer.imageFileResizer(
+          file,
+          800, 
+          600, 
+          fileName[1], 
+          70, 
+          0,
+          (uri) => {
+            resolve(uri);
+          },
+          'file' 
+        );
       });
 
-    if (user.associate_status > 6) {
-      window.location.assign("/");
+      var formData = new FormData();
+      formData.append("folder", userFolder);
+      formData.append("file", compressedImage, nameFile);
+
+     
+      var fileId = "";
+
+   await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
+         .then(response => {
+           fileId = response.id;
+           return fileId;
+         })
+         .catch(error => {
+           console.error(error);
+         });
+      
+       await apiRequest("/api/directus/update", { userId: user.id, formData: { medical_prescription: fileId, status: "prescription" } }, "POST")
+         .then(response => {
+           setIsLoading(false);
+         })
+         .catch(error => {
+           console.error(error);
+         });
+
+         
+       await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST");
+   
+       setMedicalPrescrption(true)
+    }else{
+      setFileError(true)
+      setTimeout(() => {
+        setFileError(false)
+      }, 6000);
     }
-
-    await apiRequest("/api/directus/update", { userId: user.id, formData: { medical_prescription: fileId, status: "prescription" } }, "POST")
-      .then(response => {
-        setIsLoading(false);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-    await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST");
-
-    setMedicalPrescrption(true)
   };
 
   const medicalAppointmentYes = async () => {
@@ -117,7 +139,7 @@ function MedicalAppointment() {
                 </div>}
               </Form.Label>
               <br></br>
-              <p style={{ color: "#fff", textAlign: "center", fontSize: "20px", padding:"0 20%" }}>Abaixo você pode enviar arquivos que complementem a sua receita como, laudos médicos, exames e outras receitas.</p>
+              <p style={{ color: "#fff", textAlign: "center", fontSize: "20px", padding: "0 20%" }}>Abaixo você pode enviar arquivos que complementem a sua receita como, laudos médicos, exames e outras receitas.</p>
               <Form.Control className="input-upload" type="file" onChange={handleFileChange} />
             </Form.Group>
           </Form>
@@ -126,6 +148,11 @@ function MedicalAppointment() {
           <br></br>
         </div>
       )}
+       {fileError && (
+          <div class="alert3">
+            <AlertError message="Formato do documento inválido, formatos aceitos (JPG, PNG, GIF e PDF)" />
+          </div>
+        )}
     </div>
   );
 }
