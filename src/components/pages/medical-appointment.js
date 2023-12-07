@@ -45,7 +45,7 @@ function MedicalAppointment() {
 
     var fileName = file.name
     fileName = fileName.split(".")
-    const nameFile = "Laudo-Medico." + fileName[1]
+    const nameFile = "Receita-Medica." + fileName[1]
 
     if (fileName[1] == "jpg" || fileName[1] == "jpeg" || fileName[1] == "png" || fileName[1] == "gif" || fileName[1] == "pdf") {
       setIsLoading(true);
