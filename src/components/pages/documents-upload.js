@@ -69,6 +69,7 @@ const FileUploadComponent = () => {
 
   }, []);
 
+
   const handleFile1Change = async event => {
 
     const file1 = event.target.files[0];
@@ -84,7 +85,7 @@ const FileUploadComponent = () => {
 
       var fileName = file1.name
       fileName = fileName.split(".")
-      const nameFile = "RG." + fileName[1]
+      const nameFile = "doc-identidade-" + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1]
 
       if (fileName[1] == "jpg" || fileName[1] == "jpeg" || fileName[1] == "png" || fileName[1] == "gif" || fileName[1] == "pdf") {
         setIsLoading(true);
@@ -127,13 +128,14 @@ const FileUploadComponent = () => {
             console.error(error);
           });
 
+        setRgProof(true);
+        setIsLoading(false);
+
         const bodyRequest = { rg_proof: fileId };
         await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST")
 
         await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST")
 
-        setRgProof(true);
-        setIsLoading(false);
       } else {
         setFileError(true)
         setTimeout(() => {
@@ -155,7 +157,7 @@ const FileUploadComponent = () => {
 
       var fileName = file2.name
       fileName = fileName.split(".")
-      const nameFile = "COMP-RESIDENCIA." + fileName[1]
+      const nameFile = "comp-residencia-" + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1]
 
       if (fileName[1] == "jpg" || fileName[1] == "jpeg" || fileName[1] == "png" || fileName[1] == "gif" || fileName[1] == "pdf") {
         setIsLoadingB(true);
@@ -191,19 +193,21 @@ const FileUploadComponent = () => {
         await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
           .then(response => {
             fileId = response.id;
-            return fileId;
+            return fileId;           
+
           })
           .catch(error => {
             console.error(error);
           });
 
+          setButtonMsg("Gerando termo para assinatura")
+
         const bodyRequest = { proof_of_address: fileId, status: "proofs" };
         await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST")
-    
+
         await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST")
 
-        setButtonMsg("Gerando termo para assinatura")
-
+        
         docuseal();
 
         setProof_of_address(true);
@@ -229,7 +233,9 @@ const FileUploadComponent = () => {
 
       var fileName = file3.name
       fileName = fileName.split(".")
-      const nameFile = "RG-PACIENTE." + fileName[1]
+      const nameFile = "doc-paciente-" + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1]
+
+      
 
       if (fileName[1] == "jpg" || fileName[1] == "jpeg" || fileName[1] == "png" || fileName[1] == "gif" || fileName[1] == "pdf") {
         setIsLoadingC(true);
