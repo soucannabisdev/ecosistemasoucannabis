@@ -5,7 +5,7 @@ import User from "../../../modules/User";
 import AlertError from "../../forms/AlertError";
 import directusRequestUpload from "../../../modules/directusRequestUpload";
 import Resizer from 'react-image-file-resizer';
-import { Options } from "selenium-webdriver/chromium";
+
 
 function MultipleFiles() {
 
