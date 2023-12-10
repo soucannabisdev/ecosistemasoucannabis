@@ -6,6 +6,7 @@ import AlertError from "../../forms/AlertError";
 import directusRequestUpload from "../../../modules/directusRequestUpload";
 import Resizer from 'react-image-file-resizer';
 
+
 function MultipleFiles() {
 
   const [user, setUser] = useState({});
@@ -62,7 +63,7 @@ function MultipleFiles() {
 
           var formData = new FormData();
           formData.append("folder", userFolder);
-          formData.append("file", compressedImage, archiveName+"."+fileName[1]);
+          formData.append("file", compressedImage, archiveName + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1]);
         } else {
           var formData = new FormData();
           formData.append("folder", userFolder);
@@ -84,6 +85,9 @@ function MultipleFiles() {
         await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST");
         isAttachment(true)
         setisLoadingButton(false)
+
+       // const optionSelect = document.querySelector("#"+archiveName)
+        //optionSelect.remove()
 
         document.querySelector("#nameDocument").value = "";
         setFileName(false)
@@ -127,9 +131,9 @@ function MultipleFiles() {
         <div className="col-12 d-flex justify-content-center">
           <select class="form-input input-login select-namefile" id="nameDocument" name="nameDocument" onChange={nameFile}>
             <option value="">Selecione o tipo do documento </option>
-            <option value="Laudo">Laudo Médico</option>
-            <option value="Exame">Exame</option>
-            <option value="Receita">Outra Receita</option>
+            <option id="laudo-"  value="laudo-">Laudo Médico</option>
+            <option id="exame-"  value="exame-">Exame</option>
+            <option id="outra-receita-"  value="outra-receita-">Outra Receita</option>
           </select>
         </div>
 

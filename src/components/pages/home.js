@@ -30,7 +30,7 @@ function Home() {
     window.location.assign("/consulta");
   }
   if (user.associate_status == 5) {
-    window.location.assign("/receita-medica");
+    window.location.assign("/cadastro");
   }
   if (user.associate_status >= 6) {
     window.location.assign("/cadastro");
