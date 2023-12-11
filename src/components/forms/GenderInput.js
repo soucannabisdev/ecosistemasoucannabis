@@ -27,8 +27,12 @@ const GenderSelect = ({ handleChangeInput }) => {
             }}
           >
             <option value="">Selecione...</option>
-            <option value="masculino">Masculino</option>
-            <option value="feminino">Feminino</option>
+            <option value="homem-cis">Homem Cis</option>
+            <option value="mulher-cis">Mulher Cis</option>
+            <option value="homem-trans">Homem Trans</option>
+            <option value="mulher-trans">Mulher Trans</option>
+            <option value="travesti">Travesti</option>
+            <option value="nao-binario">Não binário</option>
             <option value="outro">Outro Gênero</option>
           </select>
           <br></br>
