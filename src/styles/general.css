@@ -413,6 +413,10 @@ textarea {
   font-size: 22px;
 }
 
+.form-desabilitado {
+  pointer-events: none;
+}
+
 .lost-pass {
   float: right;
   text-decoration: none;

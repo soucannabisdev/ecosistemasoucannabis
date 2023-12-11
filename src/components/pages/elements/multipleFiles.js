@@ -16,6 +16,7 @@ function MultipleFiles() {
   const [attachment, isAttachment] = useState(false);
   const [fileError, setFileError] = useState(false);
   const [fileSuccess, setFileSuccess] = useState(false);
+  const [selectInfo, setSelectInfo] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -33,80 +34,86 @@ function MultipleFiles() {
 
       const file = event.target.files[0];
 
-      if(file){
+      if (file) {
 
-      file.storage = "local";      
+        file.storage = "local";
 
-      var fileName = file.name
-      fileName = fileName.split(".")
-      
+        var fileName = file.name
+        fileName = fileName.split(".")
 
-      if (fileName[1] == "jpg" || fileName[1] == "jpeg" || fileName[1] == "png" || fileName[1] == "gif" || fileName[1] == "pdf") {
-        setisLoadingButton(true);
 
-        if (fileName[1] != "pdf") {
+        if (fileName[1] == "jpg" || fileName[1] == "jpeg" || fileName[1] == "png" || fileName[1] == "gif" || fileName[1] == "pdf") {
+          setisLoadingButton(true);
 
-          const compressedImage = await new Promise((resolve) => {
-            Resizer.imageFileResizer(
-              file,
-              800,
-              600,
-              fileName[1],
-              70,
-              0,
-              (uri) => {
-                resolve(uri);
-              },
-              'file'
-            );
-          });
+          if (fileName[1] != "pdf") {
 
-          var formData = new FormData();
-          formData.append("folder", userFolder);
-          formData.append("file", compressedImage, archiveName + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1]);
+            const compressedImage = await new Promise((resolve) => {
+              Resizer.imageFileResizer(
+                file,
+                800,
+                600,
+                fileName[1],
+                70,
+                0,
+                (uri) => {
+                  resolve(uri);
+                },
+                'file'
+              );
+            });
+
+            var formData = new FormData();
+            formData.append("folder", userFolder);
+            formData.append("file", compressedImage, archiveName + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1]);
+          } else {
+            var formData = new FormData();
+            formData.append("folder", userFolder);
+            formData.append("file", file, archiveName + "." + fileName[1]);
+
+          }
+
+          var fileId = "";
+
+          await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
+            .then(response => {
+              fileId = response.id;
+              return fileId;
+            })
+            .catch(error => {
+              console.error(error);
+            });
+
+          await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST");
+          isAttachment(true)
+          setisLoadingButton(false)
+
+          const optionSelect = document.querySelector("#" + archiveName)
+          optionSelect.remove()
+
+          document.querySelector("#nameDocument").value = "";
+          setFileName(false)
+
+          document.querySelector("#nameDocument").className = "col-12 d-flex  select-namefile";
+
+          const countOptions = document.querySelector("#nameDocument")
+
+          if (countOptions && countOptions.childNodes.length === 1) {
+            setSelectInfo(true);
+          }
+
+          setFileSuccess(true)
+          setTimeout(() => {
+            setFileSuccess(false)
+          }, 6000);
+
         } else {
-          var formData = new FormData();
-          formData.append("folder", userFolder);
-          formData.append("file", file, archiveName+"."+fileName[1]);
-
+          setFileError(true)
+          setTimeout(() => {
+            setFileError(false)
+          }, 5000);
         }
-
-        var fileId = "";
-
-        await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
-          .then(response => {
-            fileId = response.id;
-            return fileId;
-          })
-          .catch(error => {
-            console.error(error);
-          });
-
-        await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST");
-        isAttachment(true)
-        setisLoadingButton(false)
-
-       // const optionSelect = document.querySelector("#"+archiveName)
-        //optionSelect.remove()
-
-        document.querySelector("#nameDocument").value = "";
-        setFileName(false)
-
-        document.querySelector("#nameDocument").className = "col-12 d-flex  select-namefile";
-
-        setFileSuccess(true)
-        setTimeout(() => {
-          setFileSuccess(false)
-        }, 6000);
-
-      } else {
-        setFileError(true)
-        setTimeout(() => {
-          setFileError(false)
-        }, 5000);
       }
-    } 
-    }else {
+    } else {
       document.querySelector("#nameDocument").className = "col-12 d-flex  select-namefile input-empty";
       setErrorNamefile(true)
       setTimeout(() => {
@@ -130,14 +137,21 @@ function MultipleFiles() {
       <div>
         <div className="col-12 d-flex justify-content-center">
           <select class="form-input input-login select-namefile" id="nameDocument" name="nameDocument" onChange={nameFile}>
-            <option value="">Selecione o tipo do documento </option>
-            <option id="laudo-"  value="laudo-">Laudo Médico</option>
-            <option id="exame-"  value="exame-">Exame</option>
-            <option id="outra-receita-"  value="outra-receita-">Outra Receita</option>
+            <option value="">
+              {!selectInfo &&
+                "Selecione o tipo do documento"
+              }
+              {selectInfo &&
+                "Você já enviou todos os arquivos"
+              }
+            </option>
+
+            <option id="laudo-" value="laudo-">Laudo Médico</option>
+            <option id="exame-" value="exame-">Exame</option>
           </select>
         </div>
 
-        <Form>
+        <Form className={selectInfo ? 'form-desabilitado' : ''}>
           <Form.Group controlId="formFile2">
             <Form.Label className="label-upload">
               {isLoadingButton && (
@@ -146,12 +160,13 @@ function MultipleFiles() {
                 </span>
               )}
               {!isLoadingButton && !attachment && <span>Anexar outros arquivos</span>}
-              {!isLoadingButton && attachment && <span>Anexar mais um arquivo</span>}
+              {!isLoadingButton && attachment && !selectInfo && <span>Anexar mais um arquivo</span>}
+              {selectInfo && attachment && <span>Clique abaixo para continuar seu cadastro</span>}
             </Form.Label>
-            <div class="col-12 d-flex justify-content-center align-items-center" style={{ marginTop: "70px" }}><a onClick={(nextPage)} class="btn btn-primary btn-lg btn-signup">Já enviei todos os arquivos</a></div>
             <Form.Control className="input-upload" type="file" onChange={handleFile} />
           </Form.Group>
         </Form>
+        <div class="col-12 d-flex justify-content-center align-items-center" style={{ marginTop: "70px" }}><a onClick={(nextPage)} class="btn btn-primary btn-lg btn-signup">Já enviei todos os arquivos</a></div>
 
       </div>
       {errorNamefile && (

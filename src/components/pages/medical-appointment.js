@@ -139,7 +139,7 @@ function MedicalAppointment() {
                 </div>}
               </Form.Label>
               <br></br>
-              <p style={{ color: "#fff", textAlign: "center", fontSize: "20px", padding: "0 20%" }}>Abaixo você pode enviar arquivos que complementem a sua receita como, laudos médicos, exames e outras receitas.</p>
+              <p style={{ color: "#fff", textAlign: "center", fontSize: "20px", padding: "0 20%" }}>Abaixo você pode enviar arquivos que complementem a sua receita como laudos médicos e exames.</p>
               <Form.Control className="input-upload" type="file" onChange={handleFileChange} />
             </Form.Group>
           </Form>
