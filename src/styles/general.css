@@ -484,6 +484,10 @@ img.logo {
 
 @media screen and (max-width: 600px) {
 
+  body {
+    background-position-x: center;
+  }
+
   h1.title {
     font-size: 24px;
   }
@@ -586,10 +590,12 @@ img.logo {
     justify-content: left;
     align-items: left;
   }
+
   select#nameDocument {
     width: 200px !important;
     font-size: 12px;
-}
+  }
+
   p.loading-text {
     color: #fff;
     margin-top: 10px;
@@ -634,7 +640,7 @@ img.logo {
   }
 
   button.btn.btn-success.btn-lg {
-    margin-left: 18%;
+    margin-left: 0;
     font-size: 15px;
   }
 
@@ -666,7 +672,7 @@ img.logo {
 
   span.doc-patient {
     font-size: 15px;
-}
+  }
 
   .label-upload:hover,
   .label-upload:active {
