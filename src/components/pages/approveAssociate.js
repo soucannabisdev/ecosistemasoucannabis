@@ -31,17 +31,27 @@ function ApproveAssociate() {
   return (
     <div className="form-container ">
       <h1 className="title">Aprovação de cadastro</h1>
+      <br></br>
+      {!msg && (
+        <div>
+          <h2 style={{ textAlign: "center" }}>Ao clicar no botão abaixo você enviará seus dados para nossa equipe de acolhimento.</h2>
+          <h2 style={{ textAlign: "center" }}>Seus documentos e sua receita médica serão analisados e seu cadastro como associado será aprovado,
+          para poder então fazer sua primeira compra.<br></br> Em caso de algum problema com seus dados, vocÊ será informado para editá-los.
+          </h2>
+          <h2 style={{textAlign:"center"}}>Aguarde nossa equipe de acolhimento entrar em contato.</h2>
+        </div>
+      )}
+
       {msg && (
         <div>
-          <h1 className="sub-title">Seus dados estão sendo analisados por nossa equipe de acolhimento, em breve você recebrá o retorno.</h1>
-          <h1 className="sub-title">Um e-mail será enviado quando sua aprovação for efetivada.</h1>
-          <h1 className="sub-title">Ou recarregue a página para verificar sua aprovação.</h1>
+         <h2 style={{textAlign:"center"}}>Seus dados foram enviados para nossa equipe de acolhimento, você está em nossa lista de espera, em breve entraremos em contato.</h2>
+         <h2 style={{textAlign:"center"}}>Obrigado.</h2>
         </div>
       )}
       {user.associate_status == 8 && <h1 className="sub-title">Cadastro Aprovado</h1>}
       {user.associate_status == 6 && (
         <div className="d-flex justify-content-center align-items-center">
-          <button onClick={approve} type="button" class="btn btn-success btn-lg" hidden={msg}>
+          <button style={{marginBottom:"30px"}} onClick={approve} type="button" class="btn btn-success btn-lg" hidden={msg}>
             Solicitar aprovação do cadastro
           </button>
         </div>

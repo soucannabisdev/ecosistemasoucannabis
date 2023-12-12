@@ -50,8 +50,7 @@ const LostPass = () => {
     if (formData.passA != formData.passB) {
       setPassError(true);
     } else {
-      var password = encrypt(formData.passA, secretKey);
-      await apiRequest("/api/directus/update", { userId: userId, formData: { pass_account: password } }, "POST");
+      await apiRequest("/api/directus/update", { userId: userId, formData: { pass_account: formData.passA } }, "POST");
       window.location.assign("/login");
     }
   }
@@ -81,7 +80,7 @@ const LostPass = () => {
 
       {!timeError && (
         <div>
-          <h1 class="text-center sub-title">Preencha seu e-mail abaixo para receber um link para definir uma nova senha.</h1>
+          <h1 class="text-center sub-title">Digite uma nova senha para sua conta abaixo:</h1>
           <form action="POST">
             <br></br>
             <label className="form-label">Nova senha:</label>

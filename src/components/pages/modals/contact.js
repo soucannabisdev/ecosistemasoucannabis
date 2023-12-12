@@ -38,7 +38,7 @@ const Contact = ({ type, redirect }) => {
       name: null,
       phone: null,
       email: null,
-      message: "Olá, gostaria de agendar uma consulta médica.",
+     // message: "Olá, gostaria de agendar uma consulta médica.",
       type: 1
     }
   } else {
@@ -46,7 +46,7 @@ const Contact = ({ type, redirect }) => {
       name: null,
       phone: null,
       email: null,
-      message: null,
+     // message: null,
       type: 0
     }
   }
@@ -74,7 +74,10 @@ const Contact = ({ type, redirect }) => {
 
       setInputError(true)
     } else {
-      await apiRequest("/api/chatwoot/send-message-api", JSON.stringify(formData), "POST")
+
+      await fetch("https://api.utalk.chat/send/tc8bgmg/?cmd=chat&to=" + formData.phone + "@c.us&msg=Olá, recebemos sua mensagem! Você está em nossa lista de espera, aguarde para ser atendido.", {method:"GET"});
+
+    /*  await apiRequest("/api/chatwoot/send-message-api", JSON.stringify(formData), "POST")
         .then(response => {
           if (response != []) {
             setMsgWhats(true)
@@ -90,7 +93,7 @@ const Contact = ({ type, redirect }) => {
         });
 
       const phone = "+" + formData.phone
-      await apiRequest("/api/chatwoot/send-message-chat", JSON.stringify({
+       await apiRequest("/api/chatwoot/send-message-chat", JSON.stringify({
         "email": formData.email,
         "name": formData.name,
         "phone_number": phone,
@@ -99,7 +102,7 @@ const Contact = ({ type, redirect }) => {
       }), "POST")
         .catch(error => {
           console.error(error);
-        });
+        });*/
     }
 
     setSumbit(false)
@@ -186,12 +189,12 @@ const Contact = ({ type, redirect }) => {
                 <PhoneInputs value={formData.phone} onChange={handleChangeInputPhone} onBlur={handleChangeInputPhone} handleChangeInput={handleChangeInputPhone} name="phone" />
 
               </div>
-              {type != "appointment" && (
+              {/*type != "appointment" && (
                 <label>Mensagem:</label>
               )}
               {type != "appointment" && (
                 <textarea name="message" className="form-control" onBlur={handleChangeInput} onChange={handleChangeInput} />
-              )}
+              )*/}
 
             </div>
             <br></br>

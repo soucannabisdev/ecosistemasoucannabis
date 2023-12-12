@@ -460,6 +460,9 @@ const AssociateSignUp = () => {
           <button class="btn btn-success btn-lg btn-float-right" type="submit">
             Enviar dados
           </button>
+          <br></br>
+          <br></br>
+          <br></br>
         </div>
 
         {fieldsError && <AlertError message="Você precisa preencher todos os campos" />}

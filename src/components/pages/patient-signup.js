@@ -252,7 +252,7 @@ const AssociateSignUp = () => {
       </Modal>
 
       <form onSubmit={updateUser} className="form-container ">
-        <h1 className="sub-title">Cadastro Paciente</h1>
+        <h1 className="sub-title">Cadastro do Paciente</h1>
         <br></br>
 
         <br></br>
@@ -386,9 +386,6 @@ const AssociateSignUp = () => {
             </label>
             <input placeholder="Digie o CEP" class="form-input input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.cep} type="text" id="cep" name="cep"></input>
           </div>
-          <br></br>
-          <br></br>
-          *----*
           <div className="mb-3" style={{ display: "none" }}>
             <MultiSelectField onChange={handleSelectionChange} value="hidden" name="reason_treatment" hidden />
             <textarea onChange={handleChangeInput} onBlur={handleChangeInput} value="hidden" as="textarea" id="reason_treatment_text" name="reason_treatment_text" hidden />
@@ -396,8 +393,11 @@ const AssociateSignUp = () => {
           <button class="btn btn-success btn-lg btn-float-right" type="submit">
             Enviar dados
           </button>
-        </div>
 
+          <br></br>
+          <br></br>
+        </div>
+        
         {fieldsError && <AlertError message="Você precisa preencher todos os campos" />}
         {cpfError && (
           <div class="alert2">

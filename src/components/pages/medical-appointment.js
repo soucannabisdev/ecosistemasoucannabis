@@ -50,50 +50,58 @@ function MedicalAppointment() {
     if (fileName[1] == "jpg" || fileName[1] == "jpeg" || fileName[1] == "png" || fileName[1] == "gif" || fileName[1] == "pdf") {
       setIsLoading(true);
 
-      const compressedImage = await new Promise((resolve) => {
-        Resizer.imageFileResizer(
-          file,
-          800, 
-          600, 
-          fileName[1], 
-          70, 
-          0,
-          (uri) => {
-            resolve(uri);
-          },
-          'file' 
-        );
-      });
+      if (fileName[1] != "pdf") {
 
-      var formData = new FormData();
-      formData.append("folder", userFolder);
-      formData.append("file", compressedImage, nameFile);
+        const compressedImage = await new Promise((resolve) => {
+          Resizer.imageFileResizer(
+            file,
+            800,
+            600,
+            fileName[1],
+            70,
+            0,
+            (uri) => {
+              resolve(uri);
+            },
+            'file'
+          );
+        });
 
-     
+        var formData = new FormData();
+        formData.append("folder", userFolder);
+        formData.append("file", compressedImage, nameFile);
+      }
+      else {
+        var formData = new FormData();
+        formData.append("folder", userFolder);
+        formData.append("file", file, nameFile);
+      }
+
+
       var fileId = "";
 
-   await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
-         .then(response => {
-           fileId = response.id;
-           return fileId;
-         })
-         .catch(error => {
-           console.error(error);
-         });
-      
-       await apiRequest("/api/directus/update", { userId: user.id, formData: { medical_prescription: fileId, status: "prescription" } }, "POST")
-         .then(response => {
-           setIsLoading(false);
-         })
-         .catch(error => {
-           console.error(error);
-         });
+      await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
+        .then(response => {
+          fileId = response.id;
+          return fileId;
+        })
+        .catch(error => {
+          console.error(error);
+        });
 
-         
-       await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST");
-   
-       setMedicalPrescrption(true)
-    }else{
+      await apiRequest("/api/directus/update", { userId: user.id, formData: { medical_prescription: fileId, status: "prescription" } }, "POST")
+        .then(response => {
+          setIsLoading(false);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+
+
+      await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST");
+
+      setMedicalPrescrption(true)
+    } else {
       setFileError(true)
       setTimeout(() => {
         setFileError(false)
@@ -127,32 +135,33 @@ function MedicalAppointment() {
           <h1 className="sub-title">Envie sua receita médica aqui: </h1>
           <Form>
             <Form.Group controlId="formFile1">
-              <Form.Label className="label-upload">
+              <Form.Label className="label-upload" hidden={medicalPrescrption}>
                 {isLoading && (
                   <span class="loading-text">
                     <img class="animated-icon" width="40" src="/icons/data-cloud.gif" /> Carregando documento... <img class="animated-icon" width="40" src="/icons/data-cloud.gif" />
                   </span>
                 )}
                 {!isLoading && !medicalPrescrption && <span>Enviar receita médica</span>}
-                {medicalPrescrption && <div>
-                  <Form.Label className="label-upload send-ok">Receita médica enviada</Form.Label>
-                </div>}
-              </Form.Label>
-              <br></br>
-              <p style={{ color: "#fff", textAlign: "center", fontSize: "20px", padding: "0 20%" }}>Abaixo você pode enviar arquivos que complementem a sua receita como laudos médicos e exames.</p>
+              </Form.Label>             
+
+              {medicalPrescrption &&
+                <Form.Label className="label-upload send-ok prescription-button">Receita Médica Enviada</Form.Label>
+              }             
               <Form.Control className="input-upload" type="file" onChange={handleFileChange} />
             </Form.Group>
           </Form>
+          <br></br>
+              <p style={{ color: "#fff", textAlign: "center", fontSize: "20px", padding: "0 20%" }}>Abaixo você pode enviar arquivos que complementem a sua receita como laudos médicos e exames.</p>
           <MultipleFiles />
           <br></br>
           <br></br>
         </div>
       )}
-       {fileError && (
-          <div class="alert3">
-            <AlertError message="Formato do documento inválido, formatos aceitos (JPG, PNG, GIF e PDF)" />
-          </div>
-        )}
+      {fileError && (
+        <div class="alert3">
+          <AlertError message="Formato do documento inválido, formatos aceitos (JPG, PNG, GIF e PDF)" />
+        </div>
+      )}
     </div>
   );
 }
