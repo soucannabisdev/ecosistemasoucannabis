@@ -24,20 +24,39 @@ function LoginForm() {
 
   const userLogin = async event => {
     event.preventDefault();
-    await apiRequest("/api/directus/login", { email: emailInput, pass: passInput }, "POST").then(async response => {
-      if (!response) {
-        setLoginEmailError(true);
-        setLogged(false);
-        setTimeout(() => {
-          setLoginEmailError(false);
-        }, 5000);
-      } else {
-        localStorage.setItem("user_code", await response.user_code);
-        setLogged(true);
-        setLoginSucess(true);
-        window.location.assign("/");
-      }
-    });
+
+    console.log(passInput)
+
+    if (passInput == []) {
+      setLoginEmailError(true);
+    } else {
+      await apiRequest("/api/directus/login", { email: emailInput, pass: passInput }, "POST").then(async response => {
+        console.log(response.pass_account)
+        if (!response) {
+          setLoginEmailError(true);
+          setTimeout(() => {
+            setLoginEmailError(false);
+          }, 5000);
+          setLogged(false);
+          setTimeout(() => {
+            setLoginEmailError(false);
+          }, 5000);
+        } else {
+          if (response.pass_account == passInput) {
+            localStorage.setItem("user_code", await response.user_code);
+            setLogged(true);
+            setLoginSucess(true);
+            window.location.assign("/")
+          } else {
+            setLoginEmailError(true);
+            setTimeout(() => {
+              setLoginEmailError(false);
+            }, 5000);
+
+          }
+        }
+      });
+    }
   };
 
   const emailHandleChange = event => {

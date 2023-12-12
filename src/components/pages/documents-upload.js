@@ -19,7 +19,7 @@ const FileUploadComponent = () => {
   const [isLoadingB, setIsLoadingB] = useState(false);
   const [isLoadingC, setIsLoadingC] = useState(false);
   const [fileError, setFileError] = useState(false);
-  const [buttonMsg, setButtonMsg] = useState("Carregando documento...");
+  const [buttonMsg, setButtonMsg] = useState(false);
 
   var userData = {};
 
@@ -193,21 +193,20 @@ const FileUploadComponent = () => {
         await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
           .then(response => {
             fileId = response.id;
-            return fileId;           
+            return fileId;
 
           })
           .catch(error => {
             console.error(error);
           });
 
-          setButtonMsg("Gerando termo para assinatura")
+        setButtonMsg(true)
 
         const bodyRequest = { proof_of_address: fileId, status: "proofs" };
         await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST")
 
         await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST")
 
-        
         docuseal();
 
         setProof_of_address(true);
@@ -235,7 +234,7 @@ const FileUploadComponent = () => {
       fileName = fileName.split(".")
       const nameFile = "doc-paciente-" + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1]
 
-      
+
 
       if (fileName[1] == "jpg" || fileName[1] == "jpeg" || fileName[1] == "png" || fileName[1] == "gif" || fileName[1] == "pdf") {
         setIsLoadingC(true);
@@ -394,7 +393,8 @@ const FileUploadComponent = () => {
   return (
     <div class="justify-content-center">
       <h1 class="sub-title">Envie seus documentos</h1>
-
+      <h3 style={{ textAlign: "center" }}>Clique nos botões abaixo para enviar uma foto de seus documentos</h3>
+      <br></br>
       <div class="">
         {!rgProof && (
           <Form>
@@ -425,8 +425,14 @@ const FileUploadComponent = () => {
             <Form.Group controlId="formFile2">
               <Form.Label className="label-upload">
                 {isLoadingB && (
-                  <span class="loading-text">
-                    <img class="animated-icon" width="40" src="/icons/data-cloud.gif" />  {buttonMsg} <img class="animated-icon" width="40" src="/icons/data-cloud.gif" />
+                  <span className="loading-text">
+                    <img className="animated-icon" width="40" src="/icons/data-cloud.gif" />
+                    {!buttonMsg ? (
+                      <span>Carregando documento...</span>
+                    ) : (
+                      <span style={{fontSize:"14px"}}>Gerando termo para assinatura</span>
+                    )}
+                    <img className="animated-icon" width="40" src="/icons/data-cloud.gif" />
                   </span>
                 )}
                 {!isLoadingB && <span>Comprovante de residência</span>}
@@ -450,7 +456,7 @@ const FileUploadComponent = () => {
                     <img class="animated-icon" width="40" src="/icons/data-cloud.gif" /> Carregando documento... <img class="animated-icon" width="40" src="/icons/data-cloud.gif" />
                   </span>
                 )}
-                {!isLoadingC && <span>Documento de Identidade do paciente</span>}
+                {!isLoadingC && <span class="doc-patient">Documento de Identidade do paciente</span>}
               </Form.Label>
               <Form.Control className="input-upload" type="file" onChange={handleFile3Change} />
             </Form.Group>
@@ -466,7 +472,7 @@ const FileUploadComponent = () => {
         )}
         <br></br>
 
-        <a className="label-upload " target="_blank" href={generateContract || user.contract} hidden={!proof_of_address}>
+        <a className="label-upload assign-term" target="_blank" href={generateContract || user.contract} hidden={!proof_of_address}>
           Assinar Termo de Responsabilidade
         </a>
       </div>

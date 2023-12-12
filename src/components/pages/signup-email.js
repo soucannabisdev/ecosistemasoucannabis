@@ -47,7 +47,10 @@ function SignupEmail() {
 
   return (
     <div class="container">
-      <h1 class="title" style={{ marginTop: "50px" }}>Cadastro de associado</h1>
+      <div class="row justify-content-center">
+      <img class="logo" src="https://soucannabis.ong.br/wp-content/uploads/elementor/thumbs/Logotipo-Horizontal-Branco-300x100-1-q756ld54d2nqroxriqdpggu81liv79biznretir15g.png"></img>
+      </div>
+      <h1 class="title" style={{ marginTop: "30px" }}>Cadastro de associado</h1>
       <div class="row justify-content-center">
         <div class="col-md-6 form-signup">
           {errorEmail && (

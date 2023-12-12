@@ -153,7 +153,7 @@ function MultipleFiles() {
 
         <Form className={selectInfo ? 'form-desabilitado' : ''}>
           <Form.Group controlId="formFile2">
-            <Form.Label className="label-upload">
+            <Form.Label className="label-upload"  hidden={selectInfo}>
               {isLoadingButton && (
                 <span class="loading-text">
                   <img class="animated-icon" width="40" src="/icons/data-cloud.gif" /> Carregando documento... <img class="animated-icon" width="40" src="/icons/data-cloud.gif" />

@@ -6,12 +6,16 @@ function Welcome() {
   return (
     
     <div class="container">
-         <div className="form-container bg1">
+         <div className="homepage">
             <div>
-                <h1 class="title"> Olá, seja bem-vindo(a) à Associação Sou Cannabis. </h1>
-                <h1 class="sub-title">Siga todos os passos deste guia para se tornar um Associado e contar com os benefícios da associação.</h1>
+                <h1 class="title"> Olá, seja bem-vindo à <br></br>Associação Sou Cannabis</h1>
+                <br></br>
+                <h2 style={{textAlign:"center"}}>Siga todos os passos deste guia para se tornar um Associado e contar com os benefícios da associação.</h2>
+                <h2 style={{textAlign:"center"}}>Você precisará informar seus dados pessoais e foto de documentos de Identidade e Comprovante de Residência.</h2>
+                <h2 style={{textAlign:"center"}}>Se você tiver dúvidas e precisar de ajuda, clique no botão <br></br><b style={{color:"orange"}}>Solicitar Contato</b> no menu.</h2>
                 <div class="container d-flex justify-content-center align-items-center">
                     <Link to="/cadastro-associado" class="btn btn-lg btn-primary btn-login" >Iniciar Cadastro</Link>
+                    <br></br>
                 </div>
             </div></div>
      
