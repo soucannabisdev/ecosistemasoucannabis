@@ -21,6 +21,7 @@ import LostPass from "./components/pages/lost-password";
 import User from "./modules/User";
 import Products from "./components/pages/shop/products";
 import "./styles/general.css";
+import backgroundImage from './images/background.jpg'
 import { Dropdown } from 'react-bootstrap';
 
 function App() {
@@ -68,7 +69,7 @@ function App() {
   return (
     <Router>
       {hiddenLogin && (
-        <div >
+        <div style={{ backgroundImage: `url(${backgroundImage})` }}>
           <Routes>
             <Route path="/iniciar-cadastro" element={<SignupEmail />} />
           </Routes>
