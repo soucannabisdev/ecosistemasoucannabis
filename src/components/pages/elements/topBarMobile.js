@@ -35,7 +35,7 @@ const TopBarMobile = () => {
                 <Link>
                   <li className="disabled">
                     <CheckIcon status={1} size={12} />
-                    Consulta Medica
+                    Consulta
                   </li>
                 </Link>
                 <Link>
@@ -63,7 +63,7 @@ const TopBarMobile = () => {
                 <Link>
                   <li className="disabled">
                     <CheckIcon status={1} size={12} />
-                    Consulta Medica
+                    Consulta
                   </li>
                 </Link>
                 <Link>
@@ -92,7 +92,7 @@ const TopBarMobile = () => {
                 <Link>
                   <li className="disabled">
                     <CheckIcon status={1} size={12} />
-                    Consulta Medica
+                    Consulta
                   </li>
                 </Link>
                 <Link>
@@ -121,7 +121,7 @@ const TopBarMobile = () => {
                 <Link>
                   <li className="item-selected">
                     <CheckIcon status={1} size={12} />
-                    Consulta Medica
+                    Consulta
                   </li>
                 </Link>
                 <Link>
@@ -150,7 +150,7 @@ const TopBarMobile = () => {
                 <Link>
                   <li className="line-through">
                     <CheckIcon status={2} size={12} />
-                    Consulta Medica
+                    Consulta
                   </li>
                 </Link>
                 <Link>
@@ -185,7 +185,7 @@ const TopBarMobile = () => {
                 <Link>
                   <li className="line-through">
                     <CheckIcon status={2} size={12} />
-                    Consulta Medica
+                    Consulta
                   </li>
                 </Link>
                 <Link to="/cadastro-aprovado">
@@ -219,7 +219,7 @@ const TopBarMobile = () => {
                 <Link>
                   <li className="line-through">
                     <CheckIcon status={2} size={12} />
-                    Consulta Medica
+                    Consulta
                   </li>
                 </Link>
                 <Link to="/cadastro-aprovado">

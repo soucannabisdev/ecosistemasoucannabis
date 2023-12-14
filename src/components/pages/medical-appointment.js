@@ -122,21 +122,21 @@ function MedicalAppointment() {
   return (
     <div>
       <form className="form-container">
-        <h1>Você ja tem uma Prescrição Médica?</h1>
+        <h1>Você ja tem uma Prescrição?</h1>
         <br></br>
         <div className="form-control options-container">
           <input type="radio" className="btn-check" onClick={medicalAppointmentYes} name="resposable" id="btnradio1" value="yes"></input>
           <label className="btn btn-outline-primary radio-input" htmlFor="btnradio1">
-            Sim, já realizei uma consulta médica e tenho minha receita.
+            Sim, já realizei uma consulta e tenho minha receita.
           </label>
           <ContactModal redirect="/cadastro" type="appointment" />
           <label className="btn btn-outline-primary radio-input" onClick={medicalAppointmentNo}  htmlFor="btnradio2">
-            Não, gostaria de agendar uma consulta médica.
+            Não, gostaria de agendar uma consulta.
           </label>
           
         </div> 
         {signupMessage && (
-        <h3 style={{padding:"35px 20px",textAlign:"center"}}>Para dar continuidade ao seu cadastro como asssociado, envie sua receita médica nesta página após a consulta para finalizar seu cadastro como associado.</h3>
+        <h3 style={{padding:"35px 20px",textAlign:"center"}}>Para dar continuidade ao seu cadastro como asssociado, envie sua receita nesta página após a consulta para finalizar seu cadastro como associado.</h3>
       )}   
       </form>
       
@@ -144,7 +144,7 @@ function MedicalAppointment() {
 
       {prescription && (
         <div>
-          <h1 className="sub-title">Envie sua receita médica aqui: </h1>
+          <h1 className="sub-title">Envie sua receita aqui: </h1>
           <Form>
             <Form.Group controlId="formFile1">
               <Form.Label className="label-upload" hidden={medicalPrescrption}>
