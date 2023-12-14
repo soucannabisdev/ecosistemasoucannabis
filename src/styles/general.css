@@ -230,7 +230,7 @@ select#reason_treatment {
 }
 
 body {
-  background: url("https://soucannabis.ong.br/wp-content/uploads/2023/05/holding-farmer-holding-cannabis-leaf.jpg");
+  background: url("../images/background.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-opacity: 0.1;
