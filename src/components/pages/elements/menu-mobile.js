@@ -24,7 +24,7 @@ const MenuTopo = () => {
 
   return (
     <nav className="navbar  navbar-light fixed-top">
-      <img style={{width:"25%"}} src="https://soucannabis.ong.br/wp-content/uploads/elementor/thumbs/Logotipo-Horizontal-Branco-300x100-1-q756ld54d2nqroxriqdpggu81liv79biznretir15g.png"></img>
+      <img style={{width:"25%"}} src="logo-soucannabis.png"></img>
       <Contact />
       <div className="">
         <Dropdown>

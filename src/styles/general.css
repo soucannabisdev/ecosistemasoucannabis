@@ -6,6 +6,7 @@ body {
   background-attachment: fixed !important;
 }
 
+
 body::before {
   content: "";
   position: fixed;
@@ -17,6 +18,12 @@ body::before {
   opacity: 0.9;
   z-index: -1;
 }
+h1 {
+  color: #fff;
+  text-align: center;
+  font-size: 34px;
+  margin: 20px 0;
+}
 
 h2 {
   color: #fff;
@@ -27,7 +34,7 @@ h2 {
 
 h3 {
   color: #fff;
-  font-size: 16px;
+  font-size: 22px;
   padding: 0 20px;
 }
 
@@ -482,7 +489,20 @@ img.logo {
   margin-top: 20px;
 }
 
+.input-search {
+  border-radius: 6px;
+  border: none;
+  margin-bottom: 5px;
+  width: 40%;
+  height: 0%;
+  padding: 1%
+}
+
 @media screen and (max-width: 600px) {
+
+  body {
+    background-position-x: center;
+  }
 
   h1.title {
     font-size: 24px;
@@ -522,6 +542,10 @@ img.logo {
     padding-left: 10px;
     opacity: 0.5;
     text-decoration: none;
+  }
+
+  .gernerate-term {
+    font-size: 14px
   }
 
   .icon-menu-item {
@@ -586,10 +610,12 @@ img.logo {
     justify-content: left;
     align-items: left;
   }
+
   select#nameDocument {
     width: 200px !important;
     font-size: 12px;
-}
+  }
+
   p.loading-text {
     color: #fff;
     margin-top: 10px;
@@ -634,7 +660,7 @@ img.logo {
   }
 
   button.btn.btn-success.btn-lg {
-    margin-left: 18%;
+    margin-left: 0;
     font-size: 15px;
   }
 
@@ -666,7 +692,7 @@ img.logo {
 
   span.doc-patient {
     font-size: 15px;
-}
+  }
 
   .label-upload:hover,
   .label-upload:active {
@@ -684,6 +710,12 @@ img.logo {
     font-weight: 600;
     box-shadow: 0px 3px 6px #000;
     padding-top: 5px
+  }
+
+  h3 {
+    color: #fff;
+    font-size: 16px;
+    padding: 0 20px;
   }
 
   a.label-upload {
