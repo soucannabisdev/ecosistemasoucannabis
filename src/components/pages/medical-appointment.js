@@ -30,6 +30,8 @@ function MedicalAppointment() {
   const [prescription, setPrescription] = useState(false);
   const [fileError, setFileError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [signupMessage, setSignupMessage] = useState(false);
+  
 
   if (user.associate_status > 5) {
     window.location.assign("/");
@@ -113,10 +115,14 @@ function MedicalAppointment() {
     setPrescription(true);
   };
 
+  const medicalAppointmentNo = async () => {
+    setSignupMessage(true);
+  };
+
   return (
     <div>
       <form className="form-container">
-        <h1 className="sub-title">Você ja tem uma Prescrição Médica?</h1>
+        <h1>Você ja tem uma Prescrição Médica?</h1>
         <br></br>
         <div className="form-control options-container">
           <input type="radio" className="btn-check" onClick={medicalAppointmentYes} name="resposable" id="btnradio1" value="yes"></input>
@@ -124,11 +130,17 @@ function MedicalAppointment() {
             Sim, já realizei uma consulta médica e tenho minha receita.
           </label>
           <ContactModal redirect="/cadastro" type="appointment" />
-          <label className="btn btn-outline-primary radio-input" htmlFor="btnradio2">
+          <label className="btn btn-outline-primary radio-input" onClick={medicalAppointmentNo}  htmlFor="btnradio2">
             Não, gostaria de agendar uma consulta médica.
           </label>
-        </div>
+          
+        </div> 
+        {signupMessage && (
+        <h3 style={{padding:"35px 20px",textAlign:"center"}}>Para dar continuidade ao seu cadastro como asssociado, envie sua receita médica nesta página após a consulta para finalizar seu cadastro como associado.</h3>
+      )}   
       </form>
+      
+   
 
       {prescription && (
         <div>
@@ -154,7 +166,7 @@ function MedicalAppointment() {
               <p style={{ color: "#fff", textAlign: "center", fontSize: "20px", padding: "0 20%" }}>Abaixo você pode enviar arquivos que complementem a sua receita como laudos médicos e exames.</p>
           <MultipleFiles />
           <br></br>
-          <br></br>
+          <br></br>         
         </div>
       )}
       {fileError && (

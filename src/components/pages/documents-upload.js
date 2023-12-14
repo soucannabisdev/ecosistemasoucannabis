@@ -207,10 +207,11 @@ const FileUploadComponent = () => {
 
         await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST")
 
-        docuseal();
+        await docuseal()
 
         setProof_of_address(true);
         setIsLoadingB(false);
+
 
       } else {
         setFileError(true)
@@ -307,92 +308,94 @@ const FileUploadComponent = () => {
     var userData = [
       {
         "name": "usercode",
-        "default_value": user.id,
+        "default_value": await user.id,
         "readonly": true
       },
       {
         "name": "email",
-        "default_value": user.email_account,
+        "default_value": await user.email_account,
         "readonly": true
       },
       {
         "name": "Nome do Responsavel",
-        "default_value": fullname,
+        "default_value": await fullname,
         "readonly": true
       },
       {
         "name": "Estado Civil",
-        "default_value": user.marital_status,
+        "default_value": await user.marital_status,
         "readonly": true
       },
       {
         "name": "Nacionalidade",
-        "default_value": user.nationality,
+        "default_value": await user.nationality,
         "readonly": true
       },
       {
         "name": "CPF",
-        "default_value": user.cpf_associate,
+        "default_value": await user.cpf_associate,
         "readonly": true
       },
       {
         "name": "RG",
-        "default_value": user.rg_associate,
+        "default_value": await user.rg_associate,
         "readonly": true
       },
       {
         "name": "Orgao",
-        "default_value": user.emiiter_rg_associate,
+        "default_value": await user.emiiter_rg_associate,
         "readonly": true
       },
       {
         "name": "Rua",
-        "default_value": user.street,
+        "default_value": await user.street,
         "readonly": true
       },
       {
         "name": "Numero",
-        "default_value": user.number,
+        "default_value": await user.number,
         "readonly": true
       },
       {
         "name": "Bairro",
-        "default_value": user.neighborhood,
+        "default_value": await user.neighborhood,
         "readonly": true
       },
       {
         "name": "Cidade",
-        "default_value": user.city,
+        "default_value": await user.city,
         "readonly": true
       },
       {
         "name": "Estado",
-        "default_value": user.state,
+        "default_value": await user.state,
         "readonly": true
       },
       {
         "name": "CEP",
-        "default_value": user.cep,
+        "default_value": await user.cep,
         "readonly": true
       },
       {
         "name": "Data",
-        "default_value": formattedDate,
+        "default_value": await formattedDate,
         "readonly": true
       }
     ];
 
     const createContract = await apiRequest("/api/docuseal/create-contract", userData, "POST");
-    setGenerateContract(process.env.REACT_APP_DOCUSEAL_URL + "/s/" + createContract[0].slug);
+    setGenerateContract(process.env.REACT_APP_DOCUSEAL_URL + "/s/" + await createContract[0].slug);
 
-    const bodyRequest = { contract: process.env.REACT_APP_DOCUSEAL_URL + "/s/" + createContract[0].slug };
+    const bodyRequest = { contract: process.env.REACT_APP_DOCUSEAL_URL + "/s/" + await createContract[0].slug };
     await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST")
+
+    return "ok"
 
   };
 
   return (
     <div class="justify-content-center">
-      <h1 class="sub-title">Envie seus documentos</h1>
+      <h1>Envie seus documentos</h1>
       <h3 style={{ textAlign: "center" }}>Clique nos botões abaixo para enviar uma foto de seus documentos</h3>
       <br></br>
       <div class="">
@@ -430,7 +433,7 @@ const FileUploadComponent = () => {
                     {!buttonMsg ? (
                       <span>Carregando documento...</span>
                     ) : (
-                      <span style={{fontSize:"14px"}}>Gerando termo para assinatura</span>
+                      <span class="gernerate-term">Gerando termo para assinatura</span>
                     )}
                     <img className="animated-icon" width="40" src="/icons/data-cloud.gif" />
                   </span>

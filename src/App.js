@@ -68,7 +68,7 @@ function App() {
   return (
     <Router>
       {hiddenLogin && (
-        <div >          
+        <div >
           <Routes>
             <Route path="/iniciar-cadastro" element={<SignupEmail />} />
           </Routes>
@@ -87,16 +87,16 @@ function App() {
             <div class="container vertical-center" hidden={hiddenLogin}>
               <div class="text-center login-div">
                 <img
-                  src="/logo.svg"
-                  width="30%"
+                  src="logo-soucannabis.png"
                 />
-                <h1 class="sub-title">Ecosistema SouCannabis</h1>
-                <div class="row">
-                  <Link to="/login" class="btn btn-lg btn-primary btn-login" hidden={hiddenButtons}>
-                    Login
-                  </Link>
+                <h1 class="sub-title"><b>Cadastramento SouCannabis</b></h1>
+                <br></br>
+                <div class="row">                
                   <Link to="/cadastro" class="btn btn-lg btn-success" hidden={hiddenButtons}>
                     Criar minha conta
+                  </Link>
+                  <Link to="/login" class="btn btn-lg btn-primary btn-login" hidden={hiddenButtons}>
+                    Login
                   </Link>
                 </div>
               </div>
@@ -114,13 +114,13 @@ function App() {
                   src="/logo.svg"
                   width="30%"
                 />
-                <h1 class="sub-title">Ecosistema SouCannabis</h1>
-                <div class="row">
-                  <Link to="/login" class="btn btn-lg btn-primary btn-login" hidden={hiddenButtons}>
-                    Login
-                  </Link>
+                <h1 class="sub-title">Cadastramento Sou Cannabis</h1>
+                <div class="row">                  
                   <Link to="/cadastro" class="btn btn-lg btn-success" hidden={hiddenButtons}>
                     Criar minha conta
+                  </Link>
+                  <Link to="/login" class="btn btn-lg btn-primary btn-login" hidden={hiddenButtons}>
+                    Login
                   </Link>
                 </div>
               </div>
