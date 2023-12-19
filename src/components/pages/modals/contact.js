@@ -68,19 +68,27 @@ const Contact = ({ type, redirect }) => {
           phone: user.mobile_number
         })
       })
+
+      setMsgWhats(true)
+      setTimeout(() => {
+        setMsgWhats(false)
+      }, 6000)
     } else {
       await fetch("https://n8n.soucannabis.ong.br/webhook/da23155e-90a5-486e-9e74-9d1ece12e82d", {
         method: "POST",
         body: JSON.stringify({
-          form: "agendamento",
-          userData: {
+          form: "agendamento",          
             username: user.name_associate,
             lastname: user.lastname_associate,
             email: user.email_account,
-            phone: user.mobile_number
-          }
+            phone: user.mobile_number          
         })
       })
+
+      setMsgWhats(true)
+      setTimeout(() => {
+        setMsgWhats(false)
+      }, 6000)
     }
 
     /*  await apiRequest("/api/chatwoot/send-message-api", JSON.stringify(formData), "POST")
@@ -148,7 +156,7 @@ const Contact = ({ type, redirect }) => {
             )}
             {msgWhats && (
               <div class="alert alert-success" role="alert">
-                Uma mensagem foi enviada para o seu Whats'app
+                Sua solicitação foi realizada, em instantes você receberá a confirmação pelo seu Whats'app.
               </div>
             )}
             {inputError && (
@@ -157,19 +165,22 @@ const Contact = ({ type, redirect }) => {
               </div>
             )}
             <div>
-
               {type == "appointment" && (
                 <h4 class="text-center text-contact "> Para solicitar o agendamento de consulta com um de nossos médicos, por favor, entre em contato com nosso acolhimento.</h4>
               )}
 
               {type != "appointment" && (
                 <div>
-                  <h4 class="text-center text-contact "> Para solicitar contato, clique no botão abaixo, você receberá uma mensagem no seu número de Whatsapp.</h4>
+                  <h4 class="text-center text-contact "> Para solicitar contato, clique no botão abaixo, você receberá uma mensagem no seu número de Whats'app.</h4>
+                  <label style={{ color: "black" }} className="form-label">
+                    Escreva aqui sua mensagem
+                  </label>
                   <textarea name="message" className="form-control" onBlur={handleChangeInput} onChange={handleChangeInput} />
                 </div>
               )}
 
             </div>
+            <br></br>
             {type == "appointment" && (
               <div class="container d-flex justify-content-center align-items-center">
                 <button class="btn btn-primary btn-lg" type="submit" onClick={contact}>Solicitar agendamento   <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 48 48">

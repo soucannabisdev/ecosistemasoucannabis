@@ -234,7 +234,7 @@ const Sidebar = () => {
         <br></br>
         <br></br>
         <br></br>
-        {user.associate_status <= 7 && <Contact/>}
+        {user.associate_status <= 7 && user.mobile_number && <Contact/>}
       </div>
     </div>
   );
