@@ -51,15 +51,36 @@ const Contact = ({ type, redirect }) => {
     }
   }
 
-  const [formData, setFormData] = useState(formInfo)
+  const [message, setMessage] = useState(formInfo)
 
   const contact = async (event) => {
     event.preventDefault();
 
-    if(type != "appointment"){
-    await fetch("https://api.utalk.chat/send/tc8bgmg/?cmd=chat&to=" + user.mobile_number + "@c.us&msg=Olá, recebemos seu contato! Você está em nossa lista de espera, aguarde para ser atendido.", { method: "GET" });
-    }else{
-      await fetch("https://api.utalk.chat/send/tc8bgmg/?cmd=chat&to=" + user.mobile_number + "@c.us&msg=Olá, recebemos sua solicitação de agendamento de consulta! Você está em nossa lista de espera, aguarde para ser atendido.", { method: "GET" });
+    if (type != "appointment") {
+      await fetch("https://n8n.soucannabis.ong.br/webhook/da23155e-90a5-486e-9e74-9d1ece12e82d", {
+        method: "POST",
+        body: JSON.stringify({
+          form: "contato",
+          message: message,
+          username: user.name_associate,
+          lastname: user.lastname_associate,
+          email: user.email_account,
+          phone: user.mobile_number
+        })
+      })
+    } else {
+      await fetch("https://n8n.soucannabis.ong.br/webhook/da23155e-90a5-486e-9e74-9d1ece12e82d", {
+        method: "POST",
+        body: JSON.stringify({
+          form: "agendamento",
+          userData: {
+            username: user.name_associate,
+            lastname: user.lastname_associate,
+            email: user.email_account,
+            phone: user.mobile_number
+          }
+        })
+      })
     }
 
     /*  await apiRequest("/api/chatwoot/send-message-api", JSON.stringify(formData), "POST")
@@ -94,6 +115,12 @@ const Contact = ({ type, redirect }) => {
 
   function openModal() {
     setShowPopup(true)
+  }
+
+  function handleChangeInput(event) {
+    event.preventDefault()
+    setMessage(event.target.value)
+
   }
 
 
@@ -136,7 +163,10 @@ const Contact = ({ type, redirect }) => {
               )}
 
               {type != "appointment" && (
-                <h4 class="text-center text-contact "> Para solicitar contato, clique no botão abaixo, você receberá uma mensagem no seu número de Whatsapp.</h4>
+                <div>
+                  <h4 class="text-center text-contact "> Para solicitar contato, clique no botão abaixo, você receberá uma mensagem no seu número de Whatsapp.</h4>
+                  <textarea name="message" className="form-control" onBlur={handleChangeInput} onChange={handleChangeInput} />
+                </div>
               )}
 
             </div>
