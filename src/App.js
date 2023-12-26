@@ -69,7 +69,7 @@ function App() {
   return (
     <Router>
       {hiddenLogin && (
-        <div style={{ backgroundImage: `url(${backgroundImage})` }}>
+        <div>
           <Routes>
             <Route path="/iniciar-cadastro" element={<SignupEmail />} />
           </Routes>
