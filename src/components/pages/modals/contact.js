@@ -57,7 +57,7 @@ const Contact = ({ type, redirect }) => {
     event.preventDefault();
 
     if (type != "appointment") {
-      await fetch("https://n8n.soucannabis.ong.br/webhook/da23155e-90a5-486e-9e74-9d1ece12e82d", {
+        await fetch("https://n8n.soucannabis.ong.br/webhook/da23155e-90a5-486e-9e74-9d1ece12e82d", {
         method: "POST",
         body: JSON.stringify({
           form: "contato",
@@ -67,14 +67,18 @@ const Contact = ({ type, redirect }) => {
           email: user.email_account,
           phone: user.mobile_number
         })
-      })
+      })   
+      
+      setTimeout(() => {
+        closeModal()
+      }, 2000)
 
       setMsgWhats(true)
       setTimeout(() => {
         setMsgWhats(false)
       }, 6000)
     } else {
-      await fetch("https://n8n.soucannabis.ong.br/webhook/da23155e-90a5-486e-9e74-9d1ece12e82d", {
+        await fetch("https://n8n.soucannabis.ong.br/webhook/da23155e-90a5-486e-9e74-9d1ece12e82d", {
         method: "POST",
         body: JSON.stringify({
           form: "agendamento",          
@@ -85,13 +89,15 @@ const Contact = ({ type, redirect }) => {
         })
       })
 
-      setMsgWhats(true)
+      setTimeout(() => {
+        closeModal()
+      }, 2000)
+
       setTimeout(() => {
         setMsgWhats(false)
       }, 6000)
     }
-
-    /*  await apiRequest("/api/chatwoot/send-message-api", JSON.stringify(formData), "POST")
+    /* await apiRequest("/api/chatwoot/send-message-api", JSON.stringify(formData), "POST")
         .then(response => {
           if (response != []) {
             setMsgWhats(true)
@@ -117,20 +123,22 @@ const Contact = ({ type, redirect }) => {
         .catch(error => {
           console.error(error);
         });*/
-
-
   }
 
   function openModal() {
     setShowPopup(true)
   }
 
+  
+  function closeModal() {
+    setShowPopup(false)
+  }
+
+
   function handleChangeInput(event) {
     event.preventDefault()
     setMessage(event.target.value)
-
   }
-
 
   return (
     <div>
