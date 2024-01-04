@@ -34,7 +34,6 @@ function ApproveAssociate() {
       <br></br>
       {!msg && (
         <div>
-          <h2 style={{ textAlign: "center" }}>Ao clicar no botão abaixo você enviará seus dados para nossa equipe de acolhimento.</h2>
           <h2 style={{ textAlign: "center" }}>Seus documentos e sua receita médica serão analisados e seu cadastro como associado será aprovado,
           para poder então fazer sua primeira compra.<br></br> Em caso de algum problema com seus dados, vocÊ será informado para editá-los.
           </h2>
@@ -50,11 +49,7 @@ function ApproveAssociate() {
       )}
       {user.associate_status == 8 && <h1 className="sub-title">Cadastro Aprovado</h1>}
       {user.associate_status == 6 && (
-        <div className="d-flex justify-content-center align-items-center">
-          <button style={{marginBottom:"30px"}} onClick={approve} type="button" class="btn btn-success btn-lg" hidden={msg}>
-            Solicitar aprovação do cadastro
-          </button>
-        </div>
+        
       )}
     </div>
   );
