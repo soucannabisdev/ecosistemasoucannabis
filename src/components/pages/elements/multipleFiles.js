@@ -127,10 +127,9 @@ function MultipleFiles() {
   }
 
   async function nextPage() {
-    await apiRequest("/api/directus/update", { userId: user.id, formData: { associate_status: 6 } }, "POST")
+    await apiRequest("/api/directus/update", { userId: user.id, formData: { associate_status: 7, status: "aguardando-aprovacao" } }, "POST");
     window.location.assign("/cadastro");
   }
-
 
   return (
     <div>
@@ -166,7 +165,7 @@ function MultipleFiles() {
             <Form.Control className="input-upload" type="file" onChange={handleFile} />
           </Form.Group>
         </Form>
-        <div class="col-12 d-flex justify-content-center align-items-center" style={{ marginTop: "70px" }}><a onClick={(nextPage)} class="btn btn-primary btn-lg btn-signup">Já enviei todos os arquivos</a></div>
+        <div class="col-12 d-flex justify-content-center align-items-center" style={{ marginTop: "70px" }}><a onClick={(nextPage)} class="btn btn-primary btn-lg btn-signup">Solicitar aprovação do cadastro</a></div>
 
       </div>
       {errorNamefile && (
