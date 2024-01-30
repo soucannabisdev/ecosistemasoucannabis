@@ -96,6 +96,8 @@ const Contact = ({ type, redirect }) => {
       setTimeout(() => {
         setMsgWhats(false)
       }, 6000)
+
+      await apiRequest("/api/directus/update", { userId: user.id, formData: { associate_status: 7, status: "aguardando-aprovacao" } }, "POST");
     }
     /* await apiRequest("/api/chatwoot/send-message-api", JSON.stringify(formData), "POST")
         .then(response => {
