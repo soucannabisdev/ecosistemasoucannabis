@@ -163,8 +163,12 @@ function MedicalAppointment() {
             </Form.Group>
           </Form>
           <br></br>
-              <p style={{ color: "#fff", textAlign: "center", fontSize: "20px", padding: "0 20%" }}>Abaixo você pode enviar arquivos que complementem a sua receita como laudos médicos e exames.</p>
-          <MultipleFiles />
+              <p style={{ color: "#fff", textAlign: "center", fontSize: "20px", padding: "0 20%" }}>Após enviar sua receita médica você pode enviar arquivos que complementem a sua receita, como laudos médicos e exames.</p>
+        
+          {medicalPrescrption &&
+                <MultipleFiles/>
+              } 
+
           <br></br>
           <br></br>         
         </div>

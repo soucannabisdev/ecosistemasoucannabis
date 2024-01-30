@@ -396,7 +396,7 @@ const FileUploadComponent = () => {
   return (
     <div class="justify-content-center">
       <h1>Envie seus documentos</h1>
-      <h3 style={{ textAlign: "center" }}>Clique nos botões abaixo para enviar uma foto de seus documentos</h3>
+      <h2 style={{ textAlign: "center" }}>Clique nos botões abaixo para enviar uma foto de seus documentos</h2>
       <br></br>
       <div class="">
         {!rgProof && (
