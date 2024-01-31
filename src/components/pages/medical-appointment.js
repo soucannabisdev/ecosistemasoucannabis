@@ -136,7 +136,7 @@ function MedicalAppointment() {
 
         </div>
         {signupMessage && (
-          <h3 style={{ padding: "35px 20px", textAlign: "center" }}>Para dar continuidade ao seu cadastro como asssociado, envie sua receita nesta página após a consulta para finalizar seu cadastro como associado.</h3>
+          <h3 style={{ padding: "35px 20px", textAlign: "center" }}>Para dar continuidade ao seu cadastro como asssociado, envie sua receita nesta página após a consulta para atualizar seu cadastro como associado.</h3>
         )}
       </form>
 
