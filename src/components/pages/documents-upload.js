@@ -207,8 +207,6 @@ const FileUploadComponent = () => {
 
         await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST")
 
-        await docuseal()
-
         setProof_of_address(true);
         setIsLoadingB(false);
 
@@ -294,105 +292,7 @@ const FileUploadComponent = () => {
     }
   };
 
-  const docuseal = async () => {
-    const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-    const currentDate = new Date();
-    const day = currentDate.getDate();
-    const month = currentDate.getMonth();
-    const year = currentDate.getFullYear();
-    const monthName = months[month];
-    const formattedDate = `${day} de ${monthName} de ${year}`;
-
-    const fullname = user.name_associate + " " + user.lastname_associate;
-
-    var userData = [
-      {
-        "name": "usercode",
-        "default_value": await user.id,
-        "readonly": true
-      },
-      {
-        "name": "email",
-        "default_value": await user.email_account,
-        "readonly": true
-      },
-      {
-        "name": "Nome do Responsavel",
-        "default_value": await fullname,
-        "readonly": true
-      },
-      {
-        "name": "Estado Civil",
-        "default_value": await user.marital_status,
-        "readonly": true
-      },
-      {
-        "name": "Nacionalidade",
-        "default_value": await user.nationality,
-        "readonly": true
-      },
-      {
-        "name": "CPF",
-        "default_value": await user.cpf_associate,
-        "readonly": true
-      },
-      {
-        "name": "RG",
-        "default_value": await user.rg_associate,
-        "readonly": true
-      },
-      {
-        "name": "Orgao",
-        "default_value": await user.emiiter_rg_associate,
-        "readonly": true
-      },
-      {
-        "name": "Rua",
-        "default_value": await user.street,
-        "readonly": true
-      },
-      {
-        "name": "Numero",
-        "default_value": await user.number,
-        "readonly": true
-      },
-      {
-        "name": "Bairro",
-        "default_value": await user.neighborhood,
-        "readonly": true
-      },
-      {
-        "name": "Cidade",
-        "default_value": await user.city,
-        "readonly": true
-      },
-      {
-        "name": "Estado",
-        "default_value": await user.state,
-        "readonly": true
-      },
-      {
-        "name": "CEP",
-        "default_value": await user.cep,
-        "readonly": true
-      },
-      {
-        "name": "Data",
-        "default_value": await formattedDate,
-        "readonly": true
-      }
-    ];
-
-    const createContract = await apiRequest("/api/docuseal/create-contract", userData, "POST");
-    setGenerateContract(process.env.REACT_APP_DOCUSEAL_URL + "/s/" + await createContract[0].slug);
-
-    const bodyRequest = { contract: process.env.REACT_APP_DOCUSEAL_URL + "/s/" + await createContract[0].slug };
-    await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST")
-
-    return "ok"
-
-  };
-
+  
   return (
     <div class="justify-content-center">
       <h1>Envie seus documentos</h1>
