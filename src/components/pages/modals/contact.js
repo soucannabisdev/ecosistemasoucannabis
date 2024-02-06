@@ -59,22 +59,50 @@ const Contact = ({ type, redirect }) => {
     event.preventDefault();
 
     if (type != "appointment") {
+
       setTimeout(() => {
         closeModal()
       }, 4000)
+
       setMsgWhats(true)
       setTimeout(() => {
         setMsgWhats(false)
       }, 6000)
     } else {
-
       setAppointmentMsg(true)
+
       setTimeout(() => {
         setMsgWhats(false)
       }, 6000)
 
       await apiRequest("/api/directus/update", { userId: user.id, formData: { associate_status: 7, status: "aguardando-aprovacao" } }, "POST");
     }
+    await apiRequest("/api/chatwoot/send-message-api", JSON.stringify(formInfo), "POST")
+      .then(response => {
+        if (response != []) {
+          setMsgWhats(true)
+          setTimeout(() => {
+            setMsgWhats(false)
+          }, 6000)
+        } else {
+          setErrorConn(true)
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
+    const phone = "+" + formInfo.phone
+    await apiRequest("/api/chatwoot/send-message-chat", JSON.stringify({
+      "email": formInfo.email,
+      "name": formInfo.name,
+      "phone_number": phone,
+      "message": formInfo.message,
+      "type": formInfo.type
+    }), "POST")
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   function openModal() {
