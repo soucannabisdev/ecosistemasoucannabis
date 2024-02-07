@@ -47,7 +47,10 @@ function MedicalAppointment() {
 
     var fileName = file.name
     fileName = fileName.split(".")
-    const nameFile = "receita-medica-" + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1]
+    var nameFile = "receita-medica-" + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1]
+    nameFile = nameFile.replace(/\s/g, '');
+    nameFile = nameFile.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    nameFile = nameFile.replace(/ç/g, 'c');
 
     if (fileName[1] == "jpg" || fileName[1] == "jpeg" || fileName[1] == "png" || fileName[1] == "gif" || fileName[1] == "pdf") {
       setIsLoading(true);
