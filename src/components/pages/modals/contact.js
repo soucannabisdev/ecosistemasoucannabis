@@ -77,6 +77,13 @@ const Contact = ({ type, redirect }) => {
 
       await apiRequest("/api/directus/update", { userId: user.id, formData: { associate_status: 7, status: "aguardando-aprovacao" } }, "POST");
     }
+
+
+    formInfo.phone = user.mobile_number
+    formInfo.name = user.name_associate
+    formInfo.email = user.email_account
+    formInfo.message = message
+
     await apiRequest("/api/chatwoot/send-message-api", JSON.stringify(formInfo), "POST")
       .then(response => {
         if (response != []) {
@@ -93,12 +100,12 @@ const Contact = ({ type, redirect }) => {
       });
 
     const phone = "+" + formInfo.phone
-    await apiRequest("/api/chatwoot/send-message-chat", JSON.stringify({
+   await apiRequest("/api/chatwoot/send-message-chat", JSON.stringify({
       "email": formInfo.email,
       "name": formInfo.name,
       "phone_number": phone,
       "message": formInfo.message,
-      "type": formInfo.type
+      "type": type
     }), "POST")
       .catch(error => {
         console.error(error);
