@@ -63,12 +63,20 @@ function MultipleFiles() {
             });
 
             var formData = new FormData();
+            var nameArchive = archiveName + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1]
+            nameArchive = nameArchive.replace(/\s/g, '');
+            nameArchive = nameArchive.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            nameArchive = nameArchive.replace(/ç/g, 'c');
             formData.append("folder", userFolder);
-            formData.append("file", compressedImage, archiveName + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1]);
+            formData.append("file", compressedImage, nameArchive);
           } else {
+            var nameArchive = archiveName + "." + fileName[1]
+            nameArchive = nameArchive.replace(/\s/g, '');
+            nameArchive = nameArchive.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            nameArchive = nameArchive.replace(/ç/g, 'c');
             var formData = new FormData();
             formData.append("folder", userFolder);
-            formData.append("file", file, archiveName + "." + fileName[1]);
+            formData.append("file", file, nameArchive);
 
           }
 
@@ -152,7 +160,7 @@ function MultipleFiles() {
 
         <Form className={selectInfo ? 'form-desabilitado' : ''}>
           <Form.Group controlId="formFile2">
-            <Form.Label className="label-upload"  hidden={selectInfo}>
+            <Form.Label className="label-upload" hidden={selectInfo}>
               {isLoadingButton && (
                 <span class="loading-text">
                   <img class="animated-icon" width="40" src="/icons/data-cloud.gif" /> Carregando documento... <img class="animated-icon" width="40" src="/icons/data-cloud.gif" />
