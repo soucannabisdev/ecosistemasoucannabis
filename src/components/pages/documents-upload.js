@@ -85,7 +85,10 @@ const FileUploadComponent = () => {
 
       var fileName = file1.name
       fileName = fileName.split(".")
-      const nameFile = "doc-identidade-" + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1]
+      var nameFile = "doc-identidade-" + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1]
+      nameFile = nameFile.replace(/\s/g, '');
+      nameFile = nameFile.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      nameFile = nameFile.replace(/ç/g, 'c');
 
       if (fileName[1] == "jpg" || fileName[1] == "jpeg" || fileName[1] == "png" || fileName[1] == "gif" || fileName[1] == "pdf") {
         setIsLoading(true);
@@ -157,7 +160,10 @@ const FileUploadComponent = () => {
 
       var fileName = file2.name
       fileName = fileName.split(".")
-      const nameFile = "comp-residencia-" + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1]
+      var nameFile = "comp-residencia-" + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1]
+      nameFile = nameFile.replace(/\s/g, '');
+      nameFile = nameFile.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      nameFile = nameFile.replace(/ç/g, 'c');
 
       if (fileName[1] == "jpg" || fileName[1] == "jpeg" || fileName[1] == "png" || fileName[1] == "gif" || fileName[1] == "pdf") {
         setIsLoadingB(true);
@@ -231,9 +237,10 @@ const FileUploadComponent = () => {
 
       var fileName = file3.name
       fileName = fileName.split(".")
-      const nameFile = "doc-paciente-" + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1]
-
-
+      var nameFile = "doc-paciente-" + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1]
+      nameFile = nameFile.replace(/\s/g, '');
+      nameFile = nameFile.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      nameFile = nameFile.replace(/ç/g, 'c');
 
       if (fileName[1] == "jpg" || fileName[1] == "jpeg" || fileName[1] == "png" || fileName[1] == "gif" || fileName[1] == "pdf") {
         setIsLoadingC(true);
