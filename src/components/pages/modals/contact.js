@@ -89,9 +89,6 @@ const Contact = ({ type }) => {
     }else{
       formInfo.message = message.message
     }
-
-    console.log(formInfo)
-
     await apiRequest("/api/chatwoot/send-message-api", JSON.stringify(formInfo), "POST")
       .then(response => {
         if (response != []) {
@@ -170,7 +167,11 @@ const Contact = ({ type }) => {
 
               {type == "appointment" && MsgAppointment && (
                 <div>
+
                   <h2 class="text-center text-contact " style={{ color: "green" }}> Pronto! Você já está em nossa fila de agendamento de consulta. <br></br> <br></br>Assim que chegar sua vez nossa equipe de acolhimento vai entrar em contato através do Whats'app.</h2>
+
+                  <h2 class="text-center text-contact " style={{ color: "green" }}> Pronto! Você já está em nossa fila de agendamento de consulta. <br></br> <br></br>Assim que chegar sua vez nossa equipe de acolhimento vai entrar em contato através do Whats'app.
+                    <br>
                 </div>
               )}
 
