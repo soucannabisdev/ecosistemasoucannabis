@@ -126,6 +126,8 @@ function MedicalAppointment() {
       <form className="form-container">
         <h1>Você ja tem uma Prescrição?</h1>
         <br></br>
+        <p style={{ color: "#fff", textAlign: "center", fontSize: "20px", padding: "0 10%" }}>Você pode se associar a SouCannabis sem ter uma receita e usufruir de diversos serviços oferecidos pela associação.  <br></br>Porém, para ter acesso aos remédios é necessário que você tenha uma receita. <br></br> <br></br> Qual é a sua situação neste momento?</p>
+        <br></br>
         <div className="form-control options-container">
           <input type="radio" className="btn-check" onClick={medicalAppointmentYes} name="resposable" id="btnradio1" value="yes"></input>
           <label className="btn btn-outline-primary radio-input" htmlFor="btnradio1">
@@ -136,7 +138,7 @@ function MedicalAppointment() {
             Não, gostaria de agendar uma consulta.
           </label>
           <label className="btn btn-outline-primary radio-input" onClick={aprove} htmlFor="btnradio3">
-            Quero realizar meu cadastro sem enviar uma receita médica.
+            Quero realizar meu cadastro sem enviar uma receita.
           </label>
         </div>
         {signupMessage && <h3 style={{ padding: "35px 20px", textAlign: "center" }}>Para dar continuidade ao seu cadastro como asssociado, envie sua receita nesta página após a consulta para atualizar seu cadastro como associado.</h3>}
