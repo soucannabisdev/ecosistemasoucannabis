@@ -88,9 +88,10 @@ function App() {
             <div class="container vertical-center" hidden={hiddenLogin}>
               <div class="text-center login-div">
                 <img
-                  src="logo-santaguia.png"
+                  src="logo-soucannabis.png"
                 />
-                <h1 class="sub-title"><b>Cadastramento<br></br>Santa Guia</b></h1>
+                <h1 class="sub-title"><b>Cadastramento SouCannabis</b></h1>
+                <br></br>
                 <div class="row">                
                   <Link to="/cadastro" class="btn btn-lg btn-success" hidden={hiddenButtons}>
                     Criar minha conta
