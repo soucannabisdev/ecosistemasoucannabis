@@ -31,7 +31,7 @@ function MedicalAppointment() {
   const [fileError, setFileError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [signupMessage, setSignupMessage] = useState(false);
-
+  
 
   if (user.associate_status > 5) {
     window.location.assign("/");
@@ -47,10 +47,7 @@ function MedicalAppointment() {
 
     var fileName = file.name
     fileName = fileName.split(".")
-    var nameFile = "receita-medica-" + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1]
-    nameFile = nameFile.replace(/\s/g, '');
-    nameFile = nameFile.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    nameFile = nameFile.replace(/ç/g, 'c');
+    const nameFile = "receita-medica-" + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1]
 
     if (fileName[1] == "jpg" || fileName[1] == "jpeg" || fileName[1] == "png" || fileName[1] == "gif" || fileName[1] == "pdf") {
       setIsLoading(true);
@@ -125,29 +122,29 @@ function MedicalAppointment() {
   return (
     <div>
       <form className="form-container">
-        <h1>Você ja tem uma Prescrição?</h1>
+        <h1>Você ja tem uma Prescrição Médica?</h1>
         <br></br>
         <div className="form-control options-container">
           <input type="radio" className="btn-check" onClick={medicalAppointmentYes} name="resposable" id="btnradio1" value="yes"></input>
           <label className="btn btn-outline-primary radio-input" htmlFor="btnradio1">
-            Sim, já realizei uma consulta e tenho minha receita.
+            Sim, já realizei uma consulta médica e tenho minha receita.
           </label>
           <ContactModal redirect="/cadastro" type="appointment" />
-          <label className="btn btn-outline-primary radio-input" onClick={medicalAppointmentNo} htmlFor="btnradio2">
-            Não, gostaria de agendar uma consulta.
+          <label className="btn btn-outline-primary radio-input" onClick={medicalAppointmentNo}  htmlFor="btnradio2">
+            Não, gostaria de agendar uma consulta médica.
           </label>
-
-        </div>
+          
+        </div> 
         {signupMessage && (
-          <h3 style={{ padding: "35px 20px", textAlign: "center" }}>Para dar continuidade ao seu cadastro como asssociado, envie sua receita nesta página após a consulta para atualizar seu cadastro como associado.</h3>
-        )}
+        <h3 style={{padding:"35px 20px",textAlign:"center"}}>Para dar continuidade ao seu cadastro como asssociado, envie sua receita médica nesta página após a consulta para finalizar seu cadastro como associado.</h3>
+      )}   
       </form>
-
-
+      
+   
 
       {prescription && (
         <div>
-          <h1 className="sub-title">Envie sua receita aqui: </h1>
+          <h1 className="sub-title">Envie sua receita médica aqui: </h1>
           <Form>
             <Form.Group controlId="formFile1">
               <Form.Label className="label-upload" hidden={medicalPrescrption}>
@@ -157,20 +154,19 @@ function MedicalAppointment() {
                   </span>
                 )}
                 {!isLoading && !medicalPrescrption && <span>Enviar receita médica</span>}
-              </Form.Label>
+              </Form.Label>             
 
               {medicalPrescrption &&
                 <Form.Label className="label-upload send-ok prescription-button">Receita Médica Enviada</Form.Label>
-              }
+              }             
               <Form.Control className="input-upload" type="file" onChange={handleFileChange} />
             </Form.Group>
           </Form>
           <br></br>
-          <p style={{ color: "#fff", textAlign: "center", fontSize: "20px", padding: "0 20%" }}>Após enviar sua receita médica você pode enviar arquivos que complementem a sua receita, como laudos médicos e exames.</p>
+              <p style={{ color: "#fff", textAlign: "center", fontSize: "20px", padding: "0 20%" }}>Abaixo você pode enviar arquivos que complementem a sua receita como laudos médicos e exames.</p>
           <MultipleFiles />
-
           <br></br>
-          <br></br>
+          <br></br>         
         </div>
       )}
       {fileError && (

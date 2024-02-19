@@ -34,8 +34,9 @@ function ApproveAssociate() {
       <br></br>
       {!msg && (
         <div>
-          <h2 style={{ textAlign: "center" }}>Olá {user.name_associate}, seus documentos e sua receita médica serão analisados e seu cadastro como associado será aprovado,
-          para poder então fazer sua primeira compra.<br></br><br></br> Em caso de algum problema com seus dados, você será informado para editá-los.
+          <h2 style={{ textAlign: "center" }}>Ao clicar no botão abaixo você enviará seus dados para nossa equipe de acolhimento.</h2>
+          <h2 style={{ textAlign: "center" }}>Seus documentos e sua receita médica serão analisados e seu cadastro como associado será aprovado,
+          para poder então fazer sua primeira compra.<br></br> Em caso de algum problema com seus dados, vocÊ será informado para editá-los.
           </h2>
           <h2 style={{textAlign:"center"}}>Aguarde nossa equipe de acolhimento entrar em contato.</h2>
         </div>
