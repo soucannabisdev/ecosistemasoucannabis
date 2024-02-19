@@ -131,7 +131,7 @@ const FileUploadComponent = () => {
           .catch(error => {
             console.error(error);
           });
-          
+
           setButtonMsg(true)
 
           await docuseal()
