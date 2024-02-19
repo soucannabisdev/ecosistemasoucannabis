@@ -28,7 +28,7 @@ h1 {
 h2 {
   color: #fff;
   padding: 0 50px;
-  font-size: 26px;
+  font-size: 20px;
   margin-bottom: 30px;
 }
 
@@ -86,7 +86,7 @@ h1.sub-title {
 .form-container {
   max-width: 600px;
   padding: 2rem;
-  margin-left: 150px;
+  margin-left: 165px;
 }
 
 .form-container label {
@@ -230,7 +230,7 @@ select#reason_treatment {
 }
 
 body {
-  background: url("https://soucannabis.ong.br/wp-content/uploads/2023/05/holding-farmer-holding-cannabis-leaf.jpg");
+  background: url("../images/background.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-opacity: 0.1;
@@ -442,7 +442,7 @@ textarea {
 
 .text-contact {
   padding-bottom: 30px;
-  font-size: 22px;
+  font-size: 20px;
 }
 
 .form-desabilitado {

@@ -37,7 +37,7 @@ const Sidebar = () => {
                 <Link>
                   <li className="disabled">
                     <CheckIcon status={1} size={32} />
-                    Consulta Medica
+                    Consulta
                   </li>
                 </Link>
                 <Link>
@@ -65,7 +65,7 @@ const Sidebar = () => {
                 <Link>
                   <li className="disabled">
                     <CheckIcon status={1} size={32} />
-                    Consulta Medica
+                    Consulta
                   </li>
                 </Link>
                 <Link>
@@ -93,7 +93,7 @@ const Sidebar = () => {
                 <Link>
                   <li className="disabled">
                     <CheckIcon status={1} size={32} />
-                    Consulta Medica
+                    Consulta
                   </li>
                 </Link>
                 <Link>
@@ -121,7 +121,7 @@ const Sidebar = () => {
                 <Link>
                   <li className="item-selected">
                     <CheckIcon status={1} size={32} />
-                    Consulta Medica
+                    Consulta
                   </li>
                 </Link>
                 <Link>
@@ -149,7 +149,7 @@ const Sidebar = () => {
                 <Link>
                   <li className="line-through">
                     <CheckIcon status={2} size={32} />
-                    Consulta Medica
+                    Consulta
                   </li>
                 </Link>
                 <Link>
@@ -183,7 +183,7 @@ const Sidebar = () => {
                 <Link>
                   <li className="line-through">
                     <CheckIcon status={2} size={32} />
-                    Consulta Medica
+                    Consulta
                   </li>
                 </Link>
                 <Link to="/cadastro-aprovado">
@@ -217,7 +217,7 @@ const Sidebar = () => {
                 <Link>
                   <li className="line-through">
                     <CheckIcon status={2} size={32} />
-                    Consulta Medica
+                    Consulta
                   </li>
                 </Link>
                 <Link to="/cadastro-aprovado">
@@ -234,7 +234,7 @@ const Sidebar = () => {
         <br></br>
         <br></br>
         <br></br>
-        {user.associate_status <= 7 && <Contact/>}
+        {user.associate_status <= 7 && user.mobile_number && <Contact/>}
       </div>
     </div>
   );
