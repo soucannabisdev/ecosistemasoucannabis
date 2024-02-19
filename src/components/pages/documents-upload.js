@@ -119,6 +119,7 @@ const FileUploadComponent = () => {
           formData.append("file", file1, nameFile);
 
         }
+       
 
         var fileId = "";
 
@@ -130,9 +131,15 @@ const FileUploadComponent = () => {
           .catch(error => {
             console.error(error);
           });
+          
+          setButtonMsg(true)
+
+          await docuseal()
 
         setRgProof(true);
         setIsLoading(false);
+
+
 
         const bodyRequest = { rg_proof: fileId };
         await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST")
@@ -212,9 +219,7 @@ const FileUploadComponent = () => {
         await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST")
 
         await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST")
-
-        await docuseal()
-
+      
         setProof_of_address(true);
         setIsLoadingB(false);
 
@@ -401,40 +406,17 @@ const FileUploadComponent = () => {
   };
 
   return (
-    <div class="justify-content-center">
-      <h1>Envie seus documentos</h1>
-      <h2 style={{ textAlign: "center" }}>Clique nos botões abaixo para enviar uma foto de seus documentos</h2>
+    <div class="justify-content-center" >
+      <h1 style={{paddingTop:"60px"}}>Envie seu Documento de Identidade</h1>
+      <h2 style={{ textAlign: "center" }}>Clique no botão abaixo para enviar uma cópia ou foto do seu RG.</h2>
       <br></br>
       <div class="">
+
         {!rgProof && (
           <Form>
             <Form.Group controlId="formFile1">
               <Form.Label className="label-upload">
                 {isLoading && (
-                  <span class="loading-text">
-                    <img class="animated-icon" width="40" src="/icons/data-cloud.gif" />
-                    Carregando documento...
-                    <img class="animated-icon" width="40" src="/icons/data-cloud.gif" />
-                  </span>
-                )}
-                {!isLoading && <span>Documento de Identidade</span>}
-              </Form.Label>
-              <Form.Control className="input-upload" type="file" onChange={handleFile1Change} />
-            </Form.Group>
-          </Form>
-        )}
-
-        {rgProof && (
-          <div>
-            <Form.Label className="label-upload send-ok">Documento de Identidade enviado</Form.Label>
-          </div>
-        )}
-
-        {!proof_of_address && (
-          <Form>
-            <Form.Group controlId="formFile2">
-              <Form.Label className="label-upload">
-                {isLoadingB && (
                   <span className="loading-text">
                     <img className="animated-icon" width="40" src="/icons/data-cloud.gif" />
                     {!buttonMsg ? (
@@ -445,15 +427,15 @@ const FileUploadComponent = () => {
                     <img className="animated-icon" width="40" src="/icons/data-cloud.gif" />
                   </span>
                 )}
-                {!isLoadingB && <span>Comprovante de residência</span>}
+                {!isLoading && <span>Documento de identidade</span>}
               </Form.Label>
-              <Form.Control className="input-upload" type="file" onChange={handleFile2Change} />
+              <Form.Control className="input-upload" type="file" onChange={handleFile1Change} />
             </Form.Group>
           </Form>
         )}
-        {proof_of_address && (
+        {rgProof && (
           <div class="document-send">
-            <Form.Label className="label-upload send-ok">Comprovante de residência enviado</Form.Label>
+            <Form.Label className="label-upload send-ok">Comprovante de identidade enviado</Form.Label>
           </div>
         )}
 
