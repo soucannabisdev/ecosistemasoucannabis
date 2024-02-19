@@ -131,7 +131,7 @@ const FileUploadComponent = () => {
           .catch(error => {
             console.error(error);
           });
-          
+
           setButtonMsg(true)
 
           await docuseal()
@@ -464,7 +464,7 @@ const FileUploadComponent = () => {
         )}
         <br></br>
 
-        <a className="label-upload assign-term" target="_blank" href={generateContract || user.contract} hidden={!proof_of_address}>
+        <a className="label-upload assign-term" target="_blank" href={generateContract || user.contract} hidden={!rg_patient_proof}>
           Assinar Termo de Responsabilidade
         </a>
       </div>
