@@ -63,12 +63,20 @@ function MultipleFiles() {
             });
 
             var formData = new FormData();
+            var nameArchive = archiveName + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1]
+            nameArchive = nameArchive.replace(/\s/g, '');
+            nameArchive = nameArchive.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            nameArchive = nameArchive.replace(/ç/g, 'c');
             formData.append("folder", userFolder);
-            formData.append("file", compressedImage, archiveName + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1]);
+            formData.append("file", compressedImage, nameArchive);
           } else {
+            var nameArchive = archiveName + "." + fileName[1]
+            nameArchive = nameArchive.replace(/\s/g, '');
+            nameArchive = nameArchive.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            nameArchive = nameArchive.replace(/ç/g, 'c');
             var formData = new FormData();
             formData.append("folder", userFolder);
-            formData.append("file", file, archiveName + "." + fileName[1]);
+            formData.append("file", file, nameArchive);
 
           }
 
@@ -127,10 +135,9 @@ function MultipleFiles() {
   }
 
   async function nextPage() {
-    await apiRequest("/api/directus/update", { userId: user.id, formData: { associate_status: 6 } }, "POST")
+    await apiRequest("/api/directus/update", { userId: user.id, formData: { associate_status: 7, status: "aguardando-aprovacao" } }, "POST");
     window.location.assign("/cadastro");
   }
-
 
   return (
     <div>
@@ -153,7 +160,7 @@ function MultipleFiles() {
 
         <Form className={selectInfo ? 'form-desabilitado' : ''}>
           <Form.Group controlId="formFile2">
-            <Form.Label className="label-upload"  hidden={selectInfo}>
+            <Form.Label className="label-upload" hidden={selectInfo}>
               {isLoadingButton && (
                 <span class="loading-text">
                   <img class="animated-icon" width="40" src="/icons/data-cloud.gif" /> Carregando documento... <img class="animated-icon" width="40" src="/icons/data-cloud.gif" />
@@ -166,7 +173,7 @@ function MultipleFiles() {
             <Form.Control className="input-upload" type="file" onChange={handleFile} />
           </Form.Group>
         </Form>
-        <div class="col-12 d-flex justify-content-center align-items-center" style={{ marginTop: "70px" }}><a onClick={(nextPage)} class="btn btn-primary btn-lg btn-signup">Já enviei todos os arquivos</a></div>
+        <div class="col-12 d-flex justify-content-center align-items-center" style={{ marginTop: "70px" }}><a onClick={(nextPage)} class="btn btn-success btn-lg btn-signup">Solicitar aprovação do cadastro</a></div>
 
       </div>
       {errorNamefile && (
