@@ -3,6 +3,13 @@ import { Navigate } from "react-router-dom";
 import Logout from "../logout";
 import LostPass from "./modals/lost-password";
 import apiRequest from "../../modules/apiRequest";
+import CryptoJS from 'crypto-js';
+
+function decrypt(decrypt, secretKey) {
+  const bytes = CryptoJS.AES.decrypt(decrypt, secretKey);
+  decrypt = bytes.toString(CryptoJS.enc.Utf8);
+  return decrypt;
+}
 
 function LoginForm() {
   const [emailInput, setEmailInput] = useState([]);
@@ -31,7 +38,8 @@ function LoginForm() {
       setLoginEmailError(true);
     } else {
       await apiRequest("/api/directus/login", { email: emailInput, pass: passInput }, "POST").then(async response => {
-        console.log(response.pass_account)
+        
+       var userPass = decrypt(response.pass_account, process.env.REACT_APP_PASS_ENCRYPT)
         if (!response) {
           setLoginEmailError(true);
           setTimeout(() => {
@@ -42,7 +50,7 @@ function LoginForm() {
             setLoginEmailError(false);
           }, 5000);
         } else {
-          if (response.pass_account == passInput) {
+          if (userPass == passInput) {
             localStorage.setItem("user_code", await response.user_code);
             setLogged(true);
             setLoginSucess(true);
