@@ -464,7 +464,7 @@ const FileUploadComponent = () => {
         )}
         <br></br>
 
-        <a className="label-upload assign-term" target="_blank" href={generateContract || user.contract} hidden={!proof_of_address}>
+        <a className="label-upload assign-term" target="_blank" href={generateContract || user.contract} hidden={!rgProof}>
           Assinar Termo de Responsabilidade
         </a>
       </div>
