@@ -2768,6 +2768,7 @@ const MultiSelectField = ({ onChange }) => {
   return (
     <Select
       id="reason_treatment"
+      name="reason_treatment" 
       options={options}
       value={selectedOptions}
       isMulti
