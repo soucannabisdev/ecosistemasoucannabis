@@ -81,7 +81,7 @@ const AssociateSignUp = () => {
   const handleSelectionChange = event => {
     setFormData({
       ...formData,
-      ["reason_treatment"]: event[0],
+      ["reason_treatment"]: event,
     });
   };
 
@@ -161,10 +161,8 @@ const AssociateSignUp = () => {
           }
         }
         if (formData.reason_treatment == [] || formData.reason_treatment == null) {
-          document.querySelector("input[aria-haspopup='listbox']").className = "form-input input-login input-empty";
-        } else {
-          document.querySelector("input[aria-haspopup='listbox']").className = "form-input input-login";
-        }
+          document.querySelector(".css-13cymwt-control").className = "css-13cymwt-control input-empty";
+        } 
       }
     }
 
@@ -423,8 +421,7 @@ const AssociateSignUp = () => {
             <label className="form-label" htmlFor="reason_treatment">
               Motivo principal para o tratamento
             </label>
-            <ReasonTreatment  name="reason_treatment" id="reason_treatment"  class="form-input input-login select-treatment" onChange={handleSelectionChange} value={formData.reason_treatment} />
-            {/* <MultiSelectField onChange={handleSelectionChange} value={formData.reason_treatment} name="reason_treatment" /> */}
+            { <MultiSelectField onChange={handleSelectionChange}  id="reason_treatment"   class="form-input input-login select-treatment" value={formData.reason_treatment} name="reason_treatment" />}
           </div>
 
           <div className="mb-3">
