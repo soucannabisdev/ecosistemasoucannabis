@@ -131,14 +131,14 @@ function MedicalAppointment() {
         <div className="form-control options-container">
           <input type="radio" className="btn-check" onClick={medicalAppointmentYes} name="resposable" id="btnradio1" value="yes"></input>
           <label className="btn btn-outline-primary radio-input" htmlFor="btnradio1">
-            Sim, já realizei uma consulta e tenho minha receita.
+            ENVIAR UMA RECEITA
           </label>
           <ContactModal redirect="/cadastro" type="appointment" />
           <label className="btn btn-outline-primary radio-input" onClick={medicalAppointmentNo} htmlFor="btnradio2">
-            Não, gostaria de agendar uma consulta.
+           AGENDAR UMA CONSULTA
           </label>
           <label className="btn btn-outline-primary radio-input" onClick={aprove} htmlFor="btnradio3">
-            Quero realizar meu cadastro sem enviar uma receita.
+            CONCLUIR O CADASTRO SEM RECEITA
           </label>
         </div>
         {signupMessage && <h3 style={{ padding: "35px 20px", textAlign: "center" }}>Para dar continuidade ao seu cadastro como asssociado, envie sua receita nesta página após a consulta para atualizar seu cadastro como associado.</h3>}
