@@ -18,9 +18,9 @@ function Signup() {
     const validateEmail = !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(emailInput);
 
     if (!validateEmail) {
-      const serchEmail = await apiRequest("/api/directus/search", { query: "/items/Users?filter[email_account][_eq]=" + emailInput }, "POST")
-      console.log(serchEmail)
-      if (serchEmail) {
+      const searchEmail = await apiRequest("/api/directus/search", { query: "/items/Users?filter[email_account][_eq]=" + emailInput }, "POST")
+      console.log(searchEmail)
+      if (searchEmail && searchEmail.associate_status !=0) {
         setErrorEmail(true);
         setTimeout(() => {
           setErrorEmail(false);
