@@ -82,7 +82,7 @@ function MultipleFiles() {
 
           var fileId = "";
 
-        await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
+          await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
             .then(response => {
               fileId = response.id;
               return fileId;
@@ -94,27 +94,6 @@ function MultipleFiles() {
           await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST");
           isAttachment(true)
           setisLoadingButton(false)
-
-          fetch("https://n8n.soucannabis.ong.br/webhook-test/f1797de4-5086-495b-a55b-68962874e69b", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json" // Define o tipo de conteúdo do corpo da requisição
-            },
-            body: user
-          })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Erro ao fazer a requisição'); // Trata erros de requisição
-            }
-            return response.json(); // Retorna a resposta como JSON
-          })
-          .then(data => {
-            console.log(data); // Manipula a resposta da requisição
-          })
-          .catch(error => {
-            console.error('Ocorreu um erro:', error); // Trata erros
-          });
-          
 
           const optionSelect = document.querySelector("#" + archiveName)
           optionSelect.remove()
