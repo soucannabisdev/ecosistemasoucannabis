@@ -34,10 +34,9 @@ function ApproveAssociate() {
       <br></br>
       {!msg && (
         <div>
-          <h2 style={{ textAlign: "center" }}>Olá {user.name_associate}, seus documentos serão analisados e seu cadastro como associado será aprovado,
-          para poder então fazer sua primeira compra.<br></br><br></br> Em caso de algum problema com seus dados, você será informado para editá-los.
+          <h2 style={{ textAlign: "center" }}>Olá {user.name_associate}, seu cadastro foi concluido e em breve será aprovado por nossa equipe.
           </h2>
-          <h2 style={{textAlign:"center"}}>Aguarde nossa equipe de acolhimento entrar em contato.</h2>
+          <h2 style={{textAlign:"center"}}>Se você já está conversando com uma de nossas acolhedoras, notifique-a que já concluiu esta etapa ou aguarde que entraremos em contato.</h2>
         </div>
       )}
 
