@@ -7,9 +7,10 @@ import ContactModal from "../../components/pages/modals/contact";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import directusRequestUpload from "../../modules/directusRequestUpload";
 import AlertError from "../forms/AlertError";
-import Resizer from "react-image-file-resizer";
+import Resizer from 'react-image-file-resizer';
 
 function MedicalAppointment() {
+
   const [medicalPrescrption, setMedicalPrescrption] = useState(false);
 
   useEffect(() => {
@@ -31,6 +32,7 @@ function MedicalAppointment() {
   const [isLoading, setIsLoading] = useState(false);
   const [signupMessage, setSignupMessage] = useState(false);
 
+
   if (user.associate_status > 5) {
     window.location.assign("/");
   }
@@ -38,23 +40,24 @@ function MedicalAppointment() {
   const handleFileChange = async event => {
     const userFolder = localStorage.getItem("user_folder");
 
-    const file = event.target.files[0];
+    const file = event.target.files[0]
 
     file.storage = "local";
     file.filename_download = file.name;
 
-    var fileName = file.name;
-    fileName = fileName.split(".");
-    var nameFile = "receita-medica-" + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1];
-    nameFile = nameFile.replace(/\s/g, "");
+    var fileName = file.name
+    fileName = fileName.split(".")
+    var nameFile = "receita-medica-" + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1]
+    nameFile = nameFile.replace(/\s/g, '');
     nameFile = nameFile.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    nameFile = nameFile.replace(/ç/g, "c");
+    nameFile = nameFile.replace(/ç/g, 'c');
 
     if (fileName[1] == "jpg" || fileName[1] == "jpeg" || fileName[1] == "png" || fileName[1] == "gif" || fileName[1] == "pdf") {
       setIsLoading(true);
 
       if (fileName[1] != "pdf") {
-        const compressedImage = await new Promise(resolve => {
+
+        const compressedImage = await new Promise((resolve) => {
           Resizer.imageFileResizer(
             file,
             800,
@@ -62,21 +65,23 @@ function MedicalAppointment() {
             fileName[1],
             70,
             0,
-            uri => {
+            (uri) => {
               resolve(uri);
             },
-            "file"
+            'file'
           );
         });
 
         var formData = new FormData();
         formData.append("folder", userFolder);
         formData.append("file", compressedImage, nameFile);
-      } else {
+      }
+      else {
         var formData = new FormData();
         formData.append("folder", userFolder);
         formData.append("file", file, nameFile);
       }
+
 
       var fileId = "";
 
@@ -89,21 +94,21 @@ function MedicalAppointment() {
           console.error(error);
         });
 
-      await apiRequest("/api/directus/update", { userId: user.id, formData: { medical_prescription: fileId, status: "prescription" } }, "POST")
-        .then(response => {
-          setIsLoading(false);
-        })
-        .catch(error => {
-          console.error(error);
-        });
-
       await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST");
 
-      setMedicalPrescrption(true);
+      await apiRequest("/api/directus/update", { userId: user.id, formData: { medical_prescription: fileId, status: "prescription" } }, "POST")
+      .then(response => {
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
+      setMedicalPrescrption(true)
     } else {
-      setFileError(true);
+      setFileError(true)
       setTimeout(() => {
-        setFileError(false);
+        setFileError(false)
       }, 6000);
     }
   };
@@ -116,17 +121,10 @@ function MedicalAppointment() {
     setSignupMessage(true);
   };
 
-  async function aprove() {
-    await apiRequest("/api/directus/update", { userId: user.id, formData: { associate_status: 7, status: "aguardando-aprovacao" } }, "POST");
-    window.location.assign("/cadastro");
-  }
-
   return (
     <div>
       <form className="form-container">
         <h1>Você ja tem uma Prescrição?</h1>
-        <br></br>
-        <p style={{ color: "#fff", textAlign: "center", fontSize: "20px", padding: "0 10%" }}>Você pode se associar a SouCannabis sem ter uma receita e usufruir de diversos serviços oferecidos pela associação.  <br></br>Porém, para ter acesso aos remédios é necessário que você tenha uma receita. <br></br> <br></br> Qual é a sua situação neste momento?</p>
         <br></br>
         <div className="form-control options-container">
           <input type="radio" className="btn-check" onClick={medicalAppointmentYes} name="resposable" id="btnradio1" value="yes"></input>
@@ -137,12 +135,14 @@ function MedicalAppointment() {
           <label className="btn btn-outline-primary radio-input" onClick={medicalAppointmentNo} htmlFor="btnradio2">
             Não, gostaria de agendar uma consulta.
           </label>
-          <label className="btn btn-outline-primary radio-input" onClick={aprove} htmlFor="btnradio3">
-            Quero realizar meu cadastro sem enviar uma receita.
-          </label>
+
         </div>
-        {signupMessage && <h3 style={{ padding: "35px 20px", textAlign: "center" }}>Para dar continuidade ao seu cadastro como asssociado, envie sua receita nesta página após a consulta para atualizar seu cadastro como associado.</h3>}
+        {signupMessage && (
+          <h3 style={{ padding: "35px 20px", textAlign: "center" }}>Para dar continuidade ao seu cadastro como asssociado, envie sua receita nesta página após a consulta para atualizar seu cadastro como associado.</h3>
+        )}
       </form>
+
+
 
       {prescription && (
         <div>
@@ -158,7 +158,9 @@ function MedicalAppointment() {
                 {!isLoading && !medicalPrescrption && <span>Enviar receita médica</span>}
               </Form.Label>
 
-              {medicalPrescrption && <Form.Label className="label-upload send-ok prescription-button">Receita Médica Enviada</Form.Label>}
+              {medicalPrescrption &&
+                <Form.Label className="label-upload send-ok prescription-button">Receita Médica Enviada</Form.Label>
+              }
               <Form.Control className="input-upload" type="file" onChange={handleFileChange} />
             </Form.Group>
           </Form>
