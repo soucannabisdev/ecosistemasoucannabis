@@ -2,24 +2,58 @@ import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import directusRequest from "../../modules/apiRequest";
 import apiRequest from "../../modules/apiRequest";
+import User from "../../modules/User";
 
 function SignupEmail() {
   const [emailInput, setEmailInput] = useState("");
   const [emailValidate, setEmailValidate] = useState(false);
   const [errorEmail, setErrorEmail] = useState(false);
+  const [user, setUser] = useState({});
 
   useEffect(() => {
-    const timer = setTimeout(() => { }, 3000);
+    (async () => {
+      const userData = await User();
+      setUser(userData);
+    })();
+
+  
+    const timer = setTimeout(() => {}, 3000);
     return () => clearTimeout(timer);
   }, []);
+
+  if (user.associate_status == 0) {
+    window.location.assign("/bem-vindo");
+  }
+
+  if (user.associate_status < 2) {
+    window.location.assign("/cadastro-associado");
+  }
+
+  if (user.associate_status == 2) {
+    window.location.assign("/cadastro-associado");
+  }
+  if (user.associate_status == 3) {
+    window.location.assign("/documentos");
+  }
+  if (user.associate_status == 4) {
+    window.location.assign("/consulta");
+  }
+  if (user.associate_status == 5) {
+    window.location.assign("/cadastro");
+  }
+  if (user.associate_status >= 6) {
+    window.location.assign("/cadastro");
+  }
+
+ 
 
   const signUp = async event => {
     event.preventDefault();
     const validateEmail = !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(emailInput);
 
     if (!validateEmail) {
-      const serchEmail = await apiRequest("/api/directus/search", { query: "/items/Users?filter[email_account][_eq]=" + emailInput }, "POST")
-      console.log(serchEmail)
+      const serchEmail = await apiRequest("/api/directus/search", { query: "/items/Users?filter[email_account][_eq]=" + emailInput }, "POST");
+      console.log(serchEmail);
       if (serchEmail) {
         setErrorEmail(true);
         setTimeout(() => {
@@ -28,7 +62,6 @@ function SignupEmail() {
       } else {
         const userData = await apiRequest("/api/directus/create-user", { email_account: emailInput, associate_status: 0 }, "POST");
         localStorage.setItem("user_code", await userData.user_code);
-        console.log(userData)
         if (userData) {
           window.location.assign("/bem-vindo");
         }
@@ -48,9 +81,11 @@ function SignupEmail() {
   return (
     <div class="container">
       <div class="row justify-content-center">
-      <img class="logo" src="https://soucannabis.ong.br/wp-content/uploads/elementor/thumbs/Logotipo-Horizontal-Branco-300x100-1-q756ld54d2nqroxriqdpggu81liv79biznretir15g.png"></img>
+        <img class="logo" src="https://soucannabis.ong.br/wp-content/uploads/elementor/thumbs/Logotipo-Horizontal-Branco-300x100-1-q756ld54d2nqroxriqdpggu81liv79biznretir15g.png"></img>
       </div>
-      <h1 class="title" style={{ marginTop: "30px" }}>Cadastro de associado</h1>
+      <h1 class="title" style={{ marginTop: "30px" }}>
+        Cadastro de associado
+      </h1>
       <div class="row justify-content-center">
         <div class="col-md-6 form-signup">
           {errorEmail && (
