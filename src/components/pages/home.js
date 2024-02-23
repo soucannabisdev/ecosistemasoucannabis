@@ -12,23 +12,24 @@ function Home() {
     })();
   }, []);
 
-  
-  if (user.responsable_type == "another" && user.resposible_for == null) {
-    window.location.assign("/cadastro-paciente");
-  }
-
   if (user.associate_status == 0) {
     window.location.assign("/bem-vindo");
   }
 
-  if (user.associate_status < 2) {
+  if (user.associate_status == 1) {
     window.location.assign("/cadastro-associado");
   }
 
   if (user.associate_status == 2) {
     window.location.assign("/cadastro-associado");
   }
-  if (user.associate_status == 3) {
+  
+  if (user.associate_status == 3 && user.responsable_type == "another" && user.resposible_for == null) {
+    window.location.assign("/cadastro-paciente");
+  }
+  if (user.associate_status == 3 && user.responsable_type == "another" && user.resposible_for == null) {
+    window.location.assign("/cadastro-paciente");
+  } else if (user.associate_status == 3) {
     window.location.assign("/documentos");
   }
   if (user.associate_status == 4) {
