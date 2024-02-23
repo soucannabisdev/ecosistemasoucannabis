@@ -12,6 +12,11 @@ function Home() {
     })();
   }, []);
 
+  
+  if (user.responsable_type == "another" && user.resposible_for == null) {
+    window.location.assign("/cadastro-paciente");
+  }
+
   if (user.associate_status == 0) {
     window.location.assign("/bem-vindo");
   }
