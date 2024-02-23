@@ -24,10 +24,7 @@ function Home() {
     window.location.assign("/cadastro-associado");
   }
   
-  if (user.associate_status == 3 && user.responsable_type == "another" && user.resposible_for == null) {
-    window.location.assign("/cadastro-paciente");
-  }
-  if (user.associate_status == 3 && user.responsable_type == "another" && user.resposible_for == null) {
+  if (user.associate_status == 3 && user.responsable_type == "another" && user.responsible_for == null) {
     window.location.assign("/cadastro-paciente");
   } else if (user.associate_status == 3) {
     window.location.assign("/documentos");
