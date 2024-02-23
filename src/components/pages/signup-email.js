@@ -16,10 +16,15 @@ function SignupEmail() {
       setUser(userData);
     })();
 
-  
     const timer = setTimeout(() => {}, 3000);
     return () => clearTimeout(timer);
   }, []);
+
+  console.log(user);
+
+  if (user.responsable_type == "another" && user.resposible_for == null) {
+    window.location.assign("/cadastro-paciente");
+  }
 
   if (user.associate_status == 0) {
     window.location.assign("/bem-vindo");
@@ -32,6 +37,7 @@ function SignupEmail() {
   if (user.associate_status == 2) {
     window.location.assign("/cadastro-associado");
   }
+
   if (user.associate_status == 3) {
     window.location.assign("/documentos");
   }
@@ -44,8 +50,6 @@ function SignupEmail() {
   if (user.associate_status >= 6) {
     window.location.assign("/cadastro");
   }
-
- 
 
   const signUp = async event => {
     event.preventDefault();
