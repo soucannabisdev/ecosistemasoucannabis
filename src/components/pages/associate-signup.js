@@ -289,7 +289,10 @@ const AssociateSignUp = () => {
             <label className="form-label" htmlFor="birthday_associate">
               Data de nascimento
             </label>
-            <input class="form-input input-login" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.birthday_associate} type="date" id="birthday_associate" name="birthday_associate"></input>
+            <InputMask mask="99/99/9999" onChange={handleChangeInput} onBlur={handleChangeInput} value={formData.birthday_associate} type="text" id="birthday_associate" name="birthday_associate">        
+              {inputProps =>  <input placeholder="__/__/____" class="form-input input-login" {...inputProps}  />}
+            </InputMask>
+            
           </div>
 
           <div className="mb-3">
@@ -320,7 +323,6 @@ const AssociateSignUp = () => {
               RG <LabelInfo message="Necessário para a geração doo termo de responsabilidade do associado" id="rg" />
             </label>
             <input placeholder="Digite seu RG" type="text" value={formData.rg_associate} id="rg_associate" name="rg_associate" className="form-input" onChange={handleChangeInput} />
-
           </div>
 
           <div className="mb-3">
