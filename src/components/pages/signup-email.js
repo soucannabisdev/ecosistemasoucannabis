@@ -20,8 +20,6 @@ function SignupEmail() {
     return () => clearTimeout(timer);
   }, []);
 
-  console.log(user);
-
   if (user.responsable_type == "another" && user.resposible_for == null) {
     window.location.assign("/cadastro-paciente");
   }
