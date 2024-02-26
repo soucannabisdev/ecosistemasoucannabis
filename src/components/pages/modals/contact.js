@@ -97,6 +97,12 @@ const Contact = ({ type, redirect }) => {
       }, 6000)
 
       await apiRequest("/api/directus/update", { userId: user.id, formData: { associate_status: 7, status: "aguardando-aprovacao" } }, "POST");
+
+      if (type == "appointment") {
+      setTimeout(() => {
+        window.location.assign("/cadastro");
+      }, 7000)      
+    }
     }
     /* await apiRequest("/api/chatwoot/send-message-api", JSON.stringify(formData), "POST")
         .then(response => {
