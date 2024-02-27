@@ -20,7 +20,7 @@ function SignupEmail() {
     return () => clearTimeout(timer);
   }, []);
 
-  if (user.responsable_type == "another" && user.responsible_for == null) {
+  if (user.responsable_type == "another" && user.resposible_for == null) {
     window.location.assign("/cadastro-paciente");
   }
 
@@ -60,9 +60,6 @@ function SignupEmail() {
       console.log(serchEmail);
       if (serchEmail) {
         setErrorEmail(true);
-        setTimeout(() => {
-          setErrorEmail(false);
-        }, 5000);
       } else {
         const userData = await apiRequest("/api/directus/create-user", { email_account: emailInput, associate_status: 0 }, "POST");
         localStorage.setItem("user_code", await userData.user_code);
@@ -94,7 +91,7 @@ function SignupEmail() {
         <div class="col-md-6 form-signup">
           {errorEmail && (
             <div className="alert alert-danger" role="alert">
-              Este endereço de e-mail já está sendo usado.
+              Este endereço de e-mail já está sendo usado. Se você ja se preencheu seus dados, por favor, <a href="/login">FAÇA LOGIN AQUI</a>
             </div>
           )}
           {emailValidate && (
@@ -109,6 +106,9 @@ function SignupEmail() {
               <input type="email" class="form-input input-login" onChange={emailHandleChange} value={emailInput} id="email" placeholder="Digite seu email"></input>
             </div>
             <br />
+            <a href="/login" className="btn btn-primary btn-sm">
+              Fazer login
+            </a>
             <button type="submit" className="btn btn-primary btn-lg btn-signup">
               Iniciar cadastro
             </button>
