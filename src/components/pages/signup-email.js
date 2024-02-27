@@ -106,7 +106,7 @@ function SignupEmail() {
               <input type="email" class="form-input input-login" onChange={emailHandleChange} value={emailInput} id="email" placeholder="Digite seu email"></input>
             </div>
             <br />
-            <a href="/login" className="btn btn-primary btn-sm">
+            <a href="/login" style={{color:"white", fontSize:"17px"}} className="btn">
               Fazer login
             </a>
             <button type="submit" className="btn btn-primary btn-lg btn-signup">
