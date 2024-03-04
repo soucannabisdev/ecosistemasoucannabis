@@ -138,14 +138,12 @@ const FileUploadComponent = () => {
 
         setRgProof(true);
         setIsLoading(false);
-
-
-
+        
         const bodyRequest = { rg_proof: fileId };
         await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST")
-
         await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST")
-
+        await apiRequest("/api/directus/update", { userId: user.id, formData: { status: "proofs" } }, "POST")
+        
       } else {
         setFileError(true)
         setTimeout(() => {
