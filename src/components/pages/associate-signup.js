@@ -10,6 +10,7 @@ import MultiSelectField from "../forms/CIAPInput";
 import Modal from "react-bootstrap/Modal";
 import PhoneInputs from "../forms/PhoneNumberInput";
 import ReasonTreatment from "../forms/ReasonTreatment";
+import Ciap2Select from "../forms/CIAP2Select";
 
 const AssociateSignUp = () => {
   const [user, setUser] = useState({});
@@ -161,7 +162,7 @@ const AssociateSignUp = () => {
           }
         }
         if (formData.reason_treatment == [] || formData.reason_treatment == null) {
-          document.querySelector(".css-13cymwt-control").className = "css-13cymwt-control input-empty";
+           document.querySelector(".select-treatment").className = "form-input input-login select-treatment input-empty";
         } 
       }
     }
@@ -423,7 +424,7 @@ const AssociateSignUp = () => {
             <label className="form-label" htmlFor="reason_treatment">
               Motivo principal para o tratamento
             </label>
-            { <MultiSelectField onChange={handleSelectionChange}  id="reason_treatment"   class="form-input input-login select-treatment" value={formData.reason_treatment} name="reason_treatment" />}
+             <Ciap2Select  handleChange={handleSelectionChange} id="reason_treatment"   class="form-input input-login select-treatment" value={formData.reason_treatment} name="reason_treatment"  />
           </div>
 
           <div className="mb-3">
