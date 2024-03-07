@@ -506,11 +506,11 @@ img.logo {
   border-radius: 4px;
 }
 
-.options-container {
+.conteiner-options {
   display: none;
 }
 
-.options-container.open {
+.conteiner-options.open {
   display: block;
   border: 1px solid #ccc;
   border-top: none;
