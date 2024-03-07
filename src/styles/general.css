@@ -578,15 +578,14 @@ input.option-checkbox {
   cursor:pointer
 }
 
-.options-container.open {
+.conteiner-options.open {
   border: none;
 }
 
-.options-container {
+.conteiner-options {
   background-color: #0e430f9e;
   padding-left: 20px;
 }
-
 
 .option-group > div {
   margin-top: 29px;
