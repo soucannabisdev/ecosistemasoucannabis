@@ -406,7 +406,8 @@ const FileUploadComponent = () => {
   return (
     <div class="justify-content-center" >
       <h1 style={{paddingTop:"60px"}}>Envie seu Documento de Identidade</h1>
-      <h2 style={{ textAlign: "center" }}>Clique no botão abaixo para enviar uma cópia ou foto do seu RG.</h2>
+      <h2 style={{ textAlign: "center" }}>Clique no botão para enviar uma foto de seu comprovante de identidade.</h2>
+      <h2 style={{ textAlign: "center" }}>Você pode enviar a parte de trás do seu RG ou seu CNH.</h2>
       <br></br>
       <div class="">
 
