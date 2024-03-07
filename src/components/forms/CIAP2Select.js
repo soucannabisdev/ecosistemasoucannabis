@@ -2702,7 +2702,7 @@ const SelectComponent = ({ handleChange }) => {
           setIsSelectOpen(true);
         }}
       />
-      <div className={`options-container ${isSelectOpen ? "open" : ""}`}>
+      <div className={`conteiner-options ${isSelectOpen ? "open" : ""}`}>
         {filteredOptions.map((option, index) => (
           <div key={index} className="option-group">
             <h3 className={"options" + index} onClick={toggleCat}>
