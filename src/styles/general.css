@@ -512,7 +512,6 @@ img.logo {
 
 .conteiner-options.open {
   display: block;
-  border: 1px solid #ccc;
   border-top: none;
 }
 
