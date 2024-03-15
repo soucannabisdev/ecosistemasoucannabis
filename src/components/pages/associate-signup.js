@@ -425,7 +425,8 @@ const AssociateSignUp = () => {
               Motivo principal para o tratamento
             </label>
             <p style={{ color:"#fff", fontStyle:"italic" }}>Os dados deste campo são de acordo com o CIAP2 (Classificação Internacional de Atenção Primária) <a style={{color:"#fff",fontWeight:"bold"}} href="https://saude.campinas.sp.gov.br/sistemas/esus/guia_CIAP2.pdf" target="_blank">Saiba Mais</a></p>
-             <Ciap2Select  handleChange={handleSelectionChange} id="reason_treatment"   class="form-input input-login select-treatment" value={formData.reason_treatment} name="reason_treatment"  />
+            <p style={{ color:"#fff", fontStyle:"italic" }}>No campo abaixo, pesquise pelo motivo do tratamento e selecione uma ou mais opções.</p>
+                <Ciap2Select  handleChange={handleSelectionChange} id="reason_treatment"   class="form-input input-login select-treatment" value={formData.reason_treatment} name="reason_treatment"  />
           </div>
 
           <div className="mb-3">
