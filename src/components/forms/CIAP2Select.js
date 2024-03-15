@@ -2703,6 +2703,7 @@ const SelectComponent = ({ handleChange }) => {
         }}
       />
       <div className={`conteiner-options ${isSelectOpen ? "open" : ""}`}>
+      <p style={{color:"white",fontWeight:"bold",textAlign:"center",fontSize:"18pp", paddingTop:"10px"}}>SELECIONE AS OPÇÕES ABAIXO</p>
         {filteredOptions.map((option, index) => (
           <div key={index} className="option-group">
             <h3 className={"options" + index} onClick={toggleCat}>
