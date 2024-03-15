@@ -2691,7 +2691,7 @@ const SelectComponent = ({ handleChange }) => {
       <input
         className="form-input input-login select-treatment"
         type="text"
-        placeholder="Digite o motivo do seu tratamento"
+        placeholder="Digite o motivo do seu tratamento e selecione uma ou mais opções abaixo"
         value={searchTerm}
         onChange={e => {
           setIsCatOpen("all");
