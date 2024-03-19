@@ -30,11 +30,11 @@ function ApproveAssociate() {
 
   return (
     <div className="form-container ">
-      <h1 className="title">Aprovação de cadastro</h1>
+      <h1 className="title">Cadastro Concluído</h1>
       <br></br>
       {!msg && (
         <div>
-          <h2 style={{ textAlign: "center" }}>Olá {user.name_associate}, seu cadastro foi concluido e em breve será aprovado por nossa equipe.
+          <h2 style={{ textAlign: "center" }}>Olá {user.name_associate}, seu cadastro foi concluido!
           </h2>
           <h2 style={{textAlign:"center"}}>Se você já está conversando com uma de nossas acolhedoras, notifique-a que já concluiu esta etapa ou aguarde que entraremos em contato.</h2>
         </div>
