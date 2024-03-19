@@ -32,14 +32,26 @@ function LoginForm() {
   const userLogin = async event => {
     event.preventDefault();
 
-    console.log(passInput)
-
     if (passInput == []) {
       setLoginEmailError(true);
     } else {
-      await apiRequest("/api/directus/login", { email: emailInput, pass: passInput }, "POST").then(async response => {
-        
-       var userPass = decrypt(response.pass_account, process.env.REACT_APP_PASS_ENCRYPT)
+      await apiRequest("/api/directus/login", { email: emailInput, pass: passInput }, "POST")
+        .then(async response => {        
+         if(response.pass_account){
+          var userPass = decrypt(response.pass_account, process.env.REACT_APP_PASS_ENCRYPT);
+         }else{
+          setLoginEmailError(true);
+          setTimeout(() => {
+            setLoginEmailError(false);
+          }, 5000);
+          setLogged(false);
+          setTimeout(() => {
+            setLoginEmailError(false);
+          }, 5000);
+  
+          userPass = ""
+         }
+          
         if (!response) {
           setLoginEmailError(true);
           setTimeout(() => {
