@@ -220,10 +220,10 @@ const Sidebar = () => {
                     Consulta
                   </li>
                 </Link>
-                <Link to="/cadastro-aprovado">
-                  <li className="item-selected">
+                <Link>
+                  <li className="line-through">
                     <CheckIcon status={2} size={32} />
-                    Aprovação do cadastro
+                    Cadastro Concluído
                   </li>
                 </Link>
               </div>
