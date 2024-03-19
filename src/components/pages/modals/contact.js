@@ -55,89 +55,82 @@ const Contact = ({ type, redirect }) => {
 
   const [message, setMessage] = useState(formInfo)
 
- const contact = async event => {
+  const contact = async (event) => {
     event.preventDefault();
 
-  //  if (process.env.REACT_APP_UTALK) {
-      
-      if (type != "appointment") {
-        await fetch("https://n8n.soucannabis.ong.br/webhook/da23155e-90a5-486e-9e74-9d1ece12e82d", {
-          method: "POST",
-          body: JSON.stringify({
-            form: "contato",
-            message: message,
-            username: user.name_associate,
-            lastname: user.lastname_associate,
-            email: user.email_account,
-            phone: user.mobile_number,
-          }),
-        });
-        setTimeout(() => {
-          closeModal();
-        }, 4000);
-        setMsgWhats(true);
-        setTimeout(() => {
-          setMsgWhats(false);
-        }, 6000);
-      } else {
-        setAppointmentMsg(true);
+    if (type != "appointment") {
+      await fetch("https://n8n.soucannabis.ong.br/webhook/da23155e-90a5-486e-9e74-9d1ece12e82d", {
+        method: "POST",
+        body: JSON.stringify({
+          form: "contato",
+          message: message,
+          username: user.name_associate,
+          lastname: user.lastname_associate,
+          email: user.email_account,
+          phone: user.mobile_number
+        })
+      })
+      setTimeout(() => {
+        closeModal()
+      }, 4000)
+      setMsgWhats(true)
+      setTimeout(() => {
+        setMsgWhats(false)
+      }, 6000)
+    } else {
 
-        await fetch("https://n8n.soucannabis.ong.br/webhook/da23155e-90a5-486e-9e74-9d1ece12e82d", {
-          method: "POST",
-          body: JSON.stringify({
-            form: "agendamento",
-            username: user.name_associate,
-            lastname: user.lastname_associate,
-            email: user.email_account,
-            phone: user.mobile_number,
-          }),
-        });
+      setAppointmentMsg(true)
 
-        setTimeout(() => {
-          setMsgWhats(false);
-        }, 6000);
+      await fetch("https://n8n.soucannabis.ong.br/webhook/da23155e-90a5-486e-9e74-9d1ece12e82d", {
+        method: "POST",
+        body: JSON.stringify({
+          form: "agendamento",
+          username: user.name_associate,
+          lastname: user.lastname_associate,
+          email: user.email_account,
+          phone: user.mobile_number
+        })
+      })
 
-        await apiRequest("/api/directus/update", { userId: user.id, formData: { associate_status: 7, status: "aguardando-aprovacao" } }, "POST");
-      }
+      setTimeout(() => {
+        setMsgWhats(false)
+      }, 6000)
+
+      await apiRequest("/api/directus/update", { userId: user.id, formData: { associate_status: 7, status: "aguardando-aprovacao" } }, "POST");
 
       if (type == "appointment") {
-        setTimeout(() => {
-          window.location.assign("/cadastro");
-        }, 7000);
-      }
-  //  } else {
-   /*   await apiRequest("/api/chatwoot/send-message-api", JSON.stringify(formData), "POST")
+      setTimeout(() => {
+        window.location.assign("/cadastro");
+      }, 7000)      
+    }
+    }
+    /* await apiRequest("/api/chatwoot/send-message-api", JSON.stringify(formData), "POST")
         .then(response => {
           if (response != []) {
-            setMsgWhats(true);
+            setMsgWhats(true)
             setTimeout(() => {
-              setMsgWhats(false);
-            }, 6000);
+              setMsgWhats(false)
+            }, 6000)
           } else {
-            setErrorConn(true);
+            setErrorConn(true)
           }
         })
         .catch(error => {
           console.error(error);
         });
 
-      const phone = "+" + formData.phone;
-      await apiRequest(
-        "/api/chatwoot/send-message-chat",
-        JSON.stringify({
-          email: formData.email,
-          name: formData.name,
-          phone_number: phone,
-          message: formData.message,
-          type: formData.type,
-        }),
-        "POST"
-      ).catch(error => {
-        console.error(error);
-      });
-    }
-  };*/
-
+      const phone = "+" + formData.phone
+       await apiRequest("/api/chatwoot/send-message-chat", JSON.stringify({
+        "email": formData.email,
+        "name": formData.name,
+        "phone_number": phone,
+        "message": formData.message,
+        "type": formData.type
+      }), "POST")
+        .catch(error => {
+          console.error(error);
+        });*/
+  }
 
   function openModal() {
     setShowPopup(true)
