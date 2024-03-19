@@ -58,7 +58,7 @@ const Contact = ({ type, redirect }) => {
  const contact = async event => {
     event.preventDefault();
 
-    if (process.env.REACT_APP_UTALK) {
+  //  if (process.env.REACT_APP_UTALK) {
       
       if (type != "appointment") {
         await fetch("https://n8n.soucannabis.ong.br/webhook/da23155e-90a5-486e-9e74-9d1ece12e82d", {
@@ -105,8 +105,8 @@ const Contact = ({ type, redirect }) => {
           window.location.assign("/cadastro");
         }, 7000);
       }
-    } else {
-      await apiRequest("/api/chatwoot/send-message-api", JSON.stringify(formData), "POST")
+  //  } else {
+   /*   await apiRequest("/api/chatwoot/send-message-api", JSON.stringify(formData), "POST")
         .then(response => {
           if (response != []) {
             setMsgWhats(true);
@@ -136,7 +136,7 @@ const Contact = ({ type, redirect }) => {
         console.error(error);
       });
     }
-  };
+  };*/
 
 
   function openModal() {
