@@ -4,7 +4,7 @@ import directusRequestUpload from "../../modules/directusRequestUpload";
 import apiRequest from "../../modules/apiRequest";
 import User from "../../modules/User";
 import AlertError from "../forms/AlertError";
-import Resizer from 'react-image-file-resizer';
+import Resizer from "react-image-file-resizer";
 
 const FileUploadComponent = () => {
   const [user, setUser] = useState({});
@@ -27,7 +27,6 @@ const FileUploadComponent = () => {
     userData = await User();
     setUser(userData);
   }, 4000);
-
 
   if (user.associate_status == 4) {
     window.location.assign("/consulta");
@@ -64,14 +63,10 @@ const FileUploadComponent = () => {
       } else {
         setVisible(false);
       }
-
     })();
-
   }, []);
 
-
   const handleFile1Change = async event => {
-
     const file1 = event.target.files[0];
 
     if (file1) {
@@ -83,149 +78,136 @@ const FileUploadComponent = () => {
 
       file1.storage = "local";
 
-      var fileName = file1.name
-      fileName = fileName.split(".")
-      var nameFile = "doc-identidade-" + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1]
-      nameFile = nameFile.replace(/\s/g, '');
+      var fileName = file1.name;
+      fileName = fileName.split(".");
+      var nameFile = "doc-identidade-" + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1];
+      nameFile = nameFile.replace(/\s/g, "");
       nameFile = nameFile.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      nameFile = nameFile.replace(/ç/g, 'c');
+      nameFile = nameFile.replace(/ç/g, "c");
 
       if (fileName[1] == "jpg" || fileName[1] == "jpeg" || fileName[1] == "png" || fileName[1] == "gif" || fileName[1] == "pdf") {
         setIsLoading(true);
 
-        if (fileName[1] != "pdf") {
+        var formData = new FormData();
+        formData.append("folder", userFolder);
+        formData.append("file", file1, nameFile);
 
-          const compressedImage = await new Promise((resolve) => {
-            Resizer.imageFileResizer(
-              file1,
-              800,
-              600,
-              fileName[1],
-              70,
-              0,
-              (uri) => {
-                resolve(uri);
-              },
-              'file'
-            );
-          });
-
-          var formData = new FormData();
-          formData.append("folder", userFolder);
-          formData.append("file", compressedImage, nameFile);
-        } else {
-          var formData = new FormData();
-          formData.append("folder", userFolder);
-          formData.append("file", file1, nameFile);
-
-        }
-       
-
-        var fileId = "";
+        var fileId = "não-carregou-o-arquivo";
 
         await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
           .then(response => {
             fileId = response.id;
+            setButtonMsg(true);
             return fileId;
           })
           .catch(error => {
-            console.error(error);
+            console.log("Erro ao enviar o documento: " + user.name_associate + "-" + user.lastname_associate + "error -> " + error);
           });
 
-          setButtonMsg(true)
+        const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+        const currentDate = new Date();
+        const day = currentDate.getDate();
+        const month = currentDate.getMonth();
+        const year = currentDate.getFullYear();
+        const monthName = months[month];
+        const formattedDate = `${day} de ${monthName} de ${year}`;
 
-          await docuseal()
+        const fullname = user.name_associate + " " + user.lastname_associate;
+
+        var userData = [
+          {
+            name: "usercode",
+            default_value: await user.id,
+            readonly: true,
+          },
+          {
+            name: "email",
+            default_value: await user.email_account,
+            readonly: true,
+          },
+          {
+            name: "Nome do Responsavel",
+            default_value: await fullname,
+            readonly: true,
+          },
+          {
+            name: "Estado Civil",
+            default_value: await user.marital_status,
+            readonly: true,
+          },
+          {
+            name: "Nacionalidade",
+            default_value: await user.nationality,
+            readonly: true,
+          },
+          {
+            name: "CPF",
+            default_value: await user.cpf_associate,
+            readonly: true,
+          },
+          {
+            name: "RG",
+            default_value: await user.rg_associate,
+            readonly: true,
+          },
+          {
+            name: "Orgao",
+            default_value: await user.emiiter_rg_associate,
+            readonly: true,
+          },
+          {
+            name: "Rua",
+            default_value: await user.street,
+            readonly: true,
+          },
+          {
+            name: "Numero",
+            default_value: await user.number,
+            readonly: true,
+          },
+          {
+            name: "Bairro",
+            default_value: await user.neighborhood,
+            readonly: true,
+          },
+          {
+            name: "Cidade",
+            default_value: await user.city,
+            readonly: true,
+          },
+          {
+            name: "Estado",
+            default_value: await user.state,
+            readonly: true,
+          },
+          {
+            name: "CEP",
+            default_value: await user.cep,
+            readonly: true,
+          },
+          {
+            name: "Data",
+            default_value: await formattedDate,
+            readonly: true,
+          },
+        ];
+
+        await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST");
+        await apiRequest("/api/directus/update", { userId: user.id, formData: { rg_proof: fileId } }, "POST");
+        await apiRequest("/api/directus/update", { userId: user.id, formData: { status: "proofs" } }, "POST");
+
+        const createContract = await apiRequest("/api/docuseal/create-contract", userData, "POST");
+        setGenerateContract(process.env.REACT_APP_DOCUSEAL_URL + "/s/" + (await createContract[0].slug));
+
+        const bodyRequest = { contract: process.env.REACT_APP_DOCUSEAL_URL + "/s/" + (await createContract[0].slug) };
+        await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST");
 
         setRgProof(true);
         setIsLoading(false);
-        
-        const bodyRequest = { rg_proof: fileId };
-        await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST")
-        await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST")
-        await apiRequest("/api/directus/update", { userId: user.id, formData: { status: "proofs" } }, "POST")
-        
       } else {
-        setFileError(true)
+        setFileError(true);
         setTimeout(() => {
-          setFileError(false)
-        }, 5000);
-      }
-    }
-  };
-
-  const handleFile2Change = async event => {
-
-    const file2 = event.target.files[0];
-    var userFolder = localStorage.getItem("user_folder");
-
-    if (file2) {
-
-      file2.storage = "local";
-      file2.filename_download = file2.name;
-
-      var fileName = file2.name
-      fileName = fileName.split(".")
-      var nameFile = "comp-residencia-" + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1]
-      nameFile = nameFile.replace(/\s/g, '');
-      nameFile = nameFile.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      nameFile = nameFile.replace(/ç/g, 'c');
-
-      if (fileName[1] == "jpg" || fileName[1] == "jpeg" || fileName[1] == "png" || fileName[1] == "gif" || fileName[1] == "pdf") {
-        setIsLoadingB(true);
-
-        if (fileName[1] != "pdf") {
-
-          const compressedImage = await new Promise((resolve) => {
-            Resizer.imageFileResizer(
-              file2,
-              800,
-              600,
-              fileName[1],
-              70,
-              0,
-              (uri) => {
-                resolve(uri);
-              },
-              'file'
-            );
-          });
-
-          var formData = new FormData();
-          formData.append("folder", userFolder);
-          formData.append("file", compressedImage, nameFile);
-        } else {
-          var formData = new FormData();
-          formData.append("folder", userFolder);
-          formData.append("file", file2, nameFile);
-        }
-
-        var fileId = "";
-
-        await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
-          .then(response => {
-            fileId = response.id;
-            return fileId;
-
-          })
-          .catch(error => {
-            console.error(error);
-          });
-
-        setButtonMsg(true)
-
-        const bodyRequest = { proof_of_address: fileId, status: "proofs" };
-        await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST")
-
-        await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST")
-      
-        setProof_of_address(true);
-        setIsLoadingB(false);
-
-
-      } else {
-        setFileError(true)
-        setTimeout(() => {
-          setFileError(false)
+          setFileError(false);
         }, 5000);
       }
     }
@@ -240,43 +222,21 @@ const FileUploadComponent = () => {
       file3.storage = "local";
       file3.filename_download = file3.name;
 
-      var fileName = file3.name
-      fileName = fileName.split(".")
-      var nameFile = "doc-paciente-" + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1]
-      nameFile = nameFile.replace(/\s/g, '');
+      var fileName = file3.name;
+      fileName = fileName.split(".");
+      var nameFile = "doc-paciente-" + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1];
+      nameFile = nameFile.replace(/\s/g, "");
       nameFile = nameFile.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      nameFile = nameFile.replace(/ç/g, 'c');
+      nameFile = nameFile.replace(/ç/g, "c");
 
       if (fileName[1] == "jpg" || fileName[1] == "jpeg" || fileName[1] == "png" || fileName[1] == "gif" || fileName[1] == "pdf") {
         setIsLoadingC(true);
 
-        if (fileName[1] != "pdf") {
+        var formData = new FormData();
+        formData.append("folder", userFolder);
+        formData.append("file", file3, nameFile);
 
-          const compressedImage = await new Promise((resolve) => {
-            Resizer.imageFileResizer(
-              file3,
-              800,
-              600,
-              fileName[1],
-              70,
-              0,
-              (uri) => {
-                resolve(uri);
-              },
-              'file'
-            );
-          });
-
-          var formData = new FormData();
-          formData.append("folder", userFolder);
-          formData.append("file", compressedImage, nameFile);
-        } else {
-          var formData = new FormData();
-          formData.append("folder", userFolder);
-          formData.append("file", file3, nameFile);
-        }
-
-        var fileId = "";
+        var fileId = "não-carregou-o-arquivo";
 
         await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
           .then(response => {
@@ -288,129 +248,28 @@ const FileUploadComponent = () => {
           });
 
         const bodyRequest = { rg_patient_proof: fileId };
-        await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST")
+        await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST");
 
-        await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST")
+        await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST");
 
         setRg_patient_proof(true);
         setIsLoadingC(false);
       }
-
     } else {
-      setFileError(true)
+      setFileError(true);
       setTimeout(() => {
-        setFileError(false)
+        setFileError(false);
       }, 5000);
     }
   };
 
-  const docuseal = async () => {
-    const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-    const currentDate = new Date();
-    const day = currentDate.getDate();
-    const month = currentDate.getMonth();
-    const year = currentDate.getFullYear();
-    const monthName = months[month];
-    const formattedDate = `${day} de ${monthName} de ${year}`;
-
-    const fullname = user.name_associate + " " + user.lastname_associate;
-
-    var userData = [
-      {
-        "name": "usercode",
-        "default_value": await user.id,
-        "readonly": true
-      },
-      {
-        "name": "email",
-        "default_value": await user.email_account,
-        "readonly": true
-      },
-      {
-        "name": "Nome do Responsavel",
-        "default_value": await fullname,
-        "readonly": true
-      },
-      {
-        "name": "Estado Civil",
-        "default_value": await user.marital_status,
-        "readonly": true
-      },
-      {
-        "name": "Nacionalidade",
-        "default_value": await user.nationality,
-        "readonly": true
-      },
-      {
-        "name": "CPF",
-        "default_value": await user.cpf_associate,
-        "readonly": true
-      },
-      {
-        "name": "RG",
-        "default_value": await user.rg_associate,
-        "readonly": true
-      },
-      {
-        "name": "Orgao",
-        "default_value": await user.emiiter_rg_associate,
-        "readonly": true
-      },
-      {
-        "name": "Rua",
-        "default_value": await user.street,
-        "readonly": true
-      },
-      {
-        "name": "Numero",
-        "default_value": await user.number,
-        "readonly": true
-      },
-      {
-        "name": "Bairro",
-        "default_value": await user.neighborhood,
-        "readonly": true
-      },
-      {
-        "name": "Cidade",
-        "default_value": await user.city,
-        "readonly": true
-      },
-      {
-        "name": "Estado",
-        "default_value": await user.state,
-        "readonly": true
-      },
-      {
-        "name": "CEP",
-        "default_value": await user.cep,
-        "readonly": true
-      },
-      {
-        "name": "Data",
-        "default_value": await formattedDate,
-        "readonly": true
-      }
-    ];
-
-    const createContract = await apiRequest("/api/docuseal/create-contract", userData, "POST");
-    setGenerateContract(process.env.REACT_APP_DOCUSEAL_URL + "/s/" + await createContract[0].slug);
-
-    const bodyRequest = { contract: process.env.REACT_APP_DOCUSEAL_URL + "/s/" + await createContract[0].slug };
-    await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST")
-
-    return "ok"
-
-  };
-
   return (
-    <div class="justify-content-center" >
-      <h1 style={{paddingTop:"60px"}}>Envie seu Documento de Identidade</h1>
+    <div class="justify-content-center">
+      <h1 style={{ paddingTop: "60px" }}>Envie seu Documento de Identidade</h1>
       <h2 style={{ textAlign: "center" }}>Clique no botão para enviar uma foto de seu comprovante de identidade.</h2>
       <h2 style={{ textAlign: "center" }}>Você pode enviar a parte de trás do seu RG ou seu CNH.</h2>
       <br></br>
       <div class="">
-
         {!rgProof && (
           <Form>
             <Form.Group controlId="formFile1">
@@ -418,11 +277,7 @@ const FileUploadComponent = () => {
                 {isLoading && (
                   <span className="loading-text">
                     <img className="animated-icon" width="40" src="/icons/data-cloud.gif" />
-                    {!buttonMsg ? (
-                      <span>Carregando documento...</span>
-                    ) : (
-                      <span class="gernerate-term">Gerando termo para assinatura</span>
-                    )}
+                    {!buttonMsg ? <span>Carregando documento...</span> : <span class="gernerate-term">Gerando termo para assinatura</span>}
                     <img className="animated-icon" width="40" src="/icons/data-cloud.gif" />
                   </span>
                 )}
