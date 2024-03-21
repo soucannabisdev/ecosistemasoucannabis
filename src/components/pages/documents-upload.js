@@ -97,12 +97,11 @@ const FileUploadComponent = () => {
         await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
           .then(response => {
             fileId = response.id;
-            console.log(fileId)
             setButtonMsg(true);
             return fileId;
           })
           .catch(error => {
-            console.error(error);
+            console.log("Erro ao enviar o documento: "+user.name_associate + "-" + user.lastname_associate+"error -> " +error);
           });
 
         const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
@@ -197,11 +196,11 @@ const FileUploadComponent = () => {
         await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST");
         await apiRequest("/api/directus/update", { userId: user.id, formData: { status: "proofs" } }, "POST");
 
-       // const createContract = await apiRequest("/api/docuseal/create-contract", userData, "POST");
-       // setGenerateContract(process.env.REACT_APP_DOCUSEAL_URL + "/s/" + (await createContract[0].slug));
+        const createContract = await apiRequest("/api/docuseal/create-contract", userData, "POST");
+        setGenerateContract(process.env.REACT_APP_DOCUSEAL_URL + "/s/" + (await createContract[0].slug));
 
-       // const bodyRequest = { contract: process.env.REACT_APP_DOCUSEAL_URL + "/s/" + (await createContract[0].slug) };
-       // await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST");       
+        const bodyRequest = { contract: process.env.REACT_APP_DOCUSEAL_URL + "/s/" + (await createContract[0].slug) };
+        await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST");       
 
         setRgProof(true);
         setIsLoading(false);
