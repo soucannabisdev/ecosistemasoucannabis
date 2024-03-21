@@ -173,7 +173,7 @@ function MultipleFiles() {
             <Form.Control className="input-upload" type="file" onChange={handleFile} />
           </Form.Group>
         </Form>
-        <div class="col-12 d-flex justify-content-center align-items-center" style={{ marginTop: "70px" }}><a onClick={(nextPage)} class="btn btn-success btn-lg btn-signup">Solicitar aprovação do cadastro</a></div>
+        <div class="col-12 d-flex justify-content-center align-items-center" style={{ marginTop: "70px" }}><a onClick={(nextPage)} class="btn btn-success btn-lg btn-signup">CONCLUIR CADASTRO</a></div>
 
       </div>
       {errorNamefile && (
