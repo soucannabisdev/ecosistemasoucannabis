@@ -6096,6 +6096,11 @@ ignore@^5.2.0:
   resolved "https://registry.npmjs.org/ignore/-/ignore-5.3.0.tgz"
   integrity sha512-g7dmpshy+gD7mh88OC9NwSGTKoc3kyLAZQRU1mt53Aw/vnvfXnbC+F/7F7QoYVKbV+KNvJx8wArewKy1vXMtlg==
 
+image-validator@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.npmjs.org/image-validator/-/image-validator-1.2.1.tgz"
+  integrity sha512-mNV9ABWD9rKaMvBH0BeYOWtZaV6s459RNfPL+WJ+NMDO4qchucbQRFzePVg1+V5c09NjOOOOTMSaU2OtHcX1Ig==
+
 immer@^9.0.7:
   version "9.0.21"
   resolved "https://registry.npmjs.org/immer/-/immer-9.0.21.tgz"
