@@ -13,7 +13,7 @@ const FileUploadComponent = () => {
   const [proof_of_address, setProof_of_address] = useState(false);
   const [contract, setContract] = useState(false);
   const [generateContract, setGenerateContract] = useState(false);
-  const [docsError, setDocsError] = useState(false);
+  const [docError, setdocError] = useState(false);
   const [visible, setVisible] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingB, setIsLoadingB] = useState(false);
@@ -96,10 +96,16 @@ const FileUploadComponent = () => {
 
         await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
           .then(response => {
-            console.log(response)
+            if(response){
             fileId = response.id;
             setButtonMsg(true);
             return fileId;
+            }else{
+              setdocError(true);
+              setTimeout(() => {
+                setdocError(false);
+              }, 5000);
+            }
           })
           .catch(error => {
             var fetchBody = user.name_associate + error
@@ -335,9 +341,9 @@ const FileUploadComponent = () => {
           Assinar Termo de Responsabilidade
         </a>
       </div>
-      {docsError && (
+      {docError && (
         <div class="alert1">
-          <AlertError message="Você precisa enviar todos os comprovantes antes de enviar o termo" />
+          <AlertError message="Arquivo inválido, ele parece estar corrompido." />
         </div>
       )}
       {fileError && (
