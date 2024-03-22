@@ -10,13 +10,11 @@ const FileUploadComponent = () => {
   const [user, setUser] = useState({});
   const [rgProof, setRgProof] = useState(false);
   const [rg_patient_proof, setRg_patient_proof] = useState(false);
-  const [proof_of_address, setProof_of_address] = useState(false);
   const [contract, setContract] = useState(false);
   const [generateContract, setGenerateContract] = useState(false);
   const [docError, setdocError] = useState(false);
   const [visible, setVisible] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingB, setIsLoadingB] = useState(false);
   const [isLoadingC, setIsLoadingC] = useState(false);
   const [fileError, setFileError] = useState(false);
   const [buttonMsg, setButtonMsg] = useState(false);
@@ -66,19 +64,19 @@ const FileUploadComponent = () => {
     })();
   }, []);
 
-  const handleFile1Change = async event => {
-    const file1 = event.target.files[0];
+  const handleFileAssociateChange = async event => {
+    const file = event.target.files[0];
 
-    if (file1) {
+    if (file) {
       const createFolder = await apiRequest("/api/directus/create-folder", { name: user.user_code }, "POST");
       var userFolder = createFolder.id;
       localStorage.setItem("user_folder", userFolder);
 
       await apiRequest("/api/directus/update", { userId: user.id, formData: { user_path: userFolder } }, "POST");
 
-      file1.storage = "local";
+      file.storage = "local";
 
-      var fileName = file1.name;
+      var fileName = file.name;
       fileName = fileName.split(".");
       var nameFile = "doc-identidade-" + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1];
       nameFile = nameFile.replace(/\s/g, "");
@@ -90,139 +88,127 @@ const FileUploadComponent = () => {
 
         var formData = new FormData();
         formData.append("folder", userFolder);
-        formData.append("file", file1, nameFile);
+        formData.append("file", file, nameFile);
 
         var fileId = "não-carregou-o-arquivo";
 
-        await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
-          .then(response => {
-            if(response){
+        await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" }).then(response => {
+          if (response) {
             fileId = response.id;
             setButtonMsg(true);
             return fileId;
-            }else{
-              setdocError(true);
-              setTimeout(() => {
-                setdocError(false);
-              }, 5000);
-            }
-          })
-          .catch(error => {
-            var fetchBody = user.name_associate + error
-              fetch('https://ntfy.sh/Soucannabis', {
-              method: 'POST', 
-              body: fetchBody
-            });
+          } else {
+            setdocError(true);
+            setTimeout(() => {
+              setdocError(false);
+            }, 5000);
+          }
+        });
 
-            console.log(error)
-          });
+        if (fileId != "não-carregou-o-arquivo") {
+          const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+          const currentDate = new Date();
+          const day = currentDate.getDate();
+          const month = currentDate.getMonth();
+          const year = currentDate.getFullYear();
+          const monthName = months[month];
+          const formattedDate = `${day} de ${monthName} de ${year}`;
 
-        if(fileId != "não-carregou-o-arquivo"){
+          const fullname = user.name_associate + " " + user.lastname_associate;
 
-        const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-        const currentDate = new Date();
-        const day = currentDate.getDate();
-        const month = currentDate.getMonth();
-        const year = currentDate.getFullYear();
-        const monthName = months[month];
-        const formattedDate = `${day} de ${monthName} de ${year}`;
+          var userData = [
+            {
+              name: "usercode",
+              default_value: await user.id,
+              readonly: true,
+            },
+            {
+              name: "email",
+              default_value: await user.email_account,
+              readonly: true,
+            },
+            {
+              name: "Nome do Responsavel",
+              default_value: await fullname,
+              readonly: true,
+            },
+            {
+              name: "Estado Civil",
+              default_value: await user.marital_status,
+              readonly: true,
+            },
+            {
+              name: "Nacionalidade",
+              default_value: await user.nationality,
+              readonly: true,
+            },
+            {
+              name: "CPF",
+              default_value: await user.cpf_associate,
+              readonly: true,
+            },
+            {
+              name: "RG",
+              default_value: await user.rg_associate,
+              readonly: true,
+            },
+            {
+              name: "Orgao",
+              default_value: await user.emiiter_rg_associate,
+              readonly: true,
+            },
+            {
+              name: "Rua",
+              default_value: await user.street,
+              readonly: true,
+            },
+            {
+              name: "Numero",
+              default_value: await user.number,
+              readonly: true,
+            },
+            {
+              name: "Bairro",
+              default_value: await user.neighborhood,
+              readonly: true,
+            },
+            {
+              name: "Cidade",
+              default_value: await user.city,
+              readonly: true,
+            },
+            {
+              name: "Estado",
+              default_value: await user.state,
+              readonly: true,
+            },
+            {
+              name: "CEP",
+              default_value: await user.cep,
+              readonly: true,
+            },
+            {
+              name: "Data",
+              default_value: await formattedDate,
+              readonly: true,
+            },
+          ];
 
-        const fullname = user.name_associate + " " + user.lastname_associate;
+          await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST");
+          await apiRequest("/api/directus/update", { userId: user.id, formData: { rg_proof: fileId } }, "POST");
+          await apiRequest("/api/directus/update", { userId: user.id, formData: { status: "proofs" } }, "POST");
 
-        var userData = [
-          {
-            name: "usercode",
-            default_value: await user.id,
-            readonly: true,
-          },
-          {
-            name: "email",
-            default_value: await user.email_account,
-            readonly: true,
-          },
-          {
-            name: "Nome do Responsavel",
-            default_value: await fullname,
-            readonly: true,
-          },
-          {
-            name: "Estado Civil",
-            default_value: await user.marital_status,
-            readonly: true,
-          },
-          {
-            name: "Nacionalidade",
-            default_value: await user.nationality,
-            readonly: true,
-          },
-          {
-            name: "CPF",
-            default_value: await user.cpf_associate,
-            readonly: true,
-          },
-          {
-            name: "RG",
-            default_value: await user.rg_associate,
-            readonly: true,
-          },
-          {
-            name: "Orgao",
-            default_value: await user.emiiter_rg_associate,
-            readonly: true,
-          },
-          {
-            name: "Rua",
-            default_value: await user.street,
-            readonly: true,
-          },
-          {
-            name: "Numero",
-            default_value: await user.number,
-            readonly: true,
-          },
-          {
-            name: "Bairro",
-            default_value: await user.neighborhood,
-            readonly: true,
-          },
-          {
-            name: "Cidade",
-            default_value: await user.city,
-            readonly: true,
-          },
-          {
-            name: "Estado",
-            default_value: await user.state,
-            readonly: true,
-          },
-          {
-            name: "CEP",
-            default_value: await user.cep,
-            readonly: true,
-          },
-          {
-            name: "Data",
-            default_value: await formattedDate,
-            readonly: true,
-          },
-        ];
+          const createContract = await apiRequest("/api/docuseal/create-contract", userData, "POST");
+          setGenerateContract(process.env.REACT_APP_DOCUSEAL_URL + "/s/" + (await createContract[0].slug));
 
-        await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST");
-        await apiRequest("/api/directus/update", { userId: user.id, formData: { rg_proof: fileId } }, "POST");
-        await apiRequest("/api/directus/update", { userId: user.id, formData: { status: "proofs" } }, "POST");
+          const bodyRequest = { contract: process.env.REACT_APP_DOCUSEAL_URL + "/s/" + (await createContract[0].slug) };
+          await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST");
 
-        const createContract = await apiRequest("/api/docuseal/create-contract", userData, "POST");
-        setGenerateContract(process.env.REACT_APP_DOCUSEAL_URL + "/s/" + (await createContract[0].slug));
-
-        const bodyRequest = { contract: process.env.REACT_APP_DOCUSEAL_URL + "/s/" + (await createContract[0].slug) };
-        await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST");
-
-        setRgProof(true);
-        setIsLoading(false);
-        }else{
+          setRgProof(true);
+          setIsLoading(false);
+        } else {
           setIsLoading(false);
         }
-
       } else {
         setFileError(true);
         setTimeout(() => {
@@ -232,16 +218,16 @@ const FileUploadComponent = () => {
     }
   };
 
-  const handleFile3Change = async event => {
-    const file3 = event.target.files[0];
+  const handlePatientFileChange = async event => {
+    const file = event.target.files[0];
 
     var userFolder = localStorage.getItem("user_folder");
 
-    if (file3) {
-      file3.storage = "local";
-      file3.filename_download = file3.name;
+    if (file) {
+      file.storage = "local";
+      file.filename_download = file.name;
 
-      var fileName = file3.name;
+      var fileName = file.name;
       fileName = fileName.split(".");
       var nameFile = "doc-paciente-" + user.name_associate + "-" + user.lastname_associate + "-" + user.user_code + "." + fileName[1];
       nameFile = nameFile.replace(/\s/g, "");
@@ -253,18 +239,23 @@ const FileUploadComponent = () => {
 
         var formData = new FormData();
         formData.append("folder", userFolder);
-        formData.append("file", file3, nameFile);
+        formData.append("file", file, nameFile);
 
         var fileId = "não-carregou-o-arquivo";
 
         await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
           .then(response => {
-            fileId = response.id;
-            return fileId;
+            if (response) {
+              fileId = response.id;
+              setButtonMsg(true);
+              return fileId;
+            } else {
+              setdocError(true);
+              setTimeout(() => {
+                setdocError(false);
+              }, 5000);
+            }
           })
-          .catch(error => {
-            console.error(error);
-          });
 
         const bodyRequest = { rg_patient_proof: fileId };
         await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST");
@@ -302,7 +293,7 @@ const FileUploadComponent = () => {
                 )}
                 {!isLoading && <span>Documento de identidade</span>}
               </Form.Label>
-              <Form.Control className="input-upload" type="file" onChange={handleFile1Change} />
+              <Form.Control className="input-upload" type="file" onChange={handleFileAssociateChange} />
             </Form.Group>
           </Form>
         )}
@@ -323,7 +314,7 @@ const FileUploadComponent = () => {
                 )}
                 {!isLoadingC && <span class="doc-patient">Documento de Identidade do paciente</span>}
               </Form.Label>
-              <Form.Control className="input-upload" type="file" onChange={handleFile3Change} />
+              <Form.Control className="input-upload" type="file" onChange={handlePatientFileChange} />
             </Form.Group>
           </Form>
         )}
