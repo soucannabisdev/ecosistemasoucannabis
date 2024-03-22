@@ -96,6 +96,7 @@ const FileUploadComponent = () => {
 
         await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
           .then(response => {
+            console.log(response)
             fileId = response.id;
             setButtonMsg(true);
             return fileId;
