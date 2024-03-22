@@ -4,12 +4,13 @@ import directusRequestUpload from "../../modules/directusRequestUpload";
 import apiRequest from "../../modules/apiRequest";
 import User from "../../modules/User";
 import AlertError from "../forms/AlertError";
-import { validateImage } from "image-validator";
+import Resizer from "react-image-file-resizer";
 
 const FileUploadComponent = () => {
   const [user, setUser] = useState({});
   const [rgProof, setRgProof] = useState(false);
   const [rg_patient_proof, setRg_patient_proof] = useState(false);
+  const [proof_of_address, setProof_of_address] = useState(false);
   const [contract, setContract] = useState(false);
   const [generateContract, setGenerateContract] = useState(false);
   const [docError, setdocError] = useState(false);
@@ -91,10 +92,6 @@ const FileUploadComponent = () => {
         formData.append("file", file, nameFile);
 
         var fileId = "não-carregou-o-arquivo";
-
-          const isValidImage = await validateImage(file);
-          console.log(isValidImage);
-    
 
         await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" }).then(response => {
           if (response) {
