@@ -101,8 +101,16 @@ const FileUploadComponent = () => {
             return fileId;
           })
           .catch(error => {
-            console.log("Erro ao enviar o documento: "+user.name_associate + "-" + user.lastname_associate+"error -> " +error);
+            var fetchBody = user.name_associate + error
+              fetch('https://ntfy.sh/Soucannabis', {
+              method: 'POST', 
+              body: fetchBody
+            });
+
+            console.log(error)
           });
+
+        if(fileId != "não-carregou-o-arquivo"){
 
         const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
         const currentDate = new Date();
@@ -192,18 +200,21 @@ const FileUploadComponent = () => {
           },
         ];
 
-        await apiRequest("/api/directus/update", { userId: user.id, formData: { rg_proof: fileId } }, "POST");
         await apiRequest("/api/directus/upload-files", { userId: user.id, fileId: fileId }, "POST");
+        await apiRequest("/api/directus/update", { userId: user.id, formData: { rg_proof: fileId } }, "POST");
         await apiRequest("/api/directus/update", { userId: user.id, formData: { status: "proofs" } }, "POST");
 
         const createContract = await apiRequest("/api/docuseal/create-contract", userData, "POST");
         setGenerateContract(process.env.REACT_APP_DOCUSEAL_URL + "/s/" + (await createContract[0].slug));
 
         const bodyRequest = { contract: process.env.REACT_APP_DOCUSEAL_URL + "/s/" + (await createContract[0].slug) };
-        await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST");       
+        await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST");
 
         setRgProof(true);
         setIsLoading(false);
+        }else{
+          setIsLoading(false);
+        }
 
       } else {
         setFileError(true);
@@ -233,32 +244,11 @@ const FileUploadComponent = () => {
       if (fileName[1] == "jpg" || fileName[1] == "jpeg" || fileName[1] == "png" || fileName[1] == "gif" || fileName[1] == "pdf") {
         setIsLoadingC(true);
 
-        if (fileName[1] != "pdf") {
-          const compressedImage = await new Promise(resolve => {
-            Resizer.imageFileResizer(
-              file3,
-              800,
-              600,
-              fileName[1],
-              70,
-              0,
-              uri => {
-                resolve(uri);
-              },
-              "file"
-            );
-          });
+        var formData = new FormData();
+        formData.append("folder", userFolder);
+        formData.append("file", file3, nameFile);
 
-          var formData = new FormData();
-          formData.append("folder", userFolder);
-          formData.append("file", compressedImage, nameFile);
-        } else {
-          var formData = new FormData();
-          formData.append("folder", userFolder);
-          formData.append("file", file3, nameFile);
-        }
-
-        var fileId = "";
+        var fileId = "não-carregou-o-arquivo";
 
         await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
           .then(response => {
@@ -283,10 +273,6 @@ const FileUploadComponent = () => {
         setFileError(false);
       }, 5000);
     }
-  };
-
-  const docuseal = async () => {
-    return "ok";
   };
 
   return (
@@ -350,7 +336,7 @@ const FileUploadComponent = () => {
       </div>
       {docsError && (
         <div class="alert1">
-          <AlertError message="Você precisa enviar todos os comprovantes antes de enviar o contrato" />
+          <AlertError message="Você precisa enviar todos os comprovantes antes de enviar o termo" />
         </div>
       )}
       {fileError && (
