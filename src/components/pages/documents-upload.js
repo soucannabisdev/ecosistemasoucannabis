@@ -335,7 +335,7 @@ const FileUploadComponent = () => {
       </div>
       {docError && (
         <div class="alert1">
-          <AlertError message="Arquivo inválido, ele parece estar corrompido." />
+          <AlertError message="Erro ao enviar o arquivo, tente novamente." />
         </div>
       )}
       {fileError && (
