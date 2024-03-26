@@ -97,10 +97,11 @@ const FileUploadComponent = () => {
           if (response) {
             fileId = response.id;
 
-            if(fileId != "não-carregou-o-arquivo"){
-            setButtonMsg(true) ;
-            return fileId;
+            if (fileId != "não-carregou-o-arquivo" && fileId != "") {
+              setButtonMsg(true);
+              return fileId;
             }
+            
           } else {
             setdocError(true);
             setTimeout(() => {
@@ -247,19 +248,18 @@ const FileUploadComponent = () => {
 
         var fileId = "não-carregou-o-arquivo";
 
-        await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" })
-          .then(response => {
-            if (response) {
-              fileId = response.id;
-              setButtonMsg(true);
-              return fileId;
-            } else {
-              setdocError(true);
-              setTimeout(() => {
-                setdocError(false);
-              }, 5000);
-            }
-          })
+        await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" }).then(response => {
+          if (response) {
+            fileId = response.id;
+            setButtonMsg(true);
+            return fileId;
+          } else {
+            setdocError(true);
+            setTimeout(() => {
+              setdocError(false);
+            }, 5000);
+          }
+        });
 
         const bodyRequest = { rg_patient_proof: fileId };
         await apiRequest("/api/directus/update", { userId: user.id, formData: bodyRequest }, "POST");
