@@ -96,8 +96,11 @@ const FileUploadComponent = () => {
         await directusRequestUpload("/files", formData, "POST", { "Content-Type": "multipart/form-data" }).then(response => {
           if (response) {
             fileId = response.id;
-            setButtonMsg(true);
+
+            if(fileId != "não-carregou-o-arquivo"){
+            setButtonMsg(true) ;
             return fileId;
+            }
           } else {
             setdocError(true);
             setTimeout(() => {
