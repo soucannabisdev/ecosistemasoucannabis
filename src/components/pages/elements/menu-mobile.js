@@ -24,7 +24,7 @@ const MenuTopo = () => {
 
   return (
     <nav className="navbar  navbar-light fixed-top">
-      <img style={{width:"25%"}} src="logo-soucannabis.png"></img>
+      <img style={{width:"25%"}} src="logo-santaguia.png"></img>
       <Contact />
       <div className="">
         <Dropdown>

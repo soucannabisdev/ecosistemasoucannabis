@@ -208,7 +208,7 @@ const Contact = ({ type }) => {
                     <div class="row">
                       <div class="col-sm-4">
                         <div class="text-center">
-                          <a href="https://www.instagram.com/_soucannabis" target="_blank">
+                          <a href="https://www.instagram.com/associacaosantaguia" target="_blank">
                             <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50" viewBox="0 0 64 64">
                               <radialGradient id="TGwjmZMm2W~B4yrgup6jda_119026_gr1" cx="32" cy="32.5" r="31.259" gradientTransform="matrix(1 0 0 -1 0 64)" gradientUnits="userSpaceOnUse">
                                 <stop offset="0" stop-color="#efdcb1"></stop>
@@ -248,7 +248,7 @@ const Contact = ({ type }) => {
                       </div>
                       <div class="col-sm-4">
                         <div class="text-center">
-                          <a href="https://soucannabis.ong.br" target="_blank">
+                          <a href="https://santaguia.org.br" target="_blank">
                             <img width="50" height="50" src="https://img.icons8.com/plasticine/50/domain.png" alt="domain" />
                           </a>
                         </div>

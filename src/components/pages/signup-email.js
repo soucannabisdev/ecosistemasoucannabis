@@ -82,7 +82,7 @@ function SignupEmail() {
   return (
     <div class="container">
       <div class="row justify-content-center">
-        <img class="logo" src="https://soucannabis.ong.br/wp-content/uploads/elementor/thumbs/Logotipo-Horizontal-Branco-300x100-1-q756ld54d2nqroxriqdpggu81liv79biznretir15g.png"></img>
+        <img class="logo" src="logo-santaguia.png"></img>
       </div>
       <h1 class="title" style={{ marginTop: "30px" }}>
         Cadastro de associado
